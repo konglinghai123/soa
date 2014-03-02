@@ -1,0 +1,63 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="opensoa.order.simple" targetNamespace="opensoa.order.simple" elementFormDefault="qualified" version="1.0">
+	<xs:complexType name="OrderType">
+		<xs:sequence>
+			<xs:element ref="Header"/>
+			<xs:element ref="Lines"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Order" type="OrderType"/>
+	<xs:element name="Header">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Customer"/>
+				<xs:element ref="PO"/>
+				<xs:element ref="DueDate"/>
+				<xs:element name="SalesRep" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="SalesRepEmail" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="CustomerType">
+		<xs:sequence>
+			<xs:element name="CustomerName" type="xs:string"/>
+			<xs:element name="CustomerId" type="xs:string"/>
+			<xs:element name="DeliveryAddress" type="Address"/>
+			<xs:element name="ContactName" type="xs:string"/>
+			<xs:element name="ContactPhone" type="xs:string"/>
+			<xs:element name="ContactEmail" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Address">
+		<xs:sequence>
+			<xs:element name="AddressLine1" type="xs:string"/>
+			<xs:element name="AddressLine2" type="xs:string"/>
+			<xs:element name="Municipality" type="xs:string"/>
+			<xs:element name="Region" type="xs:string"/>
+			<xs:element name="PostalCode" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Customer" type="CustomerType"/>
+	<xs:element name="PO" type="xs:string"/>
+	<xs:element name="Lines">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Line" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Line">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="No"/>
+				<xs:element ref="Item"/>
+				<xs:element ref="Price"/>
+				<xs:element ref="Qty"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="No" type="xs:int"/>
+	<xs:element name="Item" type="xs:string"/>
+	<xs:element name="Price" type="xs:float"/>
+	<xs:element name="Qty" type="xs:int"/>
+	<xs:element name="DueDate" type="xs:string"/>
+</xs:schema>

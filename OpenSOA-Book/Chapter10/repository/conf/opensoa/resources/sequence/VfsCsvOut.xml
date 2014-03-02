@@ -1,0 +1,15 @@
+<sequence name="esperOut" xmlns="http://ws.apache.org/ns/synapse" 
+	xmlns:vfs="uri:open-soa/chpt10/vfs">
+		<log level="custom">
+			<property name="Text" value="Received from CreateProcessInstanceService"/>
+		</log>
+		<log level="full"/>
+		<property name="transport.vfs.ReplyFileName"
+			expression="fn:concat(fn:substring-after(get-property('MessageID'), 'urn:uuid:'), '.xml')"
+			scope="transport"/>
+		<send>
+			<endpoint>
+				<address uri="vfs:file://tmp/synapsevfs/out"/>
+			</endpoint>
+		</send>
+</sequence>

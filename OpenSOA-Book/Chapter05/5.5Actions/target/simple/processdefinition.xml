@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition 
+  xmlns="urn:jbpm.org:jpdl-3.2"
+  name="simple">
+   <start-state name="start">
+		<transition to="field" name="to_field">
+         <action name="action" class="com.sample.action.MessageActionHandlerField" config-type="field">
+            <message>Going to the field state!</message>
+            <xml>
+            	<value1>Value 1</value1>
+            	<value2>Value 2</value2>
+            	<value3 value="Value 3"/>
+            </xml>
+            <map>
+            	<entry>
+            		<key>key1</key>
+            		<value>Value 1</value>
+            	</entry>
+            	<entry>
+            		<key>key2</key>
+            		<value>Value 2</value>
+            	</entry>            	
+            </map>
+         </action>  
+		</transition>
+	</start-state>
+	
+   <state name="field">
+		<transition to="bean" name="to_bean">
+			<action name="action" 
+				class="com.sample.action.MessageActionHandlerBean" 
+				config-type="bean">
+	            <message>Going to the bean state!</message>
+	            <complex>
+	            	<value1>value1</value1>
+	            	<value2>value2</value2>
+	            	<value3 value="value3"/>
+	            </complex>
+	         </action>
+		</transition>
+	</state>
+
+	<state name="bean">
+		<transition to="constructor" name="to_constructor">
+		<action name="action" class="com.sample.action.MessageActionHandlerConstructor" config-type="constructor">
+            Going to the constructor state!
+         </action>
+		</transition>
+	</state>
+
+	<state name="constructor">
+		<transition to="configuration" name="to_configuration">
+		 <action ref-name='action-config'/>
+		</transition>
+	</state>
+
+	<state name="configuration">
+		<transition to="end" name="to_end"></transition>
+	</state>
+	
+   <end-state name="end"></end-state>
+
+    <action name="action-config" class="com.sample.action.MessageActionHandlerConfiguration" 
+	 	config-type="configuration-property">
+        Going to the configuration state!
+    </action>
+</process-definition>

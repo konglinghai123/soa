@@ -1,0 +1,20 @@
+<sequence name="createProcessInstance" xmlns="http://ws.apache.org/ns/synapse">
+    
+    <log level="custom">
+        <property name="Text" value="jmsOrderReceiver.xml was invoked"/>
+    </log>
+
+    <property action="set" name="OUT_ONLY" value="true"/>
+    <property name="RESPONSE" value="true"/>
+    
+    <script language="js">
+        <![CDATA[
+                       mc.setPayloadXML(
+                         <createProcessInstanceResponse 
+                                 xmlns="http://vo.sca.opensoa-ch10/xsd">
+                                <processInstanceId>1001</processInstanceId>
+                          </createProcessInstanceResponse>);
+                ]]>
+    </script>
+    <send/>
+</sequence>

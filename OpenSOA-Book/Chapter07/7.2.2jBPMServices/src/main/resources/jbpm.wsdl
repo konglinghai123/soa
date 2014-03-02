@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://sca.opensoa"
+  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:jbpm="http://vo.sca.opensoa/xsd"
+  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ns1="http://sca.opensoa"
+  xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:sdoXML="commonj.sdo/xml" xmlns:sdo="commonj.sdo">
+  <wsdl:types>
+
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+      targetNamespace="http://vo.sca.opensoa/xsd" xmlns:jbpm="http://vo.sca.opensoa/xsd">
+
+      <xs:element name="listProcessesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="0" name="Processes" nillable="true"
+              type="jbpm:ProcessVOType"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+
+      <xs:element name="listProcesses">
+        <xs:complexType/>
+      </xs:element>
+
+      <xs:element name="listProcessInstancesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" name="ProcessInstances" nillable="true"
+              type="jbpm:ProcessInstanceVOType"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="listProcessInstances">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="0" name="ProcessId" nillable="true" type="xs:long"/>
+            <xs:element name="Filter" minOccurs="1">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="ALL"/>
+                  <xs:enumeration value="RUNNING"/>
+                  <xs:enumeration value="SUSPENDED"/>
+                  <xs:enumeration value="ENDED"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:complexType name="ProcessVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="description" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="hasActions" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="hasEvents" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="id" type="xs:long"/>
+          <xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:int"/>
+        </xs:sequence>
+        <xs:attribute name="running" type="xs:int" />
+        <xs:attribute name="suspended" type="xs:int"/>
+        <xs:attribute name="ended" type="xs:int"/>
+      </xs:complexType>
+
+      <xs:complexType name="ActorTasksType">
+        <xs:sequence>
+          <xs:element name="Pooled" type="jbpm:TaskVO" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="Assigned" type="jbpm:TaskVO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:complexType>
+      
+      <xs:complexType name="TokensType">
+        <xs:sequence>
+          <xs:sequence>
+            <xs:element name="Token" type="jbpm:TokenVO" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:sequence>
+      </xs:complexType>      
+      
+      <xs:complexType name="TokenVO">
+        <xs:sequence>
+          <xs:element name="tokenPath" type="xs:string"/>
+          <xs:element name="nodeName" type="xs:string"/>
+          <xs:element name="type" type="xs:string"/>
+          <xs:element ref="jbpm:comments"/>
+          <xs:element name="start" type="xs:date"/>
+          <xs:element name="end" type="xs:date"/>
+          <xs:element name="tokenTransitions">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="tokenTransition" maxOccurs="unbounded">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="name" type="xs:string"/>
+                      <xs:element name="from" type="xs:string"/>
+                      <xs:element name="to" type="xs:string"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:int"/>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="tokenStatuses">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="isSuspended" type="xs:boolean" />
+                <xs:element name="isAbleToReactivateParent" type="xs:boolean"/>
+                <xs:element name="isLocked" type="xs:boolean"/>
+                <xs:element name="isRoot" type="xs:boolean"/>
+                <xs:element name="isTerminatedmplicitly" type="xs:boolean"/>
+                <xs:element name="isTerminatedImplicit" type="xs:boolean"/>
+                <xs:element name="hasActiveChildren" type="xs:boolean"/>
+                <xs:element name="hasEnded" type="xs:boolean"/>
+                <xs:element name="hasParent" type="xs:boolean"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>         
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:long"/>
+      </xs:complexType>
+
+      <xs:complexType name="TasksType">
+        <xs:sequence>
+          <xs:sequence>
+            <xs:element name="Task" type="jbpm:TaskVO" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:sequence>
+      </xs:complexType>
+      
+      <xs:element name="comments">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="comment" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="actorId" type="xs:string"/>
+                  <xs:element name="message" type="xs:string"/>
+                  <xs:element name="time" type="xs:date"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:complexType name="TaskVO">
+        <xs:sequence>
+          <xs:element name="name" type="xs:string"/>
+          <xs:element name="description" type="xs:string"/>
+          <xs:element name="process" minOccurs="0">
+            <xs:complexType>
+              <xs:simpleContent>
+                <xs:extension base="xs:string">
+                  <xs:attribute name="name" type="xs:string"/>
+                  <xs:attribute name="instanceId" type="xs:long"/>
+                </xs:extension>
+              </xs:simpleContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element ref="jbpm:comments"/>
+          <xs:element name="created" type="xs:date"/>
+          <xs:element name="dueDate" type="xs:date"/>
+          <xs:element name="end" type="xs:date"/>
+          <xs:element name="priority" type="xs:int"/>
+          <xs:element name="start" type="xs:date"/>
+          <xs:element name="actorId" type="xs:string"/>
+          <xs:element name="poolActors">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="actorId" type="xs:string"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="transitions">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="transition" maxOccurs="unbounded">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="name" type="xs:string"/>
+                      <xs:element name="condition" type="xs:string"/>
+                      <xs:element name="to" type="xs:string"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:int"/>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="statuses">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="isBlocking" type="xs:boolean" />
+                <xs:element name="isCancelled" type="xs:boolean"/>
+                <xs:element name="isLast" type="xs:boolean"/>
+                <xs:element name="isOpen" type="xs:boolean"/>
+                <xs:element name="isSignaling" type="xs:boolean"/>
+                <xs:element name="isStartInstance" type="xs:boolean"/>
+                <xs:element name="isSuspended" type="xs:boolean"/>
+                <xs:element name="hasEnded" type="xs:boolean"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="tokenVariables" type="jbpm:ProcessVarsType" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:long"/>
+      </xs:complexType>
+
+
+      <xs:complexType name="ProcessVarsType">
+        <xs:sequence>
+          <xs:element name="var" minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:simpleContent>
+                <xs:extension base="xs:string">
+                  <xs:attribute name="name" type="xs:string"/>
+                </xs:extension>
+              </xs:simpleContent>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+           
+
+      <xs:complexType name="ProcessInstanceVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="start" nillable="true" type="xs:date"/>
+          <xs:element minOccurs="0" name="end" nillable="true" type="xs:date"/>
+          <xs:element minOccurs="0" name="id" type="xs:long"/>
+          <xs:element minOccurs="0" name="key" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:int"/>
+          <xs:element minOccurs="0" name="processVariables" type="jbpm:ProcessVarsType"/>
+          <xs:element minOccurs="0" name="isTerminatedImplicitly" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="hasEnded" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="isSuspended" type="xs:boolean"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="ver" type="xs:int" use="required"/>
+      </xs:complexType>
+
+      <xs:complexType name="ProcessVOType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Process" maxOccurs="999" type="jbpm:ProcessVO"/>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="ProcessInstanceVOType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Instance" maxOccurs="999" type="jbpm:ProcessInstanceVO"/>
+        </xs:sequence>
+      </xs:complexType>
+
+
+      <!--  following used for creating process instances -->
+
+      <xs:complexType name="ApplicantType">
+        <xs:sequence>
+          <xs:element name="indicative" type="jbpm:IndicativeType"/>
+          <xs:element name="contactInfo" type="jbpm:ContactInfoType"/>
+        </xs:sequence>
+        <xs:attribute name="objectId" type="xs:string" use="required"/>
+      </xs:complexType>
+
+      <xs:complexType name="EmployeeType">
+        <xs:sequence>
+          <xs:element name="indicative" type="jbpm:IndicativeType"/>
+          <xs:element name="contactInfo" type="jbpm:ContactInfoType"/>
+          <xs:element name="employeeData" type="jbpm:EmployeeDataType"/>
+        </xs:sequence>
+        <xs:attribute name="objectId" type="xs:long" use="required"/>
+      </xs:complexType>
+
+      <xs:complexType name="IndicativeType">
+        <xs:sequence>
+          <xs:element name="familyName" type="xs:string"/>
+          <xs:element name="givenName" type="xs:string"/>
+          <xs:element name="middleName" type="xs:string" minOccurs="0"/>
+          <xs:element name="dob" type="xs:string"/>
+          <xs:element type="jbpm:idsType" name="ids" minOccurs="0"/>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="idsType">
+        <xs:sequence>
+          <xs:element name="value" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:simpleContent>
+                <xs:extension base="xs:string">
+                  <xs:attribute name="name" type="xs:string"/>
+                  <xs:attribute name="issuedBy" type="xs:string"/>
+                </xs:extension>
+              </xs:simpleContent>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="PhonesType">
+        <xs:sequence>
+          <xs:element name="phone" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:simpleContent>
+                <xs:extension base="xs:string">
+                  <xs:attribute name="type" type="xs:string"/>
+                </xs:extension>
+              </xs:simpleContent>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="ContactInfoType">
+        <xs:sequence>
+          <xs:element name="emailAddress" type="xs:string" minOccurs="0"/>
+          <xs:element name="phones" type="jbpm:PhonesType" minOccurs="0"/>
+          <xs:element name="address" type="jbpm:AddressType" minOccurs="0"/>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="EmployeeDataType">
+        <xs:sequence>
+          <xs:element name="employeeId" type="xs:string"/>
+          <xs:element name="title" type="xs:string"/>
+          <xs:element name="department" type="xs:string"/>
+          <xs:element name="location" type="xs:string"/>
+          <xs:element name="flex" type="jbpm:FlexType" minOccurs="0"/>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="FlexType">
+        <xs:sequence>
+          <xs:element name="value" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:simpleContent>
+                <xs:extension base="xs:string">
+                  <xs:attribute name="name" type="xs:string"/>
+                </xs:extension>
+              </xs:simpleContent>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="AddressType">
+        <xs:sequence>
+          <xs:element name="addressline1" type="xs:string"/>
+          <xs:element name="addressline2" type="xs:string" minOccurs="0"/>
+          <xs:element name="municipality" type="xs:string"/>
+          <xs:element name="region" type="xs:string"/>
+          <xs:element name="country" type="xs:string"/>
+          <xs:element name="postalCode" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="ProcessType">
+        <xs:sequence>
+          <xs:element name="key" type="xs:string" minOccurs="0"/>
+          <xs:element name="ProcessVars" minOccurs="0" type="jbpm:ProcessVarsType"/>
+          <!--  
+          <xs:choice>
+            <xs:element name="Applicant" type="jbpm:ApplicantType"/>
+            <xs:element name="Employee" type="jbpm:EmployeeType"/>
+            <xs:element name="Other" type="xs:string"/>
+          </xs:choice>
+          -->
+        </xs:sequence>
+
+        <xs:attribute name="actorId" type="xs:string"/>
+        <xs:attribute name="processName" type="xs:string" use="required"/>
+      </xs:complexType>
+
+      <xs:element name="createProcessInstance">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Process" type="jbpm:ProcessType"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="createProcessInstanceResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="processInstanceId" type="xs:long"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="listActorTasks">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="actorId" type="xs:string" minOccurs="1"/>
+            <xs:element name="Filter" minOccurs="1">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="ALL"/>
+                  <xs:enumeration value="POOLED"/>
+                  <xs:enumeration value="ASSIGNED"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="listActorTasksResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Tasks" type="jbpm:ActorTasksType" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="listInstanceTasks">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" name="ProcessInstanceId" nillable="true"
+              type="xs:long"/>
+            <xs:element name="Filter" minOccurs="1">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="ALL"/>
+                  <xs:enumeration value="OPEN"/>
+                  <xs:enumeration value="SUSPENDED"/>
+                  <xs:enumeration value="SIGNALING"/>
+                  <xs:enumeration value="ENDED"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      
+      <xs:element name="listInstanceTokens">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" name="ProcessInstanceId" nillable="true"
+              type="xs:long"/>
+            <xs:element name="Filter" minOccurs="1">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="ALL"/>
+                  <xs:enumeration value="OPEN"/>
+                  <xs:enumeration value="SUSPENDED"/>
+                  <xs:enumeration value="ENDED"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>      
+
+      <xs:element name="listInstanceTasksResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Tasks" type="jbpm:TasksType" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="listInstanceTokensResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Tokens" type="jbpm:TokensType" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      
+      <xs:complexType name="ObjectRequestType">
+        <xs:sequence>
+          <xs:element name="objectId" type="xs:string" minOccurs="1"/>
+          <xs:element name="objectClassName">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="opensoa.sca.vo.xsd.EmployeeType"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="ObjectResponseType">
+        <xs:choice>
+          <xs:element name="Employee" type="jbpm:EmployeeType" minOccurs="0"/>
+          <xs:element name="Applicant" type="jbpm:ApplicantType" minOccurs="0"/>
+        </xs:choice>
+      </xs:complexType>
+      
+      <xs:complexType name="UpdateTokenResponseType">
+          <xs:sequence>
+            <xs:element name="success" type="xs:boolean" minOccurs="1"/>
+          </xs:sequence>
+      </xs:complexType>
+      
+      <xs:complexType name="UpdateTokenRequest">
+          <xs:sequence>
+            <xs:element name="processId" type="xs:long" minOccurs="1"/>
+            <xs:element name="tokenPath" type="xs:string" minOccurs="1"/>
+            <xs:element name="action" minOccurs="1">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="SIGNAL"/>
+                  <xs:enumeration value="RESUME"/>
+                  <xs:enumeration value="END"/>
+                  <xs:enumeration value="SUSPEND"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="transitionName" type="xs:string" minOccurs="0"/>
+            <xs:element name="comment" type="xs:string" minOccurs="0"/>
+            <xs:element name="localVariables" minOccurs="0" type="jbpm:ProcessVarsType"/>
+            <xs:element name="processVariables" minOccurs="0" type="jbpm:ProcessVarsType"/>
+          </xs:sequence>
+      </xs:complexType>
+
+      <xs:element name="updateTokenResponse">
+        <xs:complexType>
+            <xs:sequence>
+              <xs:element name="updateResponse" type="jbpm:UpdateTokenResponseType"/>
+            </xs:sequence>
+        </xs:complexType>  
+      </xs:element>
+      
+      <xs:element name="updateToken">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="token" type="jbpm:UpdateTokenRequest"/>
+          </xs:sequence>
+        </xs:complexType>  
+      </xs:element>
+      
+      <xs:element name="getObject">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Object" type="jbpm:ObjectRequestType"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="getObjectResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Object" type="jbpm:ObjectResponseType"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+    </xs:schema>
+
+  </wsdl:types>
+
+  <wsdl:message name="listProcessesRequest">
+    <wsdl:part name="parameters" element="jbpm:listProcesses"> </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listProcessesResponse">
+    <wsdl:part name="parameters" element="jbpm:listProcessesResponse"> </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="listProcessInstancesRequest">
+    <wsdl:part name="parameters" element="jbpm:listProcessInstances"> </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listProcessInstancesResponse">
+    <wsdl:part name="parameters" element="jbpm:listProcessInstancesResponse"> </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="createProcessInstanceRequest">
+    <wsdl:part name="parameters" element="jbpm:createProcessInstance"> </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createProcessInstanceResponse">
+    <wsdl:part name="parameters" element="jbpm:createProcessInstanceResponse"> </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="listInstanceTasksRequest">
+    <wsdl:part name="parameters" element="jbpm:listInstanceTasks"> </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listInstanceTasksResponse">
+    <wsdl:part name="parameters" element="jbpm:listInstanceTasksResponse"> </wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:message name="listInstanceTokensRequest">
+    <wsdl:part name="parameters" element="jbpm:listInstanceTokens"> </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listInstanceTokensResponse">
+    <wsdl:part name="parameters" element="jbpm:listInstanceTokensResponse"> </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="listActorTasksRequest">
+    <wsdl:part name="parameters" element="jbpm:listActorTasks"> </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listActorTasksResponse">
+    <wsdl:part name="parameters" element="jbpm:listActorTasksResponse"> </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="getObjectRequest">
+    <wsdl:part name="parameters" element="jbpm:getObject"> </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getObjectResponse">
+    <wsdl:part name="parameters" element="jbpm:getObjectResponse"> </wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:message name="updateTokenRequest">
+    <wsdl:part name="parameters" element="jbpm:updateToken"> </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateTokenResponse">
+    <wsdl:part name="parameters" element="jbpm:updateTokenResponse"> </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:portType name="ListProcessesPortType">
+    <wsdl:operation name="listProcesses">
+      <wsdl:input message="ns1:listProcessesRequest" wsaw:Action="urn:listProcesses"> </wsdl:input>
+      <wsdl:output message="ns1:listProcessesResponse" wsaw:Action="urn:listProcessesResponse"
+      > </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:portType name="ListProcessInstancesPortType">
+    <wsdl:operation name="listProcessInstances">
+      <wsdl:input message="ns1:listProcessInstancesRequest" wsaw:Action="urn:listProcessInstances"> </wsdl:input>
+      <wsdl:output message="ns1:listProcessInstancesResponse"
+        wsaw:Action="urn:listProcessInstancesResponse"> </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:portType name="CreateProcessInstancePortType">
+    <wsdl:operation name="createProcessInstance">
+      <wsdl:input message="ns1:createProcessInstanceRequest" wsaw:Action="urn:createProcessInstance"> </wsdl:input>
+      <wsdl:output message="ns1:createProcessInstanceResponse"
+        wsaw:Action="urn:createProcessInstanceResponse"> </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:portType name="ListInstanceTasksPortType">
+    <wsdl:operation name="listInstanceTasks">
+      <wsdl:input message="ns1:listInstanceTasksRequest" wsaw:Action="urn:listInstanceTasks"> </wsdl:input>
+      <wsdl:output message="ns1:listInstanceTasksResponse"
+        wsaw:Action="urn:listInstanceTasksResponse"> </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:portType name="ListInstanceTokensPortType">
+    <wsdl:operation name="listInstanceTokens">
+      <wsdl:input message="ns1:listInstanceTokensRequest" wsaw:Action="urn:listInstanceTokens"> </wsdl:input>
+      <wsdl:output message="ns1:listInstanceTokensResponse"
+        wsaw:Action="urn:listInstanceTokensResponse"> </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>  
+
+  <wsdl:portType name="ListActorTasksPortType">
+    <wsdl:operation name="listActorTasks">
+      <wsdl:input message="ns1:listActorTasksRequest" wsaw:Action="urn:listActorTasks"> </wsdl:input>
+      <wsdl:output message="ns1:listActorTasksResponse" wsaw:Action="urn:listActorTasksResponse"
+      > </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:portType name="GetObjectPortType">
+    <wsdl:operation name="getObject">
+      <wsdl:input message="ns1:getObjectRequest" wsaw:Action="urn:getObject"> </wsdl:input>
+      <wsdl:output message="ns1:getObjectResponse" wsaw:Action="urn:getObjectResponse"
+      > </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:portType name="UpdateTokenPortType">
+    <wsdl:operation name="updateToken">
+      <wsdl:input message="ns1:updateTokenRequest" wsaw:Action="urn:updateToken"> </wsdl:input>
+      <wsdl:output message="ns1:updateTokenResponse" wsaw:Action="urn:updateTokenResponse"> </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:binding name="ListProcessesSOAP11Binding" type="ns1:ListProcessesPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="listProcesses">
+      <soap:operation soapAction="urn:listProcesses" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:binding name="ListProcessInstancesSOAP11Binding" type="ns1:ListProcessInstancesPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="listProcessInstances">
+      <soap:operation soapAction="urn:listProcessInstances" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:binding name="CreateProcessInstanceSOAP11Binding" type="ns1:CreateProcessInstancePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="createProcessInstance">
+      <soap:operation soapAction="urn:createProcessInstance" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:binding name="ListInstanceTasksSOAP11Binding" type="ns1:ListInstanceTasksPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="listInstanceTasks">
+      <soap:operation soapAction="urn:listInstanceTasks" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:binding name="ListInstanceTokensSOAP11Binding" type="ns1:ListInstanceTokensPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="listInstanceTokens">
+      <soap:operation soapAction="urn:listInstanceTokens" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>  
+
+  <wsdl:binding name="ListActorTasksSOAP11Binding" type="ns1:ListActorTasksPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="listActorTasks">
+      <soap:operation soapAction="urn:listActorTasks" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:binding name="GetObjectSOAP11Binding" type="ns1:GetObjectPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getObject">
+      <soap:operation soapAction="urn:getObject" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:binding name="UpdateTokenSOAP11Binding" type="ns1:UpdateTokenPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="updateToken">
+      <soap:operation soapAction="urn:updateToken" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:service name="ListProcesses">
+    <wsdl:port name="SOAP" binding="ns1:ListProcessesSOAP11Binding">
+      <soap:address location="http://localhost:8085/ListProcessesService"/>
+    </wsdl:port>
+  </wsdl:service>
+
+  <wsdl:service name="ListProcessInstances">
+    <wsdl:port name="SOAP" binding="ns1:ListProcessInstancesSOAP11Binding">
+      <soap:address location="http://localhost:8085/ListProcessInstancesService"/>
+    </wsdl:port>
+  </wsdl:service>
+
+  <wsdl:service name="CreateProcessInstance">
+    <wsdl:port name="SOAP" binding="ns1:CreateProcessInstanceSOAP11Binding">
+      <soap:address location="http://localhost:8085/CreateProcessInstanceService"/>
+    </wsdl:port>
+  </wsdl:service>
+
+  <wsdl:service name="ListInstanceTasks">
+    <wsdl:port name="SOAP" binding="ns1:ListInstanceTasksSOAP11Binding">
+      <soap:address location="http://localhost:8085/ListInstanceTasksService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="ListInstanceTokens">
+    <wsdl:port name="SOAP" binding="ns1:ListInstanceTokensSOAP11Binding">
+      <soap:address location="http://localhost:8085/ListInstanceTokensService"/>
+    </wsdl:port>
+  </wsdl:service>
+
+  <wsdl:service name="ListActorTasks">
+    <wsdl:port name="SOAP" binding="ns1:ListActorTasksSOAP11Binding">
+      <soap:address location="http://localhost:8085/ListActorTasksService"/>
+    </wsdl:port>
+  </wsdl:service>
+
+  <wsdl:service name="GetObject">
+    <wsdl:port name="SOAP" binding="ns1:GetObjectSOAP11Binding">
+      <soap:address location="http://localhost:8085/GetObjectService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  
+  <wsdl:service name="UpdateToken">
+    <wsdl:port name="SOAP" binding="ns1:UpdateTokenSOAP11Binding">
+      <soap:address location="http://localhost:8085/UpdateTokenService"/>
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions>

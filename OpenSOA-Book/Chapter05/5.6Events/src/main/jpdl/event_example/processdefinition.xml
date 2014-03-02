@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  xmlns=""  name="event_example">
+	<event type='node-enter'>
+		<action class='com.sample.EventTest'/>
+	</event>
+	<start-state name="start">
+		<transition to="state1"></transition>
+	</start-state>
+	<state name="state1">
+		<event type='node-enter'>
+			<action class='com.sample.EventTestNode'/>
+		</event>
+		<transition to="state2"/>
+	</state>
+	<state name="state2">
+		<transition to="end"></transition>
+	</state>
+	<end-state name="end"></end-state>
+</process-definition>

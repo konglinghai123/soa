@@ -1,0 +1,11 @@
+Testsuite: com.sample.JbpmServiceTest
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 5.505 sec
+------------- Standard Output ---------------
+Setting up context...
+Event type is: transition
+Token is: Token(/)
+Token is: null
+Number is: 21
+------------- ---------------- ---------------
+
+Testcase: testSimpleProcess took 5.491 sec

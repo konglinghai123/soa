@@ -1,0 +1,2 @@
+"TransactionID","SalesOrderId","Date","Note","CustomerID","CustomerName","AddressLine1","AddressLine2","City","State","Zip","ContactName","ContactPhone","ContactEmail","Item","Price","Qty"
+"AEG012345","CON0095678","2005-06-20","This is a sample note","XFB01","IYT Corporation","10250 Some Drive","Suite 101","Irvine","CA","92032","John Brown","719-323-2322","jdoe@someplace.com","Beeswax","100.00","5"

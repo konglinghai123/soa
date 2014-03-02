@@ -1,0 +1,13 @@
+Testsuite: com.sample.SuperStateTest
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 6.568 sec
+------------- Standard Output ---------------
+WARN - StatefulPersistenceContext.narrowProxy(615) | Narrowing proxy to class org.jbpm.graph.def.SuperState - this operation breaks ==
+Entering finance Superstate
+WARN - StatefulPersistenceContext.narrowProxy(615) | Narrowing proxy to class org.jbpm.graph.def.SuperState - this operation breaks ==
+Entering HR Superstate
+WARN - StatefulPersistenceContext.narrowProxy(615) | Narrowing proxy to class org.jbpm.graph.def.SuperState - this operation breaks ==
+Entering finance Superstate
+token: to-finance
+------------- ---------------- ---------------
+
+Testcase: testSimpleProcess took 6.551 sec

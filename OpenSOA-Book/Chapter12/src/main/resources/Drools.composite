@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" xmlns:hw="urn:opensoa.drools" name="drools" targetNamespace="urn:opensoa.drools">
+ 
+  <service name="DroolsDecisionService" promote="DroolsDecisionComponent">
+    <binding.ws wsdlElement="urn:opensoa.drools#wsdl.port(DecisionService/SOAP)"/>
+    <binding.ws wsdlElement="urn:opensoa.drools#wsdl.port(SuspendService/SOAP)"/>
+    <binding.ws wsdlElement="urn:opensoa.drools#wsdl.port(ResumeService/SOAP)"/>
+    <binding.ws wsdlElement="urn:opensoa.drools#wsdl.port(LoadService/SOAP)"/>
+  </service>
+  
+  <component name="DroolsDecisionComponent">
+    <implementation.java class="opensoa.drools.service.impl.DroolsManagerImpl"/>
+    <reference name="sessionManager" target="SessionManager"/>
+  </component>
+  
+  <!-- The below example doesn't use the rule agent, and is not recommended 
+  <component name="SessionManager">
+    <implementation.java class="opensoa.drools.service.impl.SessionManagerImpl"/>
+    <property many="true" name="drls">
+      	"/CalculatePriceFlow.drl"
+  		"/CalculateShippingFlow.drl"
+  		"/CalculateSpecialDiscountFlow.drl"
+      </property>
+    <property many="true" name="ruleflows">
+      	"/PriceCalculator.rf"
+      </property>
+    <property name="pojoServiceConfig">replSync-service.xml</property>
+    <property name="pojoAOPConfig">pojocache-aop.xml</property>
+  </component>
+  -->
+  
+  <!-- SessionManagerBRMSImpl uses the rule agent - see rule.properties for more information -->
+  <component name="SessionManager">
+    <implementation.java class="opensoa.drools.service.impl.SessionManagerBRMSImpl"/>
+    <property name="rulePropertyFile">/rule.properties</property>
+    <property name="pojoServiceConfig">replSync-service.xml</property>
+    <property name="pojoAOPConfig">pojocache-aop.xml</property>
+  </component>
+</composite>

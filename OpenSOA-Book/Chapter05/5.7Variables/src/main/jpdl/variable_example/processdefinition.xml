@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  xmlns=""  name="variable_example">
+
+
+	<start-state name="start">
+		<transition to="fork1"></transition>
+	</start-state>
+
+
+	<fork name="fork1">
+		<transition to="fork-state1.1" name="t1"></transition>
+		<transition to="fork-state2.1" name="t2"></transition>
+		<transition to="fork-state3.1" name="t3"></transition>
+	</fork>
+
+	<state name="fork-state1.1">
+		<transition to="fork-state1.2"></transition>
+	</state>
+
+	<state name="fork-state2.1">
+		<transition to="fork-state2.2"></transition>
+	</state>
+
+	<state name="fork-state3.1">
+		<transition to="join"></transition>
+	</state>
+
+	<join name="join">
+		<transition to="end-state1"></transition>
+	</join>
+
+	<state name="fork-state1.2">
+		<transition to="join"></transition>
+	</state>
+
+	<state name="fork-state2.2">
+		<transition to="join"></transition>
+	</state>
+
+
+	<end-state name="end-state1"></end-state>
+
+
+</process-definition>

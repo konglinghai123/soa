@@ -1,0 +1,78 @@
+<project name="chapter13" default="compile">
+	
+	<property file="../resources/build.properties" />
+	<property name="target" value="target/classes"/>
+	<property name="java.src" value="src/main/java" />
+	<property name="jar.archive" value="chapter13.jar" />
+	<property name="jar.dir" value="target/classes" />
+	
+	
+	<path id="base.path">
+		<pathelement path="${classpath}"/>
+		<pathelement path="${target}"/>
+		<fileset dir="${registry.lib}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${tuscany.lib.10}">
+			<include name="*.jar"/>
+		</fileset>
+    	<fileset dir="${general.lib}">
+    		<include name="*.jar"/>
+    	</fileset>
+	</path>
+    		
+	<target name="compile" depends="clean">
+		
+		<mkdir dir="target/classes" />
+		<mkdir dir="logs" />
+		<javac destdir="target/classes" debug="on" source="1.5"	target="1.5">
+			<src path="src/main/java" />
+			<src path="src/main/java-generated/wsdl2javasource" />
+			<classpath refid="base.path"/>		
+		</javac>
+		
+		<copy todir="target/classes">
+			<fileset dir="src/main/resources" />
+		</copy>
+					
+	</target>
+
+	<target depends="init" name="generate.classes.from.xsd">
+		<delete includeemptydirs="true">
+			<fileset dir="src/main/java-generated/wsdl2javasource" />
+		</delete>
+			
+		<java classname="org.apache.tuscany.sdo.generate.XSD2JavaGenerator" fork="true">
+			<arg value="-targetDirectory"/>
+			<arg value="src/main/java-generated/wsdl2javasource"/>
+			<arg value="-noContainment"/>
+			<arg value="-noUnsettable"/>
+			<arg value="src/main/resources/xsd/sca-all.xsd"/>
+			<classpath>
+				<fileset dir="${tuscany.lib.10}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+		
+	</target>
+	
+	<target name="clean">
+		<delete includeemptydirs="true">
+			<fileset dir="target" />
+		</delete>
+	</target>
+	
+	<target name="init">
+		<mkdir dir="target/classes"/>
+		<mkdir dir="target/wsdl2javasource"/>
+	</target>
+
+	<target name="jar" description="Create JAR archive file for handlers" depends="compile">
+		<jar destfile="${target}/../${jar.archive}">
+		    <fileset dir="${jar.dir}"
+		     includes="**/*.class"
+             excludes="**/*.jar"/>
+		</jar>
+	</target> 
+</project>

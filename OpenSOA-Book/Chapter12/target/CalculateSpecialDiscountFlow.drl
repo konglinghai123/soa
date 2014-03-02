@@ -1,0 +1,73 @@
+#created on: Sep 13, 2008
+package opensoa.drools
+
+import opensoa.drools.dto.TotalPrice;
+import opensoa.drools.dto.Shipping;
+import opensoa.drools.dto.Order;
+import opensoa.drools.dto.OrderProduct;
+import opensoa.drools.dto.ProductPrice;
+import opensoa.drools.dto.Product;
+import opensoa.drools.utility.FunctionHelper;
+import opensoa.drools.dto.Party;
+
+global java.lang.Integer counter;
+# following global added for junit testing
+global java.util.List special_calc_results;
+
+rule "FinalTotals"
+	ruleflow-group 'special-calc'
+	activation-group 'final-price'
+	salience 50
+	when
+		price : TotalPrice ( salePrice == 0.0);
+		order : Order (orderId == price.orderId);
+	then
+		System.out.println( "Currency is: " + order.getCurrency());
+		price.setSalePrice ( FunctionHelper.currencyConverter(order.getCurrency(), price.getShippingPrice() + price.getTotalPrice() ));
+		update ( price );
+		System.out.println ( "** FINAL TOTALS **" );
+		System.out.println ( "   Order Id:   " + price.getOrderId());
+		System.out.println ( "   Price:      " + price.getTotalPrice());
+		System.out.println ( "   Shipping:   " + price.getShippingPrice());
+		System.out.println ( "   Sale Price: " + price.getSalePrice() + " ( " + order.getCurrency() + " )");
+		update ( price );
+		special_calc_results.add ( "FinalTotals" );
+end
+	
+rule "FinalTotalsGold"
+	ruleflow-group 'special-calc'
+	activation-group 'final-price'
+	salience 55
+	when
+		price : TotalPrice ( salePrice == 0.0);
+		order : Order (orderId == price.orderId);
+		party : Party ( partyId == order.partyId, partyTypeId == Party.GOLD  );
+	then
+		price.setSalePrice ( FunctionHelper.currencyConverter(order.getCurrency(), price.getTotalPrice() ));
+		update ( price );
+		System.out.println ( "** FINAL TOTALS FOR GOLD **" );
+		System.out.println ( "   Order Id:   " + price.getOrderId());
+		System.out.println ( "   Price:      " + price.getTotalPrice());
+		System.out.println ( "   Shipping:   " + 0);
+		System.out.println ( "   Sale Price: " + price.getSalePrice() + " ( " + order.getCurrency() + " )");
+		update ( price );
+		special_calc_results.add ( "FinalTotalsGold" );
+end	
+
+query "FinalPrice"
+	total : TotalPrice ( salePrice > 0.0 );
+	order : Order (orderId == total.orderId);
+end
+	
+rule "Cleanup"
+	ruleflow-group 'special-calc'
+	salience 0
+	when
+		total : TotalPrice ( salePrice > 0.0 );
+		order : Order ( orderId == total.orderId );
+	then
+		counter++;
+		drools.getWorkingMemory().setGlobal( "counter" , counter );
+		System.out.println("All done...");
+		special_calc_results.add ( "Cleanup" );
+end

@@ -1,0 +1,224 @@
+package opensoa.drools.hellodrools;
+
+import opensoa.drools.hellodrools115.Person;
+import opensoa.drools.hellodrools115.ZipCode;
+import java.util.ArrayList;
+
+# following global added for junit testing
+global java.util.List results;
+
+global java.util.ArrayList topInterests;
+
+rule "Matches"
+	salience 200
+	when 
+		person : Person( name matches "(.*?)( )[Dd]oe" );
+	then
+		System.out.println("Matches hit " + person.getName()); 
+		results.add ( "Matches" );
+end
+
+rule "NotMatches"
+	salience 190
+	when 
+		person: Person( name not matches "(.*?)( )[X]oe" );
+	then
+		System.out.println("Not Matches hit " + person.getName()); 
+		results.add ( "NotMatches" );
+end
+
+rule "Contains"
+	salience 180
+	when 
+		person: Person( interests contains "Golf" );
+	then
+		System.out.println("Contains matches " + person.getName()); 
+		results.add ( "Contains" );
+end
+
+rule "NotContains"
+	salience 170
+	when 
+		person: Person( interests not contains "Skipping" );
+	then
+		System.out.println("Not Contains matches " + person.getName()); 
+		results.add ( "NotContains" );
+end
+
+rule "MemberOf"
+	salience 160
+	when 
+		person: Person( favoriteInterest memberOf topInterests);
+	then
+		System.out.println("MemberOf " + person.getName()); 
+		results.add ( "MemberOf" );
+end
+
+rule "In"
+	salience 150
+	when
+		person : Person ( favoriteInterest in ('Golf', 'Biking' ) )
+	then
+		System.out.println("In " + person.getName());
+end
+
+rule "NotIn"
+	salience 140
+	when
+		person : Person ( favoriteInterest not in ('Golf', 'Soccer' ) )
+	then
+		System.out.println("Not In " + person.getName());
+		results.add ( "NotIn" );
+end
+
+rule "MultiRestrictions"
+	salience 130
+	when
+		person : Person ( age (> 20 && < 25) )
+	then
+		System.out.println("MultiRestrictions " + person.getName());
+		results.add ( "MultiRestrictions" );
+end
+
+rule "Eval"
+	salience 120
+	when
+		person : Person ( $age : age );
+		eval ( person.getInterests().size() >= 2 );
+	then
+		System.out.println("Eval " + person.getName());
+		results.add ( "Eval" );
+end
+
+# See note in official docs regarding caveats
+rule "NestedAccessors"
+	salience 110
+	when
+		person : Person ( interests[1] == 'Golf' )
+	then
+		System.out.println("NestedAccessors " + person.getName());
+		results.add ( "NestAccessors" );
+end
+
+rule "ImplicitAndConditional"
+	salience 100
+	when
+		person : Person ( $zip : homeZip );
+		zipCode : ZipCode ( zipcode == $zip );
+	then
+		System.out.println("ImplicitAndConditional: " + person.getName());
+		System.out.println("                        " + zipCode.getCity());
+		results.add ( "ImplicitAndConditional" );
+end
+
+rule "PrefixAndConditional"
+	salience 90
+	when
+		(and  ( person : Person ( $zip : homeZip ) )
+		       ( zipCode : ZipCode ( zipcode == $zip ) ) )
+	then
+		System.out.println("PrefixAndConditional: " + person.getName());
+		System.out.println("                " + zipCode.getCity());
+		results.add ( "PrefixAndConditional" );
+end
+		
+rule "InfixAndConditional"
+	salience 80
+	when
+		( person : Person ( $zip : homeZip ) )
+		and
+		( zipCode : ZipCode ( zipcode == $zip ) )
+	then
+		System.out.println("InfixAndConditional: " + person.getName());
+		System.out.println("                     " + zipCode.getCity());
+		results.add ( "InfixAndConditional" );
+end		
+
+rule "PrefixOrConditional"
+	salience 70
+	when
+		(or  person : Person ( age > 20 ) 
+		     person : Person ( age < 30 ) )
+	then
+		System.out.println("PrefixOrConditional: " + person.getName());
+		results.add ( "PrefixOrConditional" );
+end
+
+rule "InfixOrConditional"
+	salience 60
+	when
+		person : (Person ( homeZip == 80012) or Person ( homeZip == 80920 ) )
+	then
+		System.out.println("InfixOrConditional: " + person.getName());
+		results.add ( "InfixOrConditional" );
+end
+
+rule "Not"
+	salience 50
+	when
+		not Person ( homeZip == 83822 );
+	then
+		System.out.println ("Not rule fired");
+		results.add ( "Not" );
+end
+
+rule "Exists"
+	salience 40
+	when
+		exists ( Person ( homeZip == 80920 ) );
+	then
+		System.out.println ("Exists rule fired");
+		results.add ( "Exists" );
+end
+
+rule "Forall"
+	salience 30
+	when
+		forall( person : Person ( )
+			Person ( this == person, age > 18 ) )
+	then
+		System.out.println("Forall fires");
+		results.add ( "Forall" );
+end
+
+rule "ForallNot"
+	salience 20
+	when
+		not ( forall( person : Person ( )
+			ZipCode ( zipcode == person.homeZip ) ) )
+	then
+		System.out.println("ForallNot fires ");
+		results.add ( "ForallNot" );
+end
+
+# will fire for each person's interest that matches
+# those found in topInterests List
+rule "From"
+	salience 10
+	when
+		person : Person ( );
+		String ( val : toString) from topInterests;
+		foundInterest : String ( toString == val) from person.interests;
+	then
+		System.out.println("From fires " + person.getName() + " matched " + foundInterest);
+		results.add ( "From" );
+end
+
+# Generate a collection 
+rule "Collect"
+	salience 0
+	when
+		collection : ArrayList () from collect ( ZipCode () );
+	then
+		System.out.println("Collect " + collection.size());
+		results.add ( "Collect" );
+end
+
+rule "Soundslike" 
+	salience -10
+	when
+		person : Person ( favoriteInterest soundslike 'Gulf' )
+	then
+		System.out.println("Soundslike " + person.getName() );
+		results.add ( "Soundslike" );
+end

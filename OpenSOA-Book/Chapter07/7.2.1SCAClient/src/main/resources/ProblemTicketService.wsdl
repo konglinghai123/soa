@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://chapter721.book.opensoa" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns0="http://chapter721.book.opensoa" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ns1="http://chapter721.book.opensoa/xsd" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" 
+    targetNamespace="http://chapter721.book.opensoa" xmlns:ns="http://chapter721.book.opensoa">
+         <xs:element name="createTicket">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element minOccurs="0" name="param0" nillable="true" type="ns1:TicketDO"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="createTicketResponse">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element minOccurs="0" name="return" type="xs:int"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:schema>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://chapter721.book.opensoa/xsd" xmlns:ax21="http://chapter721.book.opensoa/xsd">
+         <xs:complexType name="TicketDO">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="caseNumber" type="xs:int"/>
+               <xs:element minOccurs="0" name="customerEmail" nillable="true" type="xs:string"/>
+               <xs:element minOccurs="0" name="customerName" nillable="true" type="xs:string"/>
+               <xs:element minOccurs="0" name="problemDesc" nillable="true" type="xs:string"/>
+               <xs:element minOccurs="0" name="source" nillable="true" type="xs:string"/>
+               <xs:element minOccurs="0" name="subject" nillable="true" type="xs:string"/>
+            </xs:sequence>
+         </xs:complexType>
+      </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="createTicketRequest">
+    <wsdl:part name="parameters" element="ns0:createTicket">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createTicketResponse">
+    <wsdl:part name="parameters" element="ns0:createTicketResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ProblemTicketComponentPortType">
+    <wsdl:operation name="createTicket">
+      <wsdl:input message="ns0:createTicketRequest" wsaw:Action="urn:createTicket">
+    </wsdl:input>
+      <wsdl:output message="ns0:createTicketResponse" wsaw:Action="urn:createTicketResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ProblemTicketComponentSOAP11Binding" type="ns0:ProblemTicketComponentPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="createTicket">
+      <soap:operation soapAction="urn:createTicket" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ProblemTicketComponent">
+    <wsdl:port name="ProblemTicketComponentSOAP11port_http" binding="ns0:ProblemTicketComponentSOAP11Binding">
+      <soap:address location="http://localhost:8085/ProblemTicketService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

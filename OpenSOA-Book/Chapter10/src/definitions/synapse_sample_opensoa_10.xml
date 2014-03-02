@@ -1,0 +1,63 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+
+    <registry provider="org.apache.synapse.registry.url.SimpleURLRegistry">
+        <parameter name="root">
+            file:./repository/conf/opensoa/resources/
+        </parameter>
+        <parameter name="cachableDuration">150000</parameter>
+    </registry>
+
+    <endpoint name="mockResponse">
+        <address uri="http://localhost:8280/soap/OrderResponseService" format="soap11"/>
+    </endpoint>
+
+    <localEntry key="xslt-key" src="file:repository/conf/opensoa/resources/xslt/mapUBLOrder.xslt"/>
+    <localEntry key="xslt-key-resp" src="file:repository/conf/opensoa/resources/xslt/response.xslt"/>
+
+    <proxy name="CreateOrderService" transports="http" >
+        <target>
+        
+        	<!--  Uses WSDL to determine endpoint JMS queue -->
+            <endpoint>
+                <wsdl uri="file:repository/conf/opensoa/resources/wsdl/jbpm-ch10.wsdl" service="CreateProcessInstance" port="JMS"/>               
+            </endpoint>
+            
+            <inSequence>
+                <validate source="//*[local-name()='Order']">
+                    <schema key="schemas/ubl.xsd"/>
+                    <on-fail>
+                        <makefault>
+                            <code value="tns:Receiver"
+                                xmlns:tns="http://www.w3.org/2003/05/soap-envelope"/>
+                            <reason value="Invalid Order Request"/>
+                        </makefault>
+                        <property name="RESPONSE" value="true"/>
+                        <header name="To" action="remove"/>
+                        <send/><drop/>
+                    </on-fail>
+                </validate>
+                <xslt key="xslt-key" source="//*[local-name()='CreateOrder']"/>
+            </inSequence>
+        </target>
+    </proxy>
+    
+    <!-- CreateProcessInstanceService -->
+    <proxy name="CreateProcessInstanceService" transports="jms" >
+        <target inSequence="sequence/createProcessInstance.xml"/>
+    </proxy>
+    
+    <proxy name="SendOrderResponse" transports="jms">
+        <target inSequence="sequence/jmsOrderReceiver.xml"> 
+            <endpoint>
+                <address uri="http://localhost:8280/soap/OrderResponseService" format="soap11"/>
+            </endpoint>
+        </target>
+    </proxy>
+    
+    <proxy name="OrderResponseService" transports="http">
+        <target inSequence="sequence/mockProxyResponse.xml"/>
+    </proxy>
+    
+</definitions>
+
+

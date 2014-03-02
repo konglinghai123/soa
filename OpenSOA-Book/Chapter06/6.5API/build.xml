@@ -1,0 +1,125 @@
+<project name="chapter06.5" default="run.main">
+	
+	<property file="../../build.properties" />
+	<property name="lib.ext" value="../lib"/>
+	
+	<property name="java.main" value="com.sample.MainAll"/>
+		
+	<target name="compile" description="Compiles java code...">
+		<mkdir dir="target/classes" />
+		<mkdir dir="test-results" />
+		
+		<javac destdir="target/classes" debug="on" source="1.5"
+			target="1.5">
+			<src path="src\main\java" />
+			<classpath>
+		    	<fileset dir="${lib.ext}">
+		    		<include name="*.jar"/>
+		    	</fileset>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+			</classpath>
+		</javac>
+		
+		<copy todir="target/classes">
+			<fileset dir="..\resources" />
+		</copy>
+				
+	</target>
+
+	<target name="clean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="target" />
+		</delete>
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="work" />
+		</delete>
+	</target>
+
+	<target name="run.main" depends="compile" description="Runs MainAll example...">
+        <java classname="${java.main}" fork="true">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${lib.ext}">
+            		<include name="*.jar"/>
+            	</fileset>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+        	
+        </java>
+	</target>
+	
+	<target name="run.tasks" depends="compile" description="Runs MainTaskInstances example...">
+		<input message="Enter a process instance id:" addproperty="process.id"/>
+		<input message="Enter task status (one of OPEN | ENDED | SUSPENDED |CANCELLED):" addproperty="task.status"/>
+        <java classname="com.sample.MainTaskInstances" fork="true">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${lib.ext}">
+            		<include name="*.jar"/>
+            	</fileset>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+			<arg value="${process.id}" />  
+			<arg value="${task.status}" />  
+        </java>
+	</target>
+	
+	<target name="run.actor.tasks" depends="compile" description="Runs MainActorTasks example...">
+		<input message="Enter an actor id: " addproperty="actor.id"/>
+        <java classname="com.sample.MainActorTasks" fork="true">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${lib.ext}">
+            		<include name="*.jar"/>
+            	</fileset>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+			<arg value="${actor.id}" />   
+        </java>
+	</target>
+
+	<target name="run.process.instances" depends="compile" description="Runs MainProcessInstances example...">
+		<input message="Enter a process id:" addproperty="process.id"/>
+		<input message="Enter process instance status (one of RUNNING | ENDED | SUSPENDED):" addproperty="status"/>
+
+        <java classname="com.sample.MainProcessInstances" fork="true">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${lib.ext}">
+            		<include name="*.jar"/>
+            	</fileset>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+			<arg value="${process.id}" />   
+        	<arg value="${status}" />   
+        </java>
+	</target>
+	
+	<target name="run.instance.tasks" depends="compile" description="Runs MainProcessInstances example...">
+		<input message="Enter a process instance id:" addproperty="instance.id"/>
+
+        <java classname="com.sample.MainProcessInstanceTasks" fork="true">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${lib.ext}">
+            		<include name="*.jar"/>
+            	</fileset>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+			<arg value="${instance.id}" />   
+        </java>
+	</target>
+	
+</project>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<process xmlns="http://drools.org/drools-5.0/process"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+         xs:schemaLocation="http://drools.org/drools-5.0/process drools-processes-5.0.xsd"
+         type="RuleFlow" name="PricingCalculator" id="opensoa.drools.pricing" package-name="opensoa.drools" >
+
+  <header>
+    <imports>
+      <import name="java.io.InputStreamReader" />
+      <import name="java.io.Reader" />
+      <import name="java.util.ArrayList" />
+      <import name="java.util.Iterator" />
+      <import name="opensoa.drools.dto.Order" />
+      <import name="opensoa.drools.dto.Party" />
+      <import name="opensoa.drools.dto.Product" />
+      <import name="opensoa.drools.dto.ProductPrice" />
+      <import name="opensoa.drools.dto.Products" />
+      <import name="opensoa.drools.dto.Shipping" />
+      <import name="opensoa.drools.dto.TotalPrice" />
+      <import name="opensoa.drools.dto.Order" />
+      <import name="opensoa.drools.dto.Party" />
+      <import name="opensoa.drools.dto.Product" />
+      <import name="opensoa.drools.dto.ProductPrice" />
+      <import name="opensoa.drools.dto.Products" />
+      <import name="opensoa.drools.dto.Shipping" />
+      <import name="opensoa.drools.dto.TotalPrice" />
+      <import name="org.drools.FactHandle" />
+      <import name="org.drools.QueryResult" />
+      <import name="org.drools.QueryResults" />
+      <import name="org.drools.RuleBase" />
+      <import name="org.drools.RuleBaseFactory" />
+      <import name="org.drools.StatefulSession" />
+      <import name="org.drools.WorkingMemory" />
+      <import name="org.drools.compiler.PackageBuilder" />
+      <import name="org.drools.rule.Package" />
+    </imports>
+  </header>
+
+  <nodes>
+    <ruleSet id="2" name="Pricing" x="53" y="97" width="80" height="40" ruleFlowGroup="price-calc" />
+    <ruleSet id="4" name="Shipping" x="177" y="96" width="80" height="40" ruleFlowGroup="shipment-calc" />
+    <actionNode id="6" name="ConsoleMessage" x="493" y="94" width="80" height="40" >
+        <action type="expression" dialect="java" >System.out.println("That's it -- all done: " + drools.getWorkingMemory().getGlobal("counter"));
+
+QueryResults results;
+QueryResult result;
+
+/* For some reason, you can't initalize and set a value in the  same statement */
+results = drools.getWorkingMemory().getQueryResults("FinalPrice");
+
+TotalPrice price;
+Order ord;
+Iterator it;
+
+for (it = results.iterator(); it.hasNext();) {
+				result = ( QueryResult ) it.next();
+				price = (TotalPrice) result.get("total");
+				ord = (Order) result.get("order");
+				System.out.println("results: " + price.salePrice);
+}</action>
+    </actionNode>
+    <start id="1" name="Start" x="52" y="25" width="80" height="40" />
+    <end id="3" name="End" x="491" y="163" width="80" height="40" />
+    <ruleSet id="5" name="Special Discounts" x="295" y="94" width="158" height="40" ruleFlowGroup="special-calc" />
+  </nodes>
+
+  <connections>
+    <connection from="1" to="2" />
+    <connection from="2" to="4" />
+    <connection from="5" to="6" />
+    <connection from="6" to="3" />
+    <connection from="4" to="5" />
+  </connections>
+
+</process>

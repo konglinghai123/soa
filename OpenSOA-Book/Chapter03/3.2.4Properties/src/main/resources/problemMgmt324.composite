@@ -1,0 +1,49 @@
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0"
+	targetNamespace="http://opensoa.book.chapter3"
+	xmlns:hw="http://opensoa.book.chapter3"
+	name="ProblemManagementComposite">
+
+	<!-- VARIANT 1
+	<property name="username">jdoe@mycompany.com</property>
+	<property name="password">mypassword1</property>
+	-->
+	
+	<!-- VARIANT 2 -->
+	<property name="credentials" type="hw:CredentialsType">
+		<Credentials>
+			<username>jdoe@mycompany.com</username>
+			<password>mypassword1</password>
+		</Credentials>
+	</property>
+	
+	<service name="ProblemTicketComponent"
+		promote="ProblemTicketComponent">
+		<binding.ws uri="http://localhost:8085/ProblemTicketService" />
+	</service>
+
+	<component name="ProblemTicketComponent">
+		<implementation.java
+			class="opensoa.book.chapter3_24.impl.ProblemTicketComponentImpl" />
+
+	    <!-- use w/VARIANT 1
+		<property name="username" source="$username" />
+		<property name="password" source="$password" />
+		-->
+		
+		<!--  use w/VARIANT 2 -->
+		<property name="username"
+			source="$credentials/*[local-name()='Credentials']/
+				*[local-name()='username']" />
+		<property name="password"
+			source="$credentials/*[local-name()='Credentials']/
+				*[local-name()='password']" />
+	
+		<reference name="createTicket" target="CreateTicketComponent" />
+	</component>
+
+	<component name="CreateTicketComponent">
+		<implementation.java
+			class="opensoa.book.chapter3_24.impl.CreateTicketComponentImpl" />
+	</component>
+
+</composite>

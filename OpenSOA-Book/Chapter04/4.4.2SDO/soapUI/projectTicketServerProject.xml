@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="OpenSoa-04.4.2" soapui-version="2.5" resourceRoot="" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="ProjectSettings@projectRoot">..\Chapter04\4.4.2SDO\soapUI</con:setting></con:settings><con:interface name="ProblemTicketServiceSOAPBinding" bindingName="{http://chapter4.book.opensoaSDO}ProblemTicketServiceSOAPBinding" soapVersion="1_1" definition="http://localhost:8085/ProblemTicketService?wsdl" xsi:type="con:WsdlInterface" wsaVersion="NONE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:endpoints><con:endpoint>http://localhost:8085/ProblemTicketService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createTicket" bindingOperationName="createTicket" inputName="" receivesAttachments="false" sendsAttachments="false" type="Request-Response"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8085/ProblemTicketService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:iss="http://chapter4.book.opensoa/issue">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <iss:createTicket>
+         <iss:Problem severity="low" category="systems" subcategory="os">
+            <iss:Header>
+               <iss:From>user</iss:From>
+               <iss:Subject>test subject</iss:Subject>
+               <iss:To>test to</iss:To>
+               <iss:CreationDate>2008-02-17T00:00:00.000-07:00</iss:CreationDate>
+            </iss:Header>
+            <iss:Description>test description</iss:Description>
+         </iss:Problem>
+      </iss:createTicket>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508"/></con:call></con:operation><con:definitionCache rootPart="http://localhost:8085/ProblemTicketService?wsdl"><con:part><con:url>http://localhost:8085/ProblemTicketService?wsdl</con:url><con:content><wsdl:definitions targetNamespace="http://chapter4.book.opensoaSDO" xmlns:issue="http://chapter4.book.opensoa/issue" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns0="http://chapter4.book.opensoaSDO" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:system="http://chapter4.book.opensoa/system" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://chapter4.book.opensoa/issue">
+
+         <xs:element name="createTicket">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element name="Problem" type="issue:ProblemType"/>
+               </xs:sequence>
+            </xs:complexType>
+            
+         </xs:element>
+         
+         <xs:element name="Response" type="xs:int"/>
+
+         <xs:complexType name="ProblemType">
+            <xs:sequence>
+               <xs:element maxOccurs="1" minOccurs="1" name="Header" type="issue:HeaderType"/>
+               <xs:element name="Description" type="xs:string"/>
+            </xs:sequence>
+            <xs:attribute default="low" name="severity">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:enumeration value="low"/>
+                     <xs:enumeration value="medium"/>
+                     <xs:enumeration value="high"/>
+                  </xs:restriction>
+               </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="category" use="required">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:enumeration value="software"/>
+                     <xs:enumeration value="systems"/>
+                     <xs:enumeration value="customer"/>
+                  </xs:restriction>
+               </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="subcategory" type="xs:string"/>
+         </xs:complexType>
+
+         <xs:complexType name="HeaderType">
+            <xs:sequence>
+               <xs:element name="From" type="xs:string"/>
+               <xs:element name="Subject" type="xs:string"/>
+               <xs:element name="To" type="xs:string"/>
+               <xs:element name="Ccs" type="issue:CcsType"/>
+               <xs:element name="CreationDate" type="xs:dateTime"/>
+            </xs:sequence>
+         </xs:complexType>
+
+         <xs:complexType name="CcsType">
+            <xs:sequence>
+               <xs:element maxOccurs="unbounded" minOccurs="0" name="CC" type="xs:string"/>
+            </xs:sequence>
+         </xs:complexType>
+
+      </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="createTicketResponse">
+    <wsdl:part name="parameters" element="issue:Response">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createTicketRequest">
+    <wsdl:part name="parameters" element="issue:createTicket">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ProblemTicketComponentPortType">
+    <wsdl:operation name="createTicket">
+      <wsdl:input name="createTicketRequest" message="ns0:createTicketRequest">
+    </wsdl:input>
+      <wsdl:output name="createTicketResponse" message="ns0:createTicketResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ProblemTicketServiceSOAPBinding" type="ns0:ProblemTicketComponentPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="createTicket">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ProblemTicketService">
+    <wsdl:port name="SOAP" binding="ns0:ProblemTicketServiceSOAPBinding">
+      <soap:address location="http://172.16.54.1:8085/ProblemTicketService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache></con:interface><con:properties/><con:wssContainer/></con:soapui-project>

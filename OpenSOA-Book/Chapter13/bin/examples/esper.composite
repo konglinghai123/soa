@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<composite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.osoa.org/xmlns/sca/1.0 ../xsd/sca-all.xsd"
+ xmlns="http://www.osoa.org/xmlns/sca/1.0"
+ xmlns:hw="http://opensoa.book.chapter8"
+ targetNamespace="http://opensoa.book.chapter8"
+ name="esper">
+
+<!--  NOTE: break into seperate sub-modules -->
+
+   <service name="EsperManagerService"	promote="EsperManager">
+   		<binding.ws uri="http://localhost:8085/EsperManagerService" />
+   </service>
+	
+   <component name="EsperManager">
+      <implementation.java class="opensoa.esper.impl.EsperManagerImpl" />
+	  <reference name="sessionManager" target="SessionManager" />
+	  <service name="EsperManagerService"	promote="EsperManager">
+   		<binding.jms uri="http://localhost:8085/EsperManagerService" />
+     </service>
+   </component>
+
+   <component name="SessionManager">
+      <implementation.java class="opensoa.esper.impl.SessionManagerImpl" />
+      <property name="configurationFile">esperconf.xml</property>
+      <property name="providerName">EsperManager</property>
+      <reference name="statementMgr" target="StatementManager"/>
+   </component>
+   
+   <component name="StatementManager">
+      <implementation.java class="opensoa.esper.impl.StatementManagerImpl" />
+   </component>
+   
+</composite>

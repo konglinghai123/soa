@@ -1,0 +1,18 @@
+<esper-configuration
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.espertech.com/schema/esper"
+	xsi:schemaLocation="
+			http://www.espertech.com/schema/esper http://www.espertech.com/schema/esper/esper-configuration-2.0.xsd">
+	<event-type name="ProcessEvent"
+		class="opensoa8_63.esper.jbpm.event.ProcessEvent" />
+
+	<database-reference name="mydb">
+		<drivermanager-connection class-name="org.hsqldb.jdbcDriver"
+			url="jdbc:hsqldb:mem:aname"
+			user="sa" password="">
+		</drivermanager-connection>
+		<connection-lifecycle value="retain" /><!-- Retains connection associated with a statement, closing a connection only when a statement is stopped -->
+		<expiry-time-cache max-age-seconds="60"
+			purge-interval-seconds="120" ref-type="weak" />
+	</database-reference>
+</esper-configuration>

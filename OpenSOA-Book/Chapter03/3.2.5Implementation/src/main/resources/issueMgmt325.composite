@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" 
+	xmlns:hw="http://opensoa.book.chapter325" 
+	name="IssueManagementComposite" 
+	targetNamespace="http://opensoa.book.chapter325">
+	
+  <service name="SystemErrorService" promote="SystemErrorComponent">
+    <binding.ws uri="http://localhost:8085/SystemErrorService"/>
+  </service>
+  
+  <component name="SystemErrorComponent">
+    <implementation.java class="opensoa.book.chapter3_25.impl.SystemErrorComponentImpl"/>
+    <reference name="problemTicket" target="ProblemTicket"/>
+  </component>
+  
+  <component name="ProblemTicket">
+    <implementation.composite name="hw:ProblemManagementComposite"/>
+  </component>
+  
+</composite>

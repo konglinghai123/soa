@@ -1,0 +1,19 @@
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0"
+	targetNamespace="http://opensoa.book.chapter7"
+	xmlns:hw="http://opensoa.book.chapter7"
+	name="ProblemTicketService">
+
+	<service name="ProblemTicketComponentService"
+		promote="ProblemTicketComponent">
+		<interface.java
+         interface="opensoa.book.chapter721.ProblemTicketComponent" />
+		
+		<binding.ws uri="http://localhost:8085/ProblemTicketService" />
+	</service>
+
+	<component name="ProblemTicketComponent">
+		<implementation.java
+			class="opensoa.book.chapter721.impl.ProblemTicketComponentImpl" />
+	</component>
+
+</composite>

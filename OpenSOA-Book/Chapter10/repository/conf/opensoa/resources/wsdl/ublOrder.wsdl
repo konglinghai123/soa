@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://sca.opensoa/ch10" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+ xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+ xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:ws="http://www.example.com/webservice" xmlns:ns1="http://sca.opensoa/ch10"
+ xmlns:uri="uri:opensoa.chapter10.order" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" >
+	<wsdl:types>
+		
+		<xs:schema xmlns="uri:opensoa.chapter10.order" xmlns:order="urn:oasis:names:specification:ubl:schema:xsd:Order-2">
+			<xs:import namespace="urn:oasis:names:specification:ubl:schema:xsd:Order-2"/>
+			
+			<xs:element name="CreateOrder" type="order:Order" />
+			
+			<xs:element name="CreateOrderResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Status" type="xs:string"/>
+						<xs:element name="Message" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+		</xs:schema>
+		
+		<xs:schema xmlns="urn:oasis:names:specification:ubl:schema:xsd:Order-2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" targetNamespace="urn:oasis:names:specification:ubl:schema:xsd:Order-2">
+			
+			<xs:import namespace="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"/>
+			<xs:import namespace="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"/>
+			
+			<xs:element name="Order">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:UBLVersionID"/>
+						<xs:element ref="cbc:CustomizationID"/>
+						<xs:element ref="cbc:ProfileID"/>
+						<xs:element ref="cbc:ID"/>
+						<xs:element ref="cbc:SalesOrderID"/>
+						<xs:element ref="cbc:CopyIndicator"/>
+						<xs:element ref="cbc:UUID"/>
+						<xs:element ref="cbc:IssueDate"/>
+						<xs:element ref="cbc:Note"/>
+						<xs:element ref="cac:BuyerCustomerParty"/>
+						<xs:element ref="cac:SellerSupplierParty"/>
+						<xs:element ref="cac:OriginatorCustomerParty"/>
+						<xs:element ref="cac:Delivery"/>
+						<xs:element ref="cac:DeliveryTerms"/>
+						<xs:element ref="cac:TransactionConditions"/>
+						<xs:element ref="cac:AnticipatedMonetaryTotal"/>
+						<xs:element ref="cac:OrderLine" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+		
+		<xs:schema xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" targetNamespace="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+			
+			<xs:import namespace="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" />
+
+			<xs:element name="TransactionConditions">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:Description"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TaxScheme">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:ID"/>
+						<xs:element ref="cbc:TaxTypeCode"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SellersItemIdentification">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:ID"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SellerSupplierParty">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:CustomerAssignedAccountID"/>
+						<xs:element ref="Party"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RequestedDeliveryPeriod">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:StartDate"/>
+						<xs:element ref="cbc:StartTime"/>
+						<xs:element ref="cbc:EndDate"/>
+						<xs:element ref="cbc:EndTime"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Price">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:PriceAmount"/>
+						<xs:element ref="cbc:BaseQuantity"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PostalAddress">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:StreetName"/>
+						<xs:element ref="cbc:BuildingName"/>
+						<xs:element ref="cbc:BuildingNumber"/>
+						<xs:element ref="cbc:CityName"/>
+						<xs:element ref="cbc:PostalZone"/>
+						<xs:element ref="cbc:CountrySubentity"/>
+						<xs:element ref="AddressLine"/>
+						<xs:element ref="Country"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PartyTaxScheme">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:RegistrationName"/>
+						<xs:element ref="cbc:CompanyID"/>
+						<xs:element ref="cbc:ExemptionReason"/>
+						<xs:element ref="TaxScheme"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PartyName">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:Name"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Party">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="PartyName"/>
+						<xs:element ref="PostalAddress"/>
+						<xs:element ref="PartyTaxScheme"/>
+						<xs:element ref="Contact"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="OriginatorCustomerParty">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="Party"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="OrderLine">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:Note"/>
+						<xs:element ref="LineItem" maxOccurs="unbounded" minOccurs="1"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LineItem">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:ID"/>
+						<xs:element ref="cbc:SalesOrderID"/>
+						<xs:element ref="cbc:LineStatusCode"/>
+						<xs:element ref="cbc:Quantity"/>
+						<xs:element ref="cbc:LineExtensionAmount"/>
+						<xs:element ref="cbc:TotalTaxAmount"/>
+						<xs:element ref="Price"/>
+						<xs:element ref="Item"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Item">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:Description"/>
+						<xs:element ref="cbc:Name"/>
+						<xs:element ref="BuyersItemIdentification"/>
+						<xs:element ref="SellersItemIdentification"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DeliveryTerms">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:SpecialTerms"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DeliveryAddress">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:StreetName"/>
+						<xs:element ref="cbc:BuildingName"/>
+						<xs:element ref="cbc:BuildingNumber"/>
+						<xs:element ref="cbc:CityName"/>
+						<xs:element ref="cbc:PostalZone"/>
+						<xs:element ref="cbc:CountrySubentity"/>
+						<xs:element ref="AddressLine"/>
+						<xs:element ref="Country"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Delivery">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="DeliveryAddress"/>
+						<xs:element ref="RequestedDeliveryPeriod"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Country">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:IdentificationCode"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Contact">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:Name"/>
+						<xs:element ref="cbc:Telephone"/>
+						<xs:element ref="cbc:Telefax"/>
+						<xs:element ref="cbc:ElectronicMail"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="BuyersItemIdentification">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:ID"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="BuyerCustomerParty">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:CustomerAssignedAccountID"/>
+						<xs:element ref="cbc:SupplierAssignedAccountID"/>
+						<xs:element ref="Party"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AnticipatedMonetaryTotal">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:LineExtensionAmount"/>
+						<xs:element ref="cbc:PayableAmount"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AddressLine">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:Line"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+		
+		<xs:schema xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+			<xs:simpleType name="ST_TotalTaxAmount">
+				<xs:restriction base="xs:decimal">
+					<xs:enumeration value="17.5"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="ST_Quantity">
+				<xs:restriction base="xs:int"/>
+			</xs:simpleType>
+			<xs:simpleType name="ST_PriceAmount">
+				<xs:restriction base="xs:decimal"/>
+			</xs:simpleType>
+			<xs:simpleType name="ST_PayableAmount">
+				<xs:restriction base="xs:decimal"/>
+			</xs:simpleType>
+			<xs:simpleType name="ST_LineExtensionAmount">
+				<xs:restriction base="xs:decimal"/>
+			</xs:simpleType>
+			<xs:simpleType name="ST_BaseQuantity">
+				<xs:restriction base="xs:int"/>
+			</xs:simpleType>
+			<xs:element name="UUID">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="UBLVersionID">
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="TotalTaxAmount">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ST_TotalTaxAmount">
+							<xs:attribute name="currencyID" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string"/>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Telephone">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Telefax">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="TaxTypeCode">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SupplierAssignedAccountID">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="StreetName">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="StartTime">
+				<xs:simpleType>
+					<xs:restriction base="xs:time"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="StartDate">
+				<xs:simpleType>
+					<xs:restriction base="xs:date"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SpecialTerms">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SalesOrderID">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="RegistrationName">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Quantity">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ST_Quantity">
+							<xs:attribute name="unitCode" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string"/>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProfileID" type="xs:string"/>
+			<xs:element name="PriceAmount">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ST_PriceAmount">
+							<xs:attribute name="currencyID" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string"/>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PostalZone">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="PayableAmount">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ST_PayableAmount">
+							<xs:attribute name="currencyID" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string"/>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Note">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Name">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="LineStatusCode">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="LineExtensionAmount">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ST_LineExtensionAmount">
+							<xs:attribute name="currencyID" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string"/>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Line">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="IssueDate">
+				<xs:simpleType>
+					<xs:restriction base="xs:date"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="IdentificationCode">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ID">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ExemptionReason">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="EndTime">
+				<xs:simpleType>
+					<xs:restriction base="xs:time"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="EndDate">
+				<xs:simpleType>
+					<xs:restriction base="xs:date"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ElectronicMail">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="CustomizationID" type="xs:string"/>
+			<xs:element name="CustomerAssignedAccountID">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CountrySubentity">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CopyIndicator" type="xs:boolean"/>
+			<xs:element name="CompanyID">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CityName">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BuildingNumber">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BuildingName">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BaseQuantity">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ST_BaseQuantity">
+							<xs:attribute name="unitCode" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string"/>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="createOrderRequest">
+		<wsdl:part name="parameters" element="uri:CreateOrder"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="createOrderResponse">
+		<wsdl:part name="parameters" element="uri:CreateOrderResponse"> </wsdl:part>
+	</wsdl:message>
+	
+	<wsdl:portType name="CreateOrderPortType">
+		<wsdl:operation name="CreateOrder">
+			<wsdl:input message="ns1:createOrderRequest" wsaw:Action="urn:CreateOrder"/> 
+			<wsdl:output message="ns1:createOrderResponse" wsaw:Action="urn:CreateOrderResponse"/> 
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="CreateOrderSOAP11Binding" type="ns1:CreateOrderPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="CreateOrder">
+			<soap:operation soapAction="urn:CreateOrder" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	<wsdl:service name="CreateOrder">
+		<wsdl:port name="SOAP" binding="ns1:CreateOrderSOAP11Binding">
+			<soap:address location="http://localhost:8280/soap/CreateOrder"/>
+		</wsdl:port>
+	</wsdl:service>
+	
+</wsdl:definitions>

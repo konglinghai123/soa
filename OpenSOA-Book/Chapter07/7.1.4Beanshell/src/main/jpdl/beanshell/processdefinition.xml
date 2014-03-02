@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition 
+  xmlns="urn:jbpm.org:jpdl-3.2"
+  name="beanshell">
+  
+   <start-state name="start">
+      <transition name="to_state" to="first">
+			<script name="beanshell-example">
+				System.out.println("Event type is: " + executionContext.getEvent().getEventType());
+				System.out.println("Token is: " + token);
+				System.out.println("Token is: " + task);
+			</script>
+		</transition>
+   </start-state>
+   <state name="first">
+       <event type="node-enter">
+            <script>           
+                long number = (Math.round(Math.random() * 100));
+                System.out.println("Number is: " + number);
+                executionContext.setVariable("evalNum", number);
+            </script>
+        </event>
+   		<!--  uncomment if using with enterprise/app version 
+		<event type="node-enter">
+			<script>           
+                long number = (Math.round(Math.random() * 100));
+                System.out.println("Number is: " + number);
+                executionContext.setVariable("evalNum", number);
+            </script>
+			<create-timer duedate="1 business minutes" name="reminder" repeat="5 business minutes">
+				<script>
+					System.err.println("You're past due!");
+				</script>
+			</create-timer>
+		</event>
+		<event type="node-leave">
+			<cancel-timer name="reminder"/>
+			<script>
+				System.err.println("Reminder timer cancelled...");
+			</script>
+		</event>
+		-->
+		<transition to="decision1"></transition>
+	</state>
+
+	<state name="0 to 33">
+		<transition to="end"></transition>
+	</state>
+
+	<state name="33 to 66">
+		<transition to="end"></transition>
+	</state>
+
+	<state name="66 or greater">
+		<transition to="end"></transition>
+	</state>
+
+	<decision name="decision1">
+		<transition to="0 to 33" name="&lt; 33">
+			<condition>
+				#{evalNum &lt; 33}
+			</condition>
+		</transition>
+		<transition to="33 to 66" name="33 to 66">
+		    <condition>
+				#{evalNum &gt;= 33 &amp;&amp; evalNum &lt; 66}
+			</condition>
+		</transition>
+		<transition to="66 or greater" name="&gt; 66">
+		    <condition>
+				#{evalNum &gt;= 66}
+			</condition>
+		</transition>
+	</decision>
+   <end-state name="end"></end-state>
+</process-definition>

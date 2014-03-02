@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition 
+  xmlns="urn:jbpm.org:jpdl-3.2"
+  name="employee-termination">
+   <start-state name="start">
+		<transition to="fork1"></transition>
+		<event type="node-leave">
+			<script name="populate-vars">
+				System.out.println(&quot;Leaving start node&quot;);
+				executionContext.setVariable(&quot;name&quot;, &quot;John Doe&quot;);
+				executionContext.setVariable(&quot;employeeId&quot;, &quot;A2321&quot;);
+				executionContext.setVariable(&quot;securityComplete&quot;, &quot;no&quot;);
+			</script>
+		</event>
+	</start-state>
+	
+   <fork name="fork1">
+		<transition to="finance" name="to-finance"></transition>
+		<transition to="hr" name="to-hr">
+			<description>
+					
+			</description>
+		</transition>
+		<transition to="security" name="to security"></transition>
+	</fork>
+
+	<join name="join1">
+		<transition to="end"></transition>
+	</join>
+
+	<super-state name="hr">
+		<node name="notify 401k">
+			<transition to="notify insrnc "></transition>
+		</node>
+		<node name="notify insrnc ">
+			<transition to="notify stock"></transition>
+		</node>
+		<node name="notify stock">
+			<transition to="rtrv equip"></transition>
+		</node>
+		<task-node name="rtrv equip">
+			<task name="retrieve_equipment_task"></task>
+			<transition to="exit intrv"></transition>
+		</task-node>
+		<task-node name="exit intrv">
+			<task name="conduct_exit_interview_task"></task>
+		</task-node>
+		<event type="superstate-enter">
+			<action name="hr-superstate-action"></action>
+			<script>
+				System.out.println("Entering HR Superstate");
+			</script>
+		</event>
+		<transition to="join1"></transition>
+	</super-state>
+
+	<super-state name="finance">
+		<task-node name="appr timecard">
+			<task name="approve_timecard_task"></task>
+			<transition to="issue check"></transition>
+		</task-node>
+		<node name="issue check">
+			<transition to="update payroll"></transition>
+		</node>
+		<node name="update payroll"></node>
+		<transition to="join1"></transition>
+	</super-state>
+
+	<process-state name="security">
+		<sub-process name="security" binding='late'/>
+		<variable access="read" name="name"></variable>
+		<variable access="read" name="employeeId"></variable>
+		<variable access="read,write" name="securityComplete"></variable>
+		<transition to="join1"></transition>
+	</process-state>
+   <end-state name="end"></end-state>
+</process-definition>

@@ -1,0 +1,7 @@
+<sequence name="mockProxyResponse" xmlns="http://ws.apache.org/ns/synapse">
+    <log level="custom">
+        <property name="Text" value="jmsOrderReceiver.xml was invoked"/>
+    </log>
+    <property action="set" name="OUT_ONLY" value="true"/>
+    <xslt key="xslt-key-resp" source="//*[local-name()='OrderResponse']" />
+</sequence>

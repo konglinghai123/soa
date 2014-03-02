@@ -1,0 +1,107 @@
+<!-- Introduction to Tasks with simple trigger -->
+<definitions xmlns="http://ws.apache.org/ns/synapse"
+	xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+	xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+
+	<registry provider="org.apache.synapse.registry.url.SimpleURLRegistry">
+		<parameter name="root"> file:./repository/conf/opensoa/resources/ </parameter>
+		<parameter name="cachableDuration">150000</parameter>
+	</registry>
+
+	<endpoint name="mockResponse">
+		<address uri="http://localhost:8280/soap/OrderResponseService" format="soap11"/>
+	</endpoint>
+	
+	<localEntry key="xslt-key" src="file:repository/conf/opensoa/resources/xslt/mapUBLOrder.xslt"/>
+	<localEntry key="xslt-key-resp" src="file:repository/conf/opensoa/resources/xslt/response.xslt"/>
+	<localEntry key="xslt-key-csv2order"
+		src="file:repository/conf/opensoa/resources/xslt/CSVtoSimpleOrder.xslt"/>
+	<localEntry key="xslt-key-email" src="file:repository/conf/opensoa/resources/xslt/Email.xslt"/>
+	<localEntry key="xslt-key-esper-csv-err" src="file:repository/conf/opensoa/resources/xslt/Esper-CSVError.xslt"/>
+	<localEntry key="xslt-key-esper-csv" src="file:repository/conf/opensoa/resources/xslt/EsperCSV.xslt"/>
+	<localEntry key="xslt-key-dummyOrders"
+	src="file:repository/conf/opensoa/resources/xslt/dummyUBLOrders.xslt"/>
+
+	<!-- phase 1 entries -->
+	<proxy name="CreateOrderService" transports="http">
+		<target inSequence="sequence/createOrderService.xml">
+			<endpoint>
+				<wsdl uri="file:repository/conf/opensoa/resources/wsdl/jbpm-ch10.wsdl"
+					service="CreateProcessInstance" port="JMS"/>
+			</endpoint>
+		</target>
+	</proxy>
+	
+	<proxy name="CreateProcessInstanceService" transports="jms">
+		<target inSequence="sequence/createProcessInstance.xml"/>
+	</proxy>
+	
+	<proxy name="SendOrderResponse" transports="jms">
+		<target inSequence="sequence/jmsOrderReceiver.xml">
+			<endpoint>
+				<address uri="http://localhost:8280/soap/OrderResponseService" format="soap11"/>
+			</endpoint>
+		</target>
+	</proxy>
+	
+	<proxy name="OrderResponseService" transports="http">
+		<target inSequence="sequence/mockProxyResponse.xml"/>
+	</proxy>
+	
+	<!-- phase 3 entries -->
+	<task class="org.apache.synapse.startup.tasks.MessageInjector" name="FetchOrders">
+		<property name="to" value="http://localhost:8280/soap/QueuedOrderRequestor"/>
+		<property name="soapAction" value="urn:getOrders"/>
+		<property name="message">
+			<getOrders xmlns="uri:opensoa.chapter10.order">
+				<customerId>1001</customerId>
+			</getOrders>
+		</property>
+		<trigger interval="30"/>
+	</task>
+	
+	<sequence name="main">
+		<in>
+			<log level="custom">
+				<property name="Text" value="Default message mediator invoked"/>
+			</log>
+			<property action="set" name="OUT_ONLY" value="true"/>
+			<send/>
+		</in>
+	</sequence>
+
+	<proxy name="QueuedOrderRequestor" transports="http">
+		<target>
+			<endpoint>
+				<address uri="http://localhost:8280/soap/CustomerOrderQueueService" format="soap11"/>
+			</endpoint>
+			<outSequence>
+				<iterate expression="//uri:CreateOrder/ublord:Order" preservePayload="true"
+					attachPath="//uri:CreateOrder"
+					xmlns:ublord="urn:oasis:names:specification:ubl:schema:xsd:Order-2"
+					xmlns:uri="uri:opensoa.chapter10.order">
+					<target>
+						<sequence>
+							<property action="set" name="OUT_ONLY" value="true"/>
+							<xslt key="xslt-key" source="//*[local-name()='CreateOrder']"/>
+							<log level="full"/>
+							<send>
+								<endpoint>
+									<wsdl uri="file:repository/conf/opensoa/resources/wsdl/jbpm-ch10.wsdl"
+										service="CreateProcessInstance" port="JMS"/>
+								</endpoint>
+							</send>
+							
+						</sequence>
+					</target>
+				</iterate>
+
+			</outSequence>
+		</target>
+	</proxy>
+
+	<proxy name="CustomerOrderQueueService" transports="http">
+		<target inSequence="sequence/mockQueuedOrders.xml"/>
+	</proxy>
+	
+</definitions>

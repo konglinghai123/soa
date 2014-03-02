@@ -1,0 +1,52 @@
+<project name="chapter08.5.2" default="basic.query.test">
+	
+	<property file="../../build.properties" />
+
+	<target name="compile" depends="clean" description="Compiles Java code">
+		<mkdir dir="target/classes" />
+		<mkdir dir="test-results" />
+		<javac destdir="target/classes" debug="on" source="1.5"
+			target="1.5">
+			<src path="src\main\java" />
+			<src path="src\test\java" />
+			<classpath>
+            	<fileset dir="${general.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+			</classpath>		
+		</javac>
+		
+		<copy todir="target/classes">
+			<fileset dir="..\resources" />
+		</copy>
+
+	</target>
+
+	<target name="clean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="target" />
+		</delete>
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="test-results" />
+		</delete>
+	</target>
+	
+	<target name="basic.query.test" depends="compile" description="Runs the Esper basic query tests...">
+		<junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${general.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+
+		  <formatter type="plain"/>
+
+		  <test name="EsperTest852" haltonfailure="no" outfile="test-results/EsperTest852"/>
+
+		</junit>
+		
+		<echo message="Results can be found in test-results/EsperTest852.txt"/>
+	</target>
+
+</project>

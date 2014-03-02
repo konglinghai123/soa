@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0"
+	targetNamespace="http://open-soa/sca/jbpm"
+	xmlns:hw="http://open-soa/sca/jbpm"
+	name="jbpm-utility">
+    
+     <service name="DBGetObjectService" promote="DBGetObjectComponent">
+    	<binding.ws wsdlElement="http://sca.opensoa#wsdl.port(GetObject/SOAP)"/>
+     </service>
+      
+    <component name="JBPMContextHelperComponent">
+      <implementation.java class="opensoa.sca.impl.JBPMContextHelperImpl"/>
+    </component>
+    
+    <component name="DBHelperComponent">
+		<implementation.java class="opensoa.sca.impl.DBHelperImpl" />
+		<property name="dbfile">DBFile.dbo</property>
+	</component>
+
+    <component name="DBGetObjectComponent">
+   	    <implementation.java class="opensoa.sca.impl.DBGetObjectImpl" />
+	    <property name="dbfile">DBFile.dbo</property>
+	</component>
+</composite>

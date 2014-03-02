@@ -1,0 +1,49 @@
+<!--  See Listing 9.3 in book for detailed explanation -->
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <sequence name="main">
+        <log level="full"/>
+        <in>
+            <switch source="get-property('To')">
+                <case regex=".*/CreateOrderService">
+                    <sequence key="CreateOrderService"/>
+                </case>
+                <default>
+                    <sequence key="NotFound"/>
+                </default>
+            </switch>
+        </in>
+    </sequence>
+    <sequence name="CreateOrderService">
+        <log level="custom">
+            <property name="Text" value="Inside CreateOrderService"/>
+        </log>
+        <in>
+            <!--
+            <drop/>
+            -->
+            <property name="RESPONSE" value="true"/>
+            <header name="To" action="remove"/>
+            <script language="js"><![CDATA[
+                mc.setPayloadXML(
+                     <CreateOrderResponse xmlns="uri:opensoa.chapter09.order">
+                        <Status>200</Status>
+                        <Message>Ok</Message>
+                    </CreateOrderResponse>);
+            ]]></script>
+            <send/>
+        </in>
+    </sequence>
+    <sequence name="NotFound">
+        <log level="custom">
+            <property name="Text" value="Service not supported/found"/>
+        </log>
+        <in>
+            <property name="RESPONSE" value="true"/>
+            <makefault>
+                <code value="tns:Receiver" xmlns:tns="http://www.w3.org/2003/05/soap-envelope"/>
+                <reason value="Service not found"/>
+            </makefault>
+            <send/>
+        </in>
+    </sequence>
+</definitions>

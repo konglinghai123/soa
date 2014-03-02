@@ -1,0 +1,31 @@
+<!--  See Listing 9.2 in book for detailed explanation -->
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+
+    <sequence name="main">
+        <log level="custom">
+            <property name="Text" value="Service called was"/>
+            <property name="service: " expression="get-property('To')"/>
+        </log>
+        <in>
+            <filter source="get-property('To')" regex=".*/CreateOrderService">
+                <sequence key="CreateOrderService"/>
+            </filter>
+            <!-- this is roughly equivalent to the above
+            <filter xpath="fn:contains(get-property('To'), '/CreateOrderService')">
+                <sequence key="CreateOrderService"/>
+            </filter>
+               -->
+             
+        </in>
+    </sequence>
+
+    <sequence name="CreateOrderService">
+        <log level="custom">
+            <property name="Text" value="Inside CreateOrderService"/>
+        </log>
+        <in>
+            <drop/>
+        </in>
+    </sequence>
+    
+</definitions>

@@ -1,0 +1,73 @@
+#created on: Sep 13, 2008
+package opensoa.drools
+
+import opensoa.drools.dto.TotalPrice;
+import opensoa.drools.dto.Shipping;
+import opensoa.drools.dto.Order;
+import opensoa.drools.dto.OrderProduct;
+import opensoa.drools.dto.ProductPrice;
+import opensoa.drools.dto.Product;
+
+global java.lang.Integer counter;
+# following global added for junit testing
+global java.util.List shipment_calc_results;
+
+# USPS orders have a min price of $10 shipping
+rule "ApplyUSPSMinimum"
+	ruleflow-group 'shipment-calc'
+	salience 130
+	when
+		price : TotalPrice ( shippingPrice > 0.0 );
+		order : Order ( orderId == price.orderId, shippingCarrier == Shipping.USPS );
+		eval ( price.shippingPrice < 12 );
+	then
+		price.setShippingPrice(12.0f);
+		update ( price );
+		shipment_calc_results.add ( "ApplyUSPSMinimum" );
+end
+
+rule "ApplyShipmentMinimum"
+	ruleflow-group 'shipment-calc'
+	salience 120
+	when
+		price : TotalPrice ( shippingPrice > 0.0 );
+		order : Order ( orderId == price.orderId );
+		eval ( price.shippingPrice < 10 );
+	then
+		price.setShippingPrice(10.0f);
+		update ( price );
+		shipment_calc_results.add ( "ApplyShipmentMinimum" );
+end
+
+rule "CalculateShippingTotal"
+	ruleflow-group 'shipment-calc'
+	salience 150
+	when
+		price : TotalPrice ( shippingPrice == 0.0 );
+		order : Order ( orderId == price.orderId ); 
+		shipPrice : Float ( ) from accumulate ( 
+		  orderProd : OrderProduct ( stdShipping :  stdShipping ) from order.getLines(),
+		  init ( float total = 0; ),
+		  action ( total += stdShipping; ),
+		  result ( new Float(total) ) 
+		  );
+	then
+		price.setShippingPrice( shipPrice );
+		update ( price );
+		shipment_calc_results.add ( "CalculateShippingTotal" );
+end
+
+rule "LineShipmentCost"
+	ruleflow-group 'shipment-calc'
+	salience 200
+	when 
+		price : TotalPrice ( );
+		order : Order ( orderId == price.orderId, orderItems : lines ); 
+		orderItem : OrderProduct ( stdprice :  stdPrice, stdShipping == 0.0 ) from order.getLines();
+		prodShipping : Product ( productId == orderItem.productId );
+		shipping : Shipping (carrier == order.shippingCarrier, shippingMethod == order.shippingMethod );
+	then
+		orderItem.setStdShipping(prodShipping.getWeight() * shipping.getMultiplier() * orderItem.getCnt());
+		update ( order );
+		shipment_calc_results.add ( "LineShipmentCost" );
+end

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" 
+	xmlns:hw="http://opensoa.book.chapter327" 
+	name="ProblemManagementComposite" 
+	targetNamespace="http://opensoa.book.chapter327">
+
+  <property name="username">jdoe@mycompany.com</property>
+  <property name="password">mypassword1</property>
+	
+  <service name="ProblemTicketService" promote="ProblemTicketComponent">
+    <!--
+    <binding.ws wsdlElement="http://chapter3.book.opensoa#wsdl.port(ProblemTicketService/SOAP)"/>
+    -->
+    <interface.java interface="opensoa.book.chapter3_27.ProblemTicketComponent"/>    
+  </service>
+
+  <component name="ProblemTicketComponent">
+    <implementation.java class="opensoa.book.chapter3_27.impl.ProblemTicketComponentImpl"/>
+    
+    <property name="username" source="$username" />
+	<property name="password" source="$password" />    
+	
+	<reference name="createTicket" target="CreateTicketComponent"/>
+  
+  </component>
+
+  <component name="CreateTicketComponent">
+    <implementation.java class="opensoa.book.chapter3_27.impl.CreateTicketComponentImpl"/>
+  </component>
+
+</composite>

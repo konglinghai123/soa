@@ -1,0 +1,44 @@
+package opensoa.drools.hellodrools;
+
+import opensoa.drools.hellodrools118.Person;
+import opensoa.drools.hellodrools118.ZipCode;
+import java.util.ArrayList;
+
+global java.util.ArrayList topInterests;
+
+# following global added for junit testing
+global java.util.List results;
+
+expander helloworld.dsl
+
+rule "DSL3" 
+	when
+		There is a  person
+		- age is greater or equal to 20
+		- gender is male
+	then
+		Log : "DSL3"
+		Print the name of the person
+		>results.add ( "DSL3" );
+end
+
+rule "DSL1"
+	when
+		There is a person who is >= than 20
+	then
+		Log : "DSL1"
+		Print the name of the person
+		>results.add ( "DSL1" );
+end
+ 
+rule "DSL2" 
+	when
+	    There is at least one person
+	    The person is >= than 20
+	    The person is male
+	then
+		Log : "DSL2"
+		Print the name of the person
+		>results.add ( "DSL2" );
+end
+

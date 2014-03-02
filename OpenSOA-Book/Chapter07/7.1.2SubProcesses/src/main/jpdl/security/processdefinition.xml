@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  xmlns="urn:jbpm.org:jpdl-3.2"  name="security">
+
+
+	<start-state name="start-state1">
+		<transition to="disable ldap"></transition>
+	</start-state>
+
+
+	<node name="disable ldap">
+		<transition to="fork1"></transition>
+	</node>
+
+	<fork name="fork1">
+		<transition to="rtrv vpn card" name="t1"></transition>
+		<transition to="rtrv access card" name="t2"></transition>
+		<transition to="rtrv parking card" name="t3"></transition>
+	</fork>
+
+	<task-node name="rtrv vpn card">
+		<task name="retrieve-vpn-card-task"></task>
+		<transition to="join1"></transition>
+	</task-node>
+
+	<task-node name="rtrv access card">
+		<task name="rtrv-access-card-task"></task>
+		<transition to="join1"></transition>
+	</task-node>
+
+	<task-node name="rtrv parking card">
+		<task name="retrieve-parking-card-task"></task>
+		<transition to="join1"></transition>
+	</task-node>
+
+	<node name="record in db">
+		<transition to="end-state1"></transition>
+	</node>
+
+	<join name="join1">
+		<transition to="record in db"></transition>
+	</join>
+
+
+	<end-state name="end-state1"></end-state>
+
+
+	<event type="process-end">
+		<script>
+			executionContext.setVariable(&quot;securityComplete&quot;,&quot;yes&quot;);
+		</script>
+	</event>
+
+
+</process-definition>

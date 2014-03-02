@@ -1,0 +1,222 @@
+<project name="chapter10" default="run.example.06" basedir=".">
+
+	<import file="../soapUI/build.xml"/>
+
+	<property file="../build.properties"/>
+
+	<property name="axis2.xml" value="${basedir}/repository/conf/axis2.xml"/>
+	<property name="repository" value="${basedir}/repository"/>
+
+	<!-- Defines the various examples used in this chapter -->
+	<property name="example6" value="${basedir}/src/definitions/synapse_sample_opensoa_06.xml"/>
+	<property name="example7" value="${basedir}/src/definitions/synapse_sample_opensoa_07.xml"/>
+	<property name="example8" value="${basedir}/src/definitions/synapse_sample_opensoa_08.xml"/>
+	<property name="example9" value="${basedir}/src/definitions/synapse_sample_opensoa_09.xml"/>
+	<property name="example10" value="${basedir}/src/definitions/synapse_sample_opensoa_10.xml"/>
+	<property name="example11" value="${basedir}/src/definitions/synapse_sample_opensoa_11.xml"/>
+	<property name="example12" value="${basedir}/src/definitions/synapse_sample_opensoa_12.xml"/>
+	<property name="example13" value="${basedir}/src/definitions/synapse_sample_opensoa_13.xml"/>
+	<property name="example14" value="${basedir}/src/definitions/synapse_sample_opensoa_14.xml"/>
+	<property name="example15" value="${basedir}/src/definitions/synapse_sample_opensoa_15.xml"/>
+	<property name="example16" value="${basedir}/src/definitions/synapse_sample_opensoa_16.xml"/>
+	<property name="example17" value="${basedir}/src/definitions/synapse_sample_opensoa_17.xml"/>
+	<property name="example18" value="${basedir}/src/definitions/synapse_sample_opensoa_18.xml"/>
+	<property name="example19" value="${basedir}/src/definitions/synapse_sample_opensoa_19.xml"/>
+	<property name="example20" value="${basedir}/src/definitions/synapse_sample_opensoa_20.xml"/>
+	<property name="example21" value="${basedir}/src/definitions/synapse_sample_opensoa_21.xml"/>
+	<property name="soapUI.project" value="../Chapter10/soapUI/soapui-inbound.xml"/>
+	<property name="soapUI.test.suite" value="TestSuiteCh10"/>
+
+	<target name="clean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="temp"/>
+		</delete>
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="logs"/>
+		</delete>
+	</target>
+
+	<target name="run.synapse.server" description="Runs the Synapse server..." depends="clean">
+		<fail unless="example-to-run"
+			message="Must be called by one of the example targets, such as run.example.1"/>
+		<java classname="org.apache.synapse.SynapseServer" fork="true">
+			<classpath>
+				<pathelement path="lib"/>
+				<!-- this will pick up the custom csv.jar mediator -->
+        		<fileset dir="lib">
+        			<include name="*.jar"/>
+        		</fileset>	
+
+				<fileset dir="${synapse.lib}">
+					<include name="*.jar"/>
+				</fileset>	
+
+				<fileset dir="${axis.lib}">
+					<exclude name="jxls-reader-0.9.6.jar"/>
+					<include name="*.jar"/>
+				</fileset>		
+
+				<fileset dir="${general.lib}">
+					<exclude name="geronimo-javamail_1.4_spec-1.2.jar"/>
+					<exclude name="geronimo-activation_1.1_spec-1.0.1.jar"/>
+					<exclude name="jxls-reader-0.9.6.jar"/>
+					<exclude name="saxon*.jar"/>
+					<include name="*.jar"/>
+				</fileset>			
+				
+				<!--
+				<fileset dir="C:\Apps\synapse-1.2-bin\synapse-1.2\lib">
+					<include name="*.jar"/>
+				</fileset>	
+				-->
+			</classpath>
+			<jvmarg
+				value="-Dorg.apache.xerces.xni.parser.XMLParserConfiguration=org.apache.xerces.parsers.XMLGrammarCachingConfiguration"/>
+			<jvmarg value="-Djava.io.tmpdir=temp"/>
+			<arg value="${repository}"/>
+			<arg value="${axis2.xml}"/>
+			<arg value="${basedir}"/>
+			<arg value="${example-to-run}"/>
+			<arg value="${repository}"/>
+		</java>
+	</target>
+
+	<!-- Following will run Synapse with the configuration specified -->
+	<target name="run.example.06" description="Runs the 6th example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example6}"/>
+		</antcall>
+	</target>
+
+	<target name="run.example.07" description="Runs the 7th example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example7}"/>
+		</antcall>
+	</target>
+
+	<target name="run.example.08" description="Runs the 8th example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example8}"/>
+		</antcall>
+	</target>
+
+	<target name="run.example.09" description="Runs the 9th example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example9}"/>
+		</antcall>
+	</target>
+
+	<target name="run.example.10" description="Runs the 10th example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example10}"/>
+		</antcall>
+	</target>
+
+	<target name="run.example.11" description="Runs the 11th example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example11}"/>
+		</antcall>
+	</target>
+
+	<target name="run.example.12" description="Runs the 12th example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example12}"/>
+		</antcall>
+	</target>
+
+	<target name="run.example.13" description="Runs the 13th example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example13}"/>
+		</antcall>
+	</target>
+
+	<target name="run.example.14" description="Runs the 14th example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example14}"/>
+		</antcall>
+	</target>
+
+	<target name="run.example.15" description="Runs the 15th example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example15}"/>
+		</antcall>
+	</target>
+
+	<target name="run.example.16" description="Runs the 16th example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example16}"/>
+		</antcall>
+	</target>
+
+	<target name="run.example.17" description="Runs the 17th example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example17}"/>
+		</antcall>
+	</target>
+
+	<target name="run.example.18" description="Runs the 18th example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example18}"/>
+		</antcall>
+	</target>
+
+	<target name="run.example.19" description="Runs the 19th example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example19}"/>
+		</antcall>
+	</target>
+
+	<target name="run.example.20" description="Runs the 20th example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example20}"/>
+		</antcall>
+	</target>
+
+	<target name="run.example.21" description="Runs the 21st example...">
+		<antcall target="run.synapse.server">
+			<param name="example-to-run" value="${example21}"/>
+		</antcall>
+	</target>
+
+	<!-- soapUI test cases that can be run ONCE Synapse is running -->
+	<target name="test.example.06" description="Runs soapUI automated test for example 6...">
+		<antcall target="run.testcase">
+			<param name="soapui.test.suite" value="TestSuiteCh10"/>
+			<param name="soapui.workspace" value="${soapUI.project}"/>
+			<param name="soapui.test.case" value="Example06"/>
+		</antcall>
+	</target>	
+
+	<target name="test.example.08" description="Runs soapUI automated test for example 8...">
+		<antcall target="run.testcase">
+			<param name="soapui.test.suite" value="${soapUI.test.suite}"/>
+			<param name="soapui.workspace" value="${soapUI.project}"/>
+			<param name="soapui.test.case" value="Example08"/>
+		</antcall>
+	</target>
+
+	<target name="test.example.09" description="Runs soapUI automated test for example 9...">
+		<antcall target="run.testcase">
+			<param name="soapui.test.suite" value="${soapUI.test.suite}"/>
+			<param name="soapui.workspace" value="${soapUI.project}"/>
+			<param name="soapui.test.case" value="Example09"/>
+		</antcall>
+	</target>
+
+	<target name="test.example.10" description="Runs soapUI automated test for example 10...">
+		<antcall target="run.testcase">
+			<param name="soapui.test.suite" value="${soapUI.test.suite}"/>
+			<param name="soapui.workspace" value="${soapUI.project}"/>
+			<param name="soapui.test.case" value="Example10"/>
+		</antcall>
+	</target>
+
+	<target name="test.example.20" description="Runs soapUI automated test for example 20...">
+		<antcall target="run.testcase">
+			<param name="soapui.test.suite" value="${soapUI.test.suite}"/>
+			<param name="soapui.workspace" value="${soapUI.project}"/>
+			<param name="soapui.test.case" value="Example20"/>
+		</antcall>
+	</target>
+
+</project>

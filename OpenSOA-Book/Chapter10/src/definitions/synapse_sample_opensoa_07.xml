@@ -1,0 +1,42 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+
+    <registry provider="org.apache.synapse.registry.url.SimpleURLRegistry">
+        <parameter name="root">
+            file:./repository/conf/opensoa/resources/
+        </parameter>
+        <parameter name="cachableDuration">150000</parameter>
+    </registry>
+
+    <localEntry key="xslt-key" src="file:repository/conf/opensoa/resources/xslt/mapUBLOrder.xslt"/>
+
+    <endpoint name="mock">
+        <address uri="http://localhost:8280/soap/mockEndpoint" format="soap11"/>
+    </endpoint>
+
+    <proxy name="CreateOrderService" transports="http" >
+        <target>
+            <endpoint  key="mock"/>
+            <inSequence>
+                <validate source="//*[local-name()='Order']">
+                    <schema key="schemas/ubl.xsd"/>
+                    <on-fail>
+                        <makefault>
+                            <code value="tns:Receiver"
+                                xmlns:tns="http://www.w3.org/2003/05/soap-envelope"/>
+                            <reason value="Invalid Order Request"/>
+                        </makefault>
+                        <property name="RESPONSE" value="true"/>
+                        <header name="To" action="remove"/>
+                        <send/><drop/>
+                    </on-fail>
+                </validate>
+            	<!-- This could be used instead of what follows: 
+                <xslt key="xslt-key" source="//*[local-name()='CreateOrder']"/> -->
+            	<xslt key="xslt-key" source="//order:CreateOrder" xmlns:order="uri:opensoa.chapter10.order"/>
+            </inSequence>
+        </target>
+    </proxy>
+    <proxy name="mockEndpoint" transports="http">
+        <target inSequence="sequence/mockProxy.xml"/>
+     </proxy>
+</definitions>

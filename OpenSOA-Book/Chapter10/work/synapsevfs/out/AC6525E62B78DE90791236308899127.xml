@@ -1,0 +1,7 @@
+--MIMEBoundaryurn_uuid_AC6525E62B78DE90791236308899145
+Content-Type: application/xop+xml; charset=UTF-8; type="text/xml"
+Content-Transfer-Encoding: binary
+Content-ID: <0.urn:uuid:AC6525E62B78DE90791236308899146@apache.org>
+
+<?xml version='1.0' encoding='UTF-8'?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Header><vfs:filename xmlns:vfs="uri:open-soa/chpt10/vfs">CSVOrder.csv</vfs:filename><vfs:datestamp xmlns:vfs="uri:open-soa/chpt10/vfs">1228445173000</vfs:datestamp><vfs:filesize xmlns:vfs="uri:open-soa/chpt10/vfs">402</vfs:filesize></soapenv:Header><soapenv:Body><createProcessInstanceResponse xmlns="http://vo.sca.opensoa-ch10/xsd"><processInstanceId>1001</processInstanceId></createProcessInstanceResponse></soapenv:Body></soapenv:Envelope>
+--MIMEBoundaryurn_uuid_AC6525E62B78DE90791236308899145--

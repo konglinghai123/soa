@@ -1,0 +1,51 @@
+package opensoa.drools.hellodrools;
+
+import opensoa.drools.hellodrools115.Person;
+
+# following global added for junit testing
+global java.util.List results;
+global java.lang.Integer flag;
+
+rule "HelloWorld"
+	when 
+		person : Person();
+	then
+		System.out.println("HelloWorld");
+		results.add ( "HelloWorld" );
+end
+
+rule "HelloInsertLogical"
+	salience 20
+	when 
+		person : Person( name == "John Doe" );
+		eval ( flag == 0 );
+	then
+		System.out.println("HelloInsertLogical");
+		insertLogical ( new String ( "test" ) );
+		person.setName("Jane Doe");
+		update ( person );
+		results.add ( "HelloInsertLogical" );
+end
+
+rule "HelloInsert"
+	salience 20
+	when 
+		person : Person( name == "John Doe" );
+		eval ( flag == 1 );
+	then
+		System.out.println("HelloInsert");
+		person.setName("Jane Doe");
+		update ( person );
+		insert ( new String ( "test" ) );
+		results.add ( "HelloInsert" );
+end
+
+## not used unless in the HelloInsert rule, insert instead of insertLogical is used.
+rule "Insert"
+	salience 10
+	when
+		String ();
+	then
+		System.out.println("Insert");
+		results.add ( "Insert" );
+end

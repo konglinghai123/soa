@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<composite
+   xmlns="http://www.osoa.org/xmlns/sca/1.0"
+   targetNamespace="http://opensoa.book.chapter721"
+   xmlns:hw="http://opensoa.book.chapter721"
+   name="soapclient">
+
+   <component name="SOAPComponent">
+      <implementation.java
+         class="opensoa.book.chapter721.impl.SOAPClientImpl" />
+   </component>
+
+   <reference
+      name="SOAPClientReference"
+      promote="SOAPComponent/soapClient">
+      <interface.wsdl
+         interface="http://chapter721.book.opensoa#wsdl.interface(ProblemTicketComponentSOAP11port_http)" />
+
+      <binding.ws
+         wsdlElement="http://chapter721.book.opensoa#wsdl.port(ProblemTicketComponent/ProblemTicketComponentSOAP11port_http)"/>
+   </reference>
+</composite>

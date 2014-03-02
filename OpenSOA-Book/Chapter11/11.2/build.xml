@@ -1,0 +1,66 @@
+<project name="chapter11.2" default="run.test">
+
+	<property file="../../build.properties"/>
+
+	<property name="main.class" value="opensoa.drools.hellodrools.HelloDroolsMain"/>
+	<property name="test.class" value="opensoa.drools.tests.Test11_2"/>
+	
+	<target name="compile" description="Compiles the Java code...">
+		<mkdir dir="target/classes"/>
+		<javac destdir="target/classes" debug="on" source="1.5" target="1.5">
+			<src path="src\main\java"/>
+			<src path="src\test\java" />
+			<classpath>
+				<fileset dir="${general.lib}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+		
+		<copy todir="target/classes">
+			<fileset dir="src\main\rules"/>
+		</copy>
+
+	</target>
+
+	<target name="clean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="target"/>
+		</delete>
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="test-results"/>
+		</delete>		
+	</target>
+
+	<target name="run.main" depends="compile"
+		description="Runs HelloDroolsMain...">
+		<java classname="${main.class}" fork="false">
+			<classpath>
+				<pathelement path="target/classes"/>
+				<fileset dir="${general.lib}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+
+	</target>
+
+	<target name="run.test" depends="compile" description="Runs the jUnit test...">
+	  <mkdir dir="test-results"/>
+		<junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${general.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+
+		  <formatter type="plain"/>
+
+		  <test name="${test.class}" haltonfailure="no" outfile="test-results/Test11.2"/>
+
+		</junit>
+		
+		<echo message="Results can be found in test-results/Test11.2.txt"/>
+	</target>
+</project>

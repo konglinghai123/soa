@@ -1,0 +1,103 @@
+Testsuite: com.sample.LoggingProcessTest
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 11.838 sec
+------------- Standard Output ---------------
+Process instance is: 1
+Logtype is: org.jbpm.graph.log.ProcessInstanceCreateLog
+KEY: At start
+Logtype is: org.jbpm.graph.log.ProcessInstanceCreateLog
+KEY: In first state
+Logtype is: org.jbpm.graph.log.SignalLog
+KEY: In first state
+    SignalLog: Token Fullpath: /
+    SignalLog: Node Name: first
+Logtype is: org.jbpm.graph.log.TransitionLog
+KEY: In first state
+Logtype is: org.jbpm.graph.log.ActionLog
+KEY: In first state
+Logtype is: org.jbpm.context.log.VariableCreateLog
+KEY: In first state
+    VariableCreateLog: VarName:message
+    VariableCreateLog: Duration: Going to the first state!
+Logtype is: org.jbpm.context.log.variableinstance.StringUpdateLog
+KEY: In first state
+Logtype is: org.jbpm.graph.log.ProcessInstanceCreateLog
+KEY: In end state
+Logtype is: org.jbpm.graph.log.SignalLog
+KEY: In end state
+    SignalLog: Token Fullpath: /
+    SignalLog: Node Name: first
+Logtype is: org.jbpm.graph.log.TransitionLog
+KEY: In end state
+Logtype is: org.jbpm.graph.log.ActionLog
+KEY: In end state
+Logtype is: org.jbpm.context.log.VariableCreateLog
+KEY: In end state
+    VariableCreateLog: VarName:message
+    VariableCreateLog: Duration: About to finish!
+Logtype is: org.jbpm.context.log.variableinstance.StringUpdateLog
+KEY: In end state
+Logtype is: org.jbpm.graph.log.SignalLog
+KEY: In end state
+    SignalLog: Token Fullpath: /
+    SignalLog: Node Name: end
+Logtype is: org.jbpm.graph.log.NodeLog
+KEY: In end state
+    NodeLog: first
+    NodeLog: Duration: 6002
+Logtype is: org.jbpm.graph.log.TransitionLog
+KEY: In end state
+Logtype is: org.jbpm.graph.log.ActionLog
+KEY: In end state
+Logtype is: org.jbpm.context.log.variableinstance.StringUpdateLog
+KEY: In end state
+Logtype is: org.jbpm.graph.log.ProcessInstanceEndLog
+KEY: In end state
+Initiating CustomDbLoggingService
+In CustomDbLoggingService
+procInstanceCreateLog.getParent()1
+start: 2009-05-19:08:32:09 MDT
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+procInstanceEndLog.getParent()1
+end: 2009-05-19:08:32:15 MDT
+Log is: org.jbpm.context.log.variableinstance.StringUpdateLog
+Log is: org.jbpm.graph.log.ActionLog
+Log is: org.jbpm.graph.log.NodeLog
+Log is: org.jbpm.context.log.VariableCreateLog
+Log is: org.jbpm.graph.log.TransitionLog
+Log is: org.jbpm.graph.log.ActionLog
+Log is: org.jbpm.graph.log.ProcessInstanceCreateLog
+Log is: org.jbpm.graph.log.TransitionLog
+Log is: org.jbpm.context.log.variableinstance.StringUpdateLog
+Log is: org.jbpm.graph.log.SignalLog
+Log is: org.jbpm.graph.log.ProcessInstanceEndLog
+Log is: org.jbpm.graph.log.SignalLog
+All done...
+In CustomDbLoggingService
+procInstanceCreateLog.getParent()1
+start: 2009-05-19:08:32:09 MDT
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+In CustomDbLoggingService
+procInstanceEndLog.getParent()1
+end: 2009-05-19:08:32:15 MDT
+------------- ---------------- ---------------
+
+Testcase: testSimpleProcess took 11.824 sec

@@ -1,0 +1,81 @@
+package opensoa.drools.hellodrools;
+
+import opensoa.drools.hellodrools115.Person;
+
+# following global added for junit testing
+global java.util.List results;
+
+rule "MrFlow"
+	#auto-focus true
+	#agenda-group "Mr"
+	when 
+		Person( gender == 'M');
+	then
+		System.out.println("MrFlow: Setting focus to 'Mr'");
+		drools.setFocus( "Mr" );
+		results.add ( "MrFlow" );
+end
+
+rule "MrsFlow"
+	when 
+		Person( gender == 'F');
+	then
+		System.out.println("MrsFlow: Setting to agend-group 'Mrs'");
+		drools.setFocus( "Mrs" );
+		results.add ( "MrsFlow" );
+end
+	
+rule "HelloMr"
+	agenda-group "Mr"
+	when
+		person : Person ();
+	then
+		System.out.println("Hello Mr. " + person.getName());
+		retract ( person );
+		results.add ( "HelloMr" );
+end
+
+rule "HelloMrs"
+	agenda-group "Mrs"
+	when
+		person : Person ();
+	then
+		System.out.println("Hello Mrs. " + person.getName());
+		retract ( person );
+		results.add ( "HelloMrs" );
+end
+
+# Test of date effective
+rule "DateEffectiveTest"
+	salience 100
+	date-effective "01-Nov-2008T01:01:01"
+	when 
+		Person( );
+	then
+		System.out.println("DateEffectiveTest triggered");
+		results.add ( "DateEffectiveTest" );
+end
+
+# Test of date expires
+rule "DateExpiresTest"
+	salience 100
+	date-effective "01-Aug-2008T01:01:01"
+	date-expires "01-Nov-2008T01:01:01"
+	when 
+		Person( );
+	then
+		System.out.println("DateExpiresTest triggered");
+		results.add ( "DateExpiresTest" );
+end
+
+# Test of date expires
+/*
+rule "DurationTest"
+	salience 100
+	duration 60000
+	when 
+		Person( );
+	then
+		System.out.println("DurationTest triggered");
+end
+*/

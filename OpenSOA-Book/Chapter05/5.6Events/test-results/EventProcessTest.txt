@@ -1,0 +1,13 @@
+Testsuite: com.sample.EventProcessTest
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 1.093 sec
+------------- Standard Output ---------------
+EventTestNode Context: state1
+EventTest Context: state1
+instance: http://www.somewebservice.com
+instance: SOAP
+instance: getData
+EventTest Context: state2
+EventTest Context: end
+------------- ---------------- ---------------
+
+Testcase: testSimpleProcess took 1.076 sec

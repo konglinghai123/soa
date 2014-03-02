@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  xmlns=""  name="salary">
+	<start-state name="start">
+	    <event type='node-leave'>
+	    	<action expression='#{salary.populateVars}'/>
+	    </event>
+		<transition to="approve"/>
+	</start-state>
+	
+	<state name="approve">
+		<transition to="end">
+			<action expression='#{salary.logApprovedSalary}'/>
+		</transition>
+	</state>
+
+	<end-state name="end"></end-state>
+</process-definition>

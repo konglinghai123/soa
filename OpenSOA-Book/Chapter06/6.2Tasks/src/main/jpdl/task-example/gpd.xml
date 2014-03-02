@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="task-example" width="958" height="718">
+  <node name="start" x="281" y="39" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="approve" x="283" y="120" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="-26" y="-23"/>
+    </edge>
+    <edge>
+      <label x="-9" y="-20"/>
+      <bendpoint w1="-101" h1="-20" w2="97" h2="-21"/>
+    </edge>
+  </node>
+  <node name="notifyRejection" x="473" y="158" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="review" x="85" y="121" width="132" height="36">
+    <edge>
+      <label x="13" y="-19"/>
+      <bendpoint w1="-1" h1="90" w2="-198" h2="1"/>
+    </edge>
+    <edge>
+      <label x="-29" y="3"/>
+      <bendpoint w1="94" h1="29" w2="-104" h2="30"/>
+    </edge>
+  </node>
+  <node name="end" x="282" y="210" width="132" height="36"/>
+</root-container>

@@ -1,0 +1,40 @@
+<!--  See Listing 9.5 in book for detailed explanation -->
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+      
+    <endpoint name="mock">
+        <address uri="http://localhost:8280/soap/mockEndpoint" format="soap11"/>
+    </endpoint>
+    
+    <proxy name="CreateOrderService" transports="http" trace="enable">
+        <target>
+            <!-- this is the same as below, but just an alternative configuration
+            <endpoint  key="mock"/>
+            <inSequence>
+                <log level="full"/>
+            </inSequence>
+            -->
+            <inSequence>
+                <send><endpoint key="mock"/></send>
+            </inSequence>
+            <outSequence>  <log level="full"/> <send/></outSequence>
+        </target>
+    </proxy>
+    
+    <proxy name="mockEndpoint" transports="http" trace="enable">
+        <target>
+            <inSequence>
+                <property name="RESPONSE" value="true"/>
+                <header name="To" action="remove"/>
+                <script language="js"><![CDATA[
+                mc.setPayloadXML(
+                     <CreateOrderResponse xmlns="uri:opensoa.chapter09.order">
+                        <Status>200</Status>
+                        <Message>Ok</Message>
+                    </CreateOrderResponse>);
+            ]]></script>
+                <send/>
+            </inSequence>
+        </target>
+    </proxy>
+    
+</definitions>

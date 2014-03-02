@@ -1,0 +1,169 @@
+<project name="chapter11.5" default="run.all.test">
+
+	<property file="../../build.properties"/>
+
+	<property name="main.class.1" value="opensoa.drools.hellodrools115.HelloDroolsMainAgendaGroupExample"/>
+	<property name="main.class.2" value="opensoa.drools.hellodrools115.HelloDroolsMainLockOnActiveExample"/>
+	<property name="main.class.3" value="opensoa.drools.hellodrools115.HelloDroolsMainLOperatorsExample"/>
+	<property name="main.class.4" value="opensoa.drools.hellodrools115.HelloDroolsMainInsert"/>
+	
+	<property name="test.class.1" value="opensoa.drools.tests.Test11_51a"/>
+	<property name="test.class.2" value="opensoa.drools.tests.Test11_51b"/>
+	<property name="test.class.3" value="opensoa.drools.tests.Test11_52"/>
+	<property name="test.class.4" value="opensoa.drools.tests.Test11_53"/>
+	
+	<target name="compile" description="Compiles the Java code...">
+		<mkdir dir="target/classes"/>
+		<mkdir dir="test-results"/>
+		<javac destdir="target/classes" debug="on" source="1.5" target="1.5">
+			<src path="src\main\java"/>
+			<src path="src\test\java" />
+			<classpath>
+				<fileset dir="${general.lib}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+		
+		<copy todir="target/classes">
+			<fileset dir="src\main\rules"/>
+		</copy>
+
+	</target>
+
+	<target name="clean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="target"/>
+		</delete>
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="test-results"/>
+		</delete>		
+	</target>
+
+	<target name="run.main.1" depends="compile"
+		description="Runs HelloDroolsMain...">
+		<java classname="${main.class.1}" fork="false">
+			<classpath>
+				<pathelement path="target/classes"/>
+				<fileset dir="${general.lib}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+
+	</target>
+
+	<target name="run.main.2" depends="compile"
+		description="Running HelloDroolsMainLockOnActiveExample...">
+		<java classname="${main.class.2}" fork="false">
+			<classpath>
+				<pathelement path="target/classes"/>
+				<fileset dir="${general.lib}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+
+	</target>
+	
+	<target name="run.main.3" depends="compile"
+		description="Running HelloDroolsMainLOperatorsExample...">
+		<java classname="${main.class.3}" fork="false">
+			<classpath>
+				<pathelement path="target/classes"/>
+				<fileset dir="${general.lib}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+
+	</target>	
+	
+	<target name="run.main.4" depends="compile"
+		description="Running HelloDroolsMainInsert...">
+		<java classname="${main.class.4}" fork="false">
+			<classpath>
+				<pathelement path="target/classes"/>
+				<fileset dir="${general.lib}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+
+	</target>	
+					
+	<target name="run.test.1" depends="compile" description="Runs the Test11_51a jUnit test...">
+		<junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${general.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+
+		  <formatter type="plain"/>
+
+		  <test name="${test.class.1}" haltonfailure="no" outfile="test-results/Test11_51a"/>
+
+		</junit>
+		
+		<echo message="Results can be found in test-results/Test11.51a.txt"/>
+	</target>
+	
+	<target name="run.test.2" depends="compile" description="Runs the Test11_51b jUnit test...">
+		<junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${general.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+
+		  <formatter type="plain"/>
+
+		  <test name="${test.class.2}" haltonfailure="no" outfile="test-results/Test11_51b"/>
+
+		</junit>
+		
+		<echo message="Results can be found in test-results/Test11.51b.txt"/>
+	</target>	
+	
+	<target name="run.test.3" depends="compile" description="Runs the Test11_52 jUnit test...">
+		<junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${general.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+
+		  <formatter type="plain"/>
+
+		  <test name="${test.class.3}" haltonfailure="no" outfile="test-results/Test11_52"/>
+
+		</junit>
+		
+		<echo message="Results can be found in test-results/Test11.52.txt"/>
+	</target>	
+	
+	<target name="run.test.4" depends="compile" description="Runs the Test11_53 jUnit test...">
+		<junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${general.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+
+		  <formatter type="plain"/>
+
+		  <test name="${test.class.4}" haltonfailure="no" outfile="test-results/Test11_53"/>
+
+		</junit>
+		
+		<echo message="Results can be found in test-results/Test11.53.txt"/>
+	</target>	
+	
+	<target name="run.all.test" depends="run.test.1, run.test.2, run.test.3, run.test.4" description="Runs all jUnit tests..."/>
+
+</project>

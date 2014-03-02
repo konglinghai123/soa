@@ -1,0 +1,11 @@
+Testsuite: com.sample.SubProcessTest
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 6.358 sec
+------------- Standard Output ---------------
+Setting up context...
+WARN - JpdlXmlReader.addWarning(139) | process xml warning: action does not have class nor ref-name attribute <action xmlns="urn:jbpm.org:jpdl-3.2" name="hr-superstate-action" config-type="field" accept-propagated-events="true"/>
+WARN - JpdlXmlReader.readProcessDefinition(198) | process parse warning: action does not have class nor ref-name attribute <action xmlns="urn:jbpm.org:jpdl-3.2" name="hr-superstate-action" config-type="field" accept-propagated-events="true"/>
+Leaving start node
+Entering HR Superstate
+------------- ---------------- ---------------
+
+Testcase: testSimpleSubProcess took 6.339 sec

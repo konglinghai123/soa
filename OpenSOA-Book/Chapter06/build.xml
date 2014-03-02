@@ -1,0 +1,79 @@
+<project name="chapter06-database" default="run.hsqldb.server">
+	
+	<property file="../build.properties" />
+	
+	<property name="lib.ext" value="lib"/>
+	<property name="resources.dir" value="resources"/>
+	
+    <!-- define the jbpm tasks with the hibernate configurations in the classpath -->
+    <taskdef resource="org/jbpm/ant/jbpm.ant.tasks.properties">
+      <classpath>
+        <pathelement path="${resources.dir}" />
+    	<fileset dir="${lib.ext}">
+    		<include name="*.jar"/>
+    	</fileset>
+    	<fileset dir="${jbpm.lib}">
+    		<include name="*.jar"/>
+    	</fileset>
+      </classpath>
+    </taskdef>
+
+	<target name="clean.db" description="Cleans out the hsqldb files...">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="dbfiles" />
+		</delete>
+	</target>
+	
+	<target name="run.hsqldb.server" description="Starts the hsqldb databse server...">
+	   
+		<java classname="org.hsqldb.Server" fork="true">
+			<arg value="-database.0" />  
+			<arg value="file:dbfiles/jbpm" />  
+			<arg value="-dbname.0" />  
+			<arg value="jbpm" />  
+		    <classpath>
+             	<fileset dir="${jbpm.lib}">
+             		<include name="*.jar"/>
+              	</fileset>
+		    </classpath>
+		</java>
+
+	</target>
+	
+	<target name="run.hsqldb.manager" description="Starts the hsqldb GUI manager...">
+	   
+		<java classname="org.hsqldb.util.DatabaseManagerSwing" fork="true">
+			<arg value="-url" />
+			<arg value="jdbc:hsqldb:hsql://localhost/jbpm" /> 
+			<arg value="-driver" />
+			<arg value="org.hsqldb.jdbcDriver" /> 
+			<arg value="-user" />
+			<arg value="sa" /> 
+		    <classpath>
+             	<fileset dir="${jbpm.lib}">
+             		<include name="*.jar"/>
+              	</fileset>
+		    </classpath>
+		</java>
+
+	</target>
+
+	<target name="drop.rebuild.hsqldb.tables" description="Drops and rebuilds the jBPM database schema...">
+	    <echo message="** HIT CARRIAGE RETURN TO START**"/>
+		<java jar="${jbpm.lib}\hsqldb-1.8.0.7.jar" fork="true">
+			<arg value="--inlineRc" />
+			<arg value="URL=jdbc:hsqldb:hsql://localhost/jbpm,USER=sa" /> 
+			<arg value="${resources.dir}/database/jbpm.jpdl.hsqldb.sql" />
+		</java>
+	</target>
+
+	<target name="load.identities" description="Loads identities/users into jBPM Console database...">
+        <loadidentities file="resources/identities.xml" />
+	</target>
+	
+	<target name="install.hsqldb.conf" description="Copys the hsqldb configuration file to JBoss' jBPM web app...">
+		<copy file="${resources.dir}/jbpm-hsqldb-ds.xml" todir="${JBOSS_HOME}/server/default/deploy/jbpm" overwrite="true"/>
+		<copy file="${resources.dir}/ejb-deployer.xml" todir="${JBOSS_HOME}/server/default/deploy" overwrite="true"/>
+	</target>
+	
+</project>

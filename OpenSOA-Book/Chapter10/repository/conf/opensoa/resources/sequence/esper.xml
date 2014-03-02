@@ -1,0 +1,21 @@
+<sequence name="esperr" xmlns="http://ws.apache.org/ns/synapse" 
+	xmlns:vfs="uri:open-soa/chpt10/vfs">
+	<switch source="//vfs:status">
+		<case regex="SUCCESS">
+			<xslt key="xslt-key-esper-csv" source="//*[local-name()='Order']">
+				<property name="filename" expression="//vfs:filename"/>
+			</xslt>
+		</case>
+		<case regex="FAILED">
+			<xslt key="xslt-key-esper-csv-err" source="//*[local-name()='csv']">
+				<property name="filename" expression="//vfs:filename"/>
+				<property name="errorType" value="XML Validation Error"/>
+			</xslt>
+		</case>
+	</switch>
+	<send>
+		<endpoint>
+			<address format="soap12" uri="http://localhost:8280/soap/EsperService"/>
+		</endpoint>
+	</send>
+</sequence>

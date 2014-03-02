@@ -1,0 +1,50 @@
+<identity>
+
+  <user name="jmurphy"    password="links234"     email="jdavis@hireright.com" />
+  <user name="jbyrns"    password="links234"     email="jdavis@hireright.com" />
+  <user name="tbabcock"    password="links234"     email="jdavis@hireright.com" />
+  <user name="vmartinez"    password="links234"     email="jdavis@hireright.com" />
+  <user name="hhaymaker"    password="links234"     email="jdavis@hireright.com" />
+  <user name="cmitchell"    password="links234"     email="jdavis@hireright.com" />
+  <user name="jdavis"    password="links234"     email="jdavis@hireright.com" />
+  <user name="awasserstrom"    password="links234"     email="awasserstrom@hireright.com" />
+  <user name="dgenkin"    password="links234"     email="dgenkin@hireright.com" />
+  <user name="jmartinson"    password="links234"     email="jmartinson@hireright.com" />
+  <user name="smalnati"    password="links234"     email="smalnati@hireright.com" />
+
+  <group name="user"    type="security-role" />
+  <group name="manager" type="security-role" />
+  <group name="admin"   type="security-role" />
+
+  <membership user="jmurphy"    group="user" />
+  <membership user="jbyrns" group="user" />
+  <membership user="tbabcock" group="user" />
+  <membership user="vmartinez" group="user" />
+  <membership user="hhaymaker" group="user" />
+  <membership user="hhaymaker" group="manager" />
+
+  
+  <membership user="cmitchell"   group="user" />
+  <membership user="cmitchell"   group="admin" />
+  <membership user="cmitchell"   group="manager" />
+  
+  <membership user="jdavis"      group="admin" />
+  <membership user="jdavis"   	 group="user" />
+  <membership user="jdavis"      group="manager" />
+  
+  <membership user="awasserstrom"      group="admin" />
+  <membership user="awasserstrom"   	 group="user" />
+  <membership user="awasserstrom"      group="manager" />  
+  
+  <membership user="dgenkin"      group="admin" />
+  <membership user="dgenkin"   	 group="user" />
+  <membership user="dgenkin"      group="manager" />    
+  
+  <membership user="jmartinson"      group="admin" />
+  <membership user="jmartinson"   	 group="user" />
+  <membership user="jmartinson"      group="manager" /> 
+
+  <membership user="smalnati"      group="admin" />
+  <membership user="smalnati"   	 group="user" />
+  <membership user="smalnati"      group="manager" />   
+</identity>

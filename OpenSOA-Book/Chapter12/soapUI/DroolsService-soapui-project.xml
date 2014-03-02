@@ -1,0 +1,1330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="OpenSoa-12" soapui-version="2.5" resourceRoot="" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="ProjectSettings@projectRoot">..\Chapter12\soapUI</con:setting></con:settings><con:interface name="LoadServiceSOAP11" bindingName="{urn:opensoa.drools}LoadServiceSOAP11" soapVersion="1_1" definition="file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\DroolsService.wsdl" xsi:type="con:WsdlInterface" wsaVersion="NONE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:endpoints><con:endpoint>localhost:8085/LoadService</con:endpoint><con:endpoint>http://localhost:8085/LoadService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:Load" name="Load" bindingOperationName="Load" inputName="" receivesAttachments="false" sendsAttachments="false"><con:settings/><con:call name="Load"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8085/LoadService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:opensoa.drools">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:ManageService/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request></con:call></con:operation><con:definitionCache rootPart="file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\DroolsService.wsdl"><con:part><con:url>file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\DroolsService.wsdl</con:url><con:content><wsdl:definitions targetNamespace="urn:opensoa.drools" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ns1="urn:opensoa.drools" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  
+  <wsdl:import namespace="urn:opensoa.drools.chapter12" location="Order.wsdl"/>
+  
+  <wsdl:types>
+    <xs:schema targetNamespace="urn:opensoa.drools" xmlns="urn:opensoa.drools">
+      
+      <xs:complexType name="DecisionRequestType" abstract="true"/>
+      <xs:complexType name="DecisionResponseType" abstract="true"/>
+      
+      <xs:complexType name="ManageServiceType"/>
+      
+      <xs:complexType name="ManageResponseType">
+        <xs:sequence>
+          <xs:element name="ResultCode" type="xs:int"/>
+          <xs:element name="Result">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="SUCCESS"/>
+                <xs:enumeration value="FAILURE"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Comment" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:complexType>
+      
+      <xs:element name="DecisionRequest" type="ns1:DecisionRequestType"/>
+      <xs:element name="DecisionResponse" type="ns1:DecisionResponseType"/>
+      <xs:element name="ManageResponse" type="ns1:ManageResponseType"/>
+      <xs:element name="ManageService" type="ns1:ManageServiceType"/>
+      
+      </xs:schema>
+  </wsdl:types> 
+  
+  <wsdl:message name="DecisionRequest">
+    <wsdl:part name="parameters" element="ns1:DecisionRequest"/>
+  </wsdl:message>
+  <wsdl:message name="DecisionResponse">
+    <wsdl:part name="parameters" element="ns1:DecisionResponse"/>
+  </wsdl:message>
+  
+  <wsdl:message name="LoadRequest">
+    <wsdl:part name="parameters" element="ns1:ManageService"/>
+  </wsdl:message>
+  <wsdl:message name="LoadResponse">
+    <wsdl:part name="parameters" element="ns1:ManageResponse"/>    
+  </wsdl:message>
+  
+  <wsdl:message name="SuspendRequest">
+    <wsdl:part name="parameters" element="ns1:ManageService"/>
+  </wsdl:message>
+  <wsdl:message name="SuspendResponse">
+    <wsdl:part name="parameters" element="ns1:ManageResponse"/>    
+  </wsdl:message>
+  
+  <wsdl:message name="ResumeRequest">
+    <wsdl:part name="parameters" element="ns1:ManageService"/>    
+  </wsdl:message>
+  <wsdl:message name="ResumeResponse">
+    <wsdl:part name="parameters" element="ns1:ManageResponse"/>    
+  </wsdl:message>
+  
+  
+  <wsdl:portType name="DecisionServicePortType">
+    <wsdl:operation name="Decision">
+      <wsdl:input message="ns1:DecisionRequest" wsaw:Action="urn:DecisionRequest">
+    </wsdl:input>
+      <wsdl:output message="ns1:DecisionResponse" wsaw:Action="urn:DecisionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:portType name="LoadServicePortType">
+    <wsdl:operation name="Load">
+      <wsdl:input message="ns1:LoadRequest" wsaw:Action="urn:LoadRequest">
+      </wsdl:input>
+      <wsdl:output message="ns1:LoadResponse" wsaw:Action="urn:LoadResponse">
+      </wsdl:output>
+    </wsdl:operation>
+    </wsdl:portType>
+
+  <wsdl:portType name="SuspendServicePortType">
+    <wsdl:operation name="Suspend">
+      <wsdl:input message="ns1:SuspendRequest" wsaw:Action="urn:SuspendRequest">
+      </wsdl:input>
+      <wsdl:output message="ns1:SuspendResponse" wsaw:Action="urn:SuspendResponse">
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:portType name="ResumeServicePortType">
+    <wsdl:operation name="Resume">
+      <wsdl:input message="ns1:ResumeRequest" wsaw:Action="urn:ResumeRequest">
+      </wsdl:input>
+      <wsdl:output message="ns1:ResumeResponse" wsaw:Action="urn:ResumeResponse">
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:binding name="DecisionServiceSOAP11" type="ns1:DecisionServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Decision">
+      <soap:operation soapAction="urn:Decision" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:binding name="LoadServiceSOAP11" type="ns1:LoadServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Load">
+      <soap:operation soapAction="urn:Load" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+   </wsdl:binding>
+    
+  <wsdl:binding name="SuspendServiceSOAP11" type="ns1:SuspendServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Suspend">
+      <soap:operation soapAction="urn:Suspend" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    </wsdl:binding>
+    
+  <wsdl:binding name="ResumeServiceSOAP11" type="ns1:ResumeServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Resume">
+      <soap:operation soapAction="urn:Resume" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:service name="SuspendService">
+    <wsdl:port name="SOAP" binding="ns1:SuspendServiceSOAP11">
+      <soap:address location="http://localhost:8085/SuspendService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="DecisionService">
+    <wsdl:port name="SOAP" binding="ns1:DecisionServiceSOAP11">
+      <soap:address location="http://localhost:8085/DecisionService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="LoadService">
+    <wsdl:port name="SOAP" binding="ns1:LoadServiceSOAP11">
+      <soap:address location="http://localhost:8085/LoadService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="ResumeService">
+    <wsdl:port name="SOAP" binding="ns1:ResumeServiceSOAP11">
+      <soap:address location="http://localhost:8085/ResumeService"/>
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\Order.wsdl</con:url><con:content><wsdl:definitions targetNamespace="urn:opensoa.drools.salesorder" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:drools="urn:opensoa.drools">
+	<wsdl:types>
+		
+		<xs:schema targetNamespace="urn:opensoa.drools.salesorder" xmlns="urn:opensoa.drools.salesorder">
+
+			<xs:import namespace="urn:opensoa.drools"/>
+			
+			<xs:element name="shipping">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="carrier"/>
+						<xs:element ref="method"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="productId" type="xs:string"/>
+			<xs:element name="product">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="lineId"/>
+						<xs:element ref="productId"/>
+						<xs:element ref="cnt"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="partyId" type="xs:string"/>
+
+			<xs:element name="partyContactId" type="xs:string"/>
+			<xs:element name="orderId" type="xs:string"/>
+			<xs:element name="method">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="STANDARD"/>
+						<xs:enumeration value="LOCAL_DELIVERY"/>
+						<xs:enumeration value="EXPRESS"/>
+						<xs:enumeration value="GROUND"/>
+						<xs:enumeration value="AIR"/>
+						<xs:enumeration value="NEXT_DAY"/>
+						<xs:enumeration value="NO_SHIPPING"/>
+						<xs:enumeration value="NEXT_PM"/>
+						<xs:enumeration value="SECOND_DAY"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="lines">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="product" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="lineId" type="xs:string"/>
+			<xs:element name="header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="orderId"/>
+						<xs:element ref="partyId"/>
+						<xs:element ref="partyContactId"/>
+						<xs:element ref="currency"/>
+						<xs:element ref="shipping"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="currency">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="EUR"/>
+						<xs:enumeration value="USD"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="cnt" type="xs:int"/>
+			<xs:element name="carrier">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="USPS"/>
+						<xs:enumeration value="Company"/>
+						<xs:enumeration value="_NA_"/>
+						<xs:enumeration value="DHL"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			
+			<xs:complexType name="PriceCalculatorRequest">
+				<xs:complexContent>
+					<xs:extension base="drools:DecisionRequestType">
+						<xs:sequence>
+							<xs:element ref="Order"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			
+			<xs:element name="Order">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="header"/>
+						<xs:element ref="lines"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			<!-- DecideResponse elements -->
+			<xs:complexType name="PriceCalculatorResponse">
+				<xs:complexContent>
+					<xs:extension base="drools:DecisionResponseType">
+						<xs:sequence>
+							<xs:element name="orderId" type="xs:string"/>
+							<xs:element name="salePrice" type="xs:float"/>
+							<xs:element name="shippingPrice" type="xs:float"/>
+							<xs:element name="totalPrice" type="xs:float"/>
+							<xs:element name="comments" type="xs:string" minOccurs="0"/>
+							<xs:element name="currency" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+</wsdl:definitions></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache></con:interface><con:interface name="ResumeServiceSOAP11" bindingName="{urn:opensoa.drools}ResumeServiceSOAP11" soapVersion="1_1" definition="file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\DroolsService.wsdl" xsi:type="con:WsdlInterface" wsaVersion="NONE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:endpoints><con:endpoint>localhost:8085/ResumeService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:Resume" name="Resume" bindingOperationName="Resume" inputName="" receivesAttachments="false" sendsAttachments="false"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>localhost:8085/ResumeService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:opensoa.drools">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:ManageService>
+         <ServiceName>?</ServiceName>
+      </urn:ManageService>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request></con:call></con:operation><con:definitionCache rootPart="file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\DroolsService.wsdl"><con:part><con:url>file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\DroolsService.wsdl</con:url><con:content><wsdl:definitions targetNamespace="urn:opensoa.drools" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ns1="urn:opensoa.drools" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  
+  <wsdl:import namespace="urn:opensoa.drools.chapter12" location="Order.wsdl"/>
+    
+  <wsdl:types>
+    <xs:schema targetNamespace="urn:opensoa.drools" xmlns="urn:opensoa.drools">
+      <xs:complexType abstract="true" name="DecisionRequestType"/>
+      <xs:complexType abstract="true" name="DecisionResponseType"/>
+      
+      <xs:complexType name="ManageServiceType">
+          <xs:sequence>
+              <xs:element name="ServiceName" type="xs:string"/>
+          </xs:sequence>
+      </xs:complexType>
+      
+      <xs:complexType name="ManageResponseType">
+        <xs:sequence>
+          <xs:element name="ResultCode" type="xs:int"/>
+          <xs:element name="Result">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="SUCCESS"/>
+                <xs:enumeration value="FAILURE"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Comment" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:complexType>
+      
+      <xs:element name="DecisionRequest" type="ns1:DecisionRequestType"/>
+      <xs:element name="DecisionResponse" type="ns1:DecisionResponseType"/>
+      <xs:element name="ManageResponse" type="ns1:ManageResponseType"/>
+      <xs:element name="ManageService" type="ns1:ManageServiceType"/>
+      
+      </xs:schema>
+  </wsdl:types> 
+  
+  <wsdl:message name="DecisionRequest">
+    <wsdl:part name="parameters" element="ns1:DecisionRequest"/>
+  </wsdl:message>
+  <wsdl:message name="DecisionResponse">
+    <wsdl:part name="parameters" element="ns1:DecisionResponse"/>
+  </wsdl:message>
+  
+  <wsdl:message name="LoadRequest">
+    <wsdl:part name="parameters" element="ns1:ManageService"/>
+  </wsdl:message>
+  <wsdl:message name="LoadResponse">
+    <wsdl:part name="parameters" element="ns1:ManageResponse"/>    
+  </wsdl:message>
+  
+  <wsdl:message name="SuspendRequest">
+    <wsdl:part name="parameters" element="ns1:ManageService"/>
+  </wsdl:message>
+  <wsdl:message name="SuspendResponse">
+    <wsdl:part name="parameters" element="ns1:ManageResponse"/>    
+  </wsdl:message>
+  
+  <wsdl:message name="ResumeRequest">
+    <wsdl:part name="parameters" element="ns1:ManageService"/>    
+  </wsdl:message>
+  <wsdl:message name="ResumeResponse">
+    <wsdl:part name="parameters" element="ns1:ManageResponse"/>    
+  </wsdl:message>
+  
+  
+  <wsdl:portType name="DecisionServicePortType">
+    <wsdl:operation name="Decision">
+      <wsdl:input message="ns1:DecisionRequest" wsaw:Action="urn:DecisionRequest">
+    </wsdl:input>
+      <wsdl:output message="ns1:DecisionResponse" wsaw:Action="urn:DecisionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:portType name="LoadServicePortType">
+    <wsdl:operation name="Load">
+      <wsdl:input message="ns1:LoadRequest" wsaw:Action="urn:LoadRequest">
+      </wsdl:input>
+      <wsdl:output message="ns1:LoadResponse" wsaw:Action="urn:LoadResponse">
+      </wsdl:output>
+    </wsdl:operation>
+    </wsdl:portType>
+
+  <wsdl:portType name="SuspendServicePortType">
+    <wsdl:operation name="Suspend">
+      <wsdl:input message="ns1:SuspendRequest" wsaw:Action="urn:SuspendRequest">
+      </wsdl:input>
+      <wsdl:output message="ns1:SuspendResponse" wsaw:Action="urn:SuspendResponse">
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:portType name="ResumeServicePortType">
+    <wsdl:operation name="Resume">
+      <wsdl:input message="ns1:ResumeRequest" wsaw:Action="urn:ResumeRequest">
+      </wsdl:input>
+      <wsdl:output message="ns1:ResumeResponse" wsaw:Action="urn:ResumeResponse">
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:binding name="DecisionServiceSOAP11" type="ns1:DecisionServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Decision">
+      <soap:operation soapAction="urn:Decision" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:binding name="LoadServiceSOAP11" type="ns1:LoadServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Load">
+      <soap:operation soapAction="urn:Load" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+   </wsdl:binding>
+    
+  <wsdl:binding name="SuspendServiceSOAP11" type="ns1:SuspendServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Suspend">
+      <soap:operation soapAction="urn:Suspend" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    </wsdl:binding>
+    
+  <wsdl:binding name="ResumeServiceSOAP11" type="ns1:ResumeServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Resume">
+      <soap:operation soapAction="urn:Resume" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:service name="DecisionService">
+    <wsdl:port name="SOAP" binding="ns1:DecisionServiceSOAP11">
+      <soap:address location="http://localhost:8085/DecisionService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="LoadService">
+    <wsdl:port name="SOAP" binding="ns1:LoadServiceSOAP11">
+      <soap:address location="localhost:8085/LoadService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="SuspendService">
+    <wsdl:port name="SOAP" binding="ns1:SuspendServiceSOAP11">
+      <soap:address location="localhost:8085/SuspendService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="ResumeService">
+    <wsdl:port name="SOAP" binding="ns1:ResumeServiceSOAP11">
+      <soap:address location="localhost:8085/ResumeService"/>
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\Order.wsdl</con:url><con:content><wsdl:definitions targetNamespace="urn:opensoa.drools.salesorder" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:drools="urn:opensoa.drools">
+	<wsdl:types>
+		
+		<xs:schema targetNamespace="urn:opensoa.drools.salesorder" xmlns="urn:opensoa.drools.salesorder">
+
+			<xs:import namespace="urn:opensoa.drools"/>
+			
+			<xs:element name="shipping">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="carrier"/>
+						<xs:element ref="method"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="productId" type="xs:string"/>
+			<xs:element name="product">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="lineId"/>
+						<xs:element ref="productId"/>
+						<xs:element ref="cnt"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="partyId" type="xs:string"/>
+
+			<xs:element name="partyContactId" type="xs:string"/>
+			<xs:element name="orderId" type="xs:string"/>
+			<xs:element name="method">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="STANDARD"/>
+						<xs:enumeration value="LOCAL_DELIVERY"/>
+						<xs:enumeration value="EXPRESS"/>
+						<xs:enumeration value="GROUND"/>
+						<xs:enumeration value="AIR"/>
+						<xs:enumeration value="NEXT_DAY"/>
+						<xs:enumeration value="NO_SHIPPING"/>
+						<xs:enumeration value="NEXT_PM"/>
+						<xs:enumeration value="SECOND_DAY"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="lines">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="product" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="lineId" type="xs:string"/>
+			<xs:element name="header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="orderId"/>
+						<xs:element ref="partyId"/>
+						<xs:element ref="partyContactId"/>
+						<xs:element ref="currency"/>
+						<xs:element ref="shipping"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="currency">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="EUR"/>
+						<xs:enumeration value="USD"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="cnt" type="xs:int"/>
+			<xs:element name="carrier">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="USPS"/>
+						<xs:enumeration value="Company"/>
+						<xs:enumeration value="_NA_"/>
+						<xs:enumeration value="DHL"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			
+			<xs:complexType name="PriceCalculatorRequest">
+				<xs:complexContent>
+					<xs:extension base="drools:DecisionRequestType">
+						<xs:sequence>
+							<xs:element ref="Order"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			
+			<xs:element name="Order">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="header"/>
+						<xs:element ref="lines"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			<!-- DecideResponse elements -->
+			<xs:complexType name="PriceCalculatorResponse">
+				<xs:complexContent>
+					<xs:extension base="drools:DecisionRequestType">
+						<xs:sequence>
+							<xs:element name="orderId" type="xs:string"/>
+							<xs:element name="salePrice" type="xs:float"/>
+							<xs:element name="shippingPrice" type="xs:float"/>
+							<xs:element name="totalPrice" type="xs:float"/>
+							<xs:element name="comments" type="xs:string"/>
+							<xs:element name="currency" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+</wsdl:definitions></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache></con:interface><con:interface name="SuspendServiceSOAP11" bindingName="{urn:opensoa.drools}SuspendServiceSOAP11" soapVersion="1_1" definition="file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\DroolsService.wsdl" xsi:type="con:WsdlInterface" wsaVersion="NONE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:endpoints><con:endpoint>localhost:8085/SuspendService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:Suspend" name="Suspend" bindingOperationName="Suspend" inputName="" receivesAttachments="false" sendsAttachments="false"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>localhost:8085/SuspendService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:opensoa.drools">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:ManageService>
+         <ServiceName>xxx</ServiceName>
+      </urn:ManageService>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request></con:call></con:operation><con:definitionCache rootPart="file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\DroolsService.wsdl"><con:part><con:url>file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\DroolsService.wsdl</con:url><con:content><wsdl:definitions targetNamespace="urn:opensoa.drools" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ns1="urn:opensoa.drools" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  
+  <wsdl:import namespace="urn:opensoa.drools.chapter12" location="Order.wsdl"/>
+    
+  <wsdl:types>
+    <xs:schema targetNamespace="urn:opensoa.drools" xmlns="urn:opensoa.drools">
+      <xs:complexType abstract="true" name="DecisionRequestType"/>
+      <xs:complexType abstract="true" name="DecisionResponseType"/>
+      
+      <xs:complexType name="ManageServiceType">
+          <xs:sequence>
+              <xs:element name="ServiceName" type="xs:string"/>
+          </xs:sequence>
+      </xs:complexType>
+      
+      <xs:complexType name="ManageResponseType">
+        <xs:sequence>
+          <xs:element name="ResultCode" type="xs:int"/>
+          <xs:element name="Result">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="SUCCESS"/>
+                <xs:enumeration value="FAILURE"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Comment" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:complexType>
+      
+      <xs:element name="DecisionRequest" type="ns1:DecisionRequestType"/>
+      <xs:element name="DecisionResponse" type="ns1:DecisionResponseType"/>
+      <xs:element name="ManageResponse" type="ns1:ManageResponseType"/>
+      <xs:element name="ManageService" type="ns1:ManageServiceType"/>
+      
+      </xs:schema>
+  </wsdl:types> 
+  
+  <wsdl:message name="DecisionRequest">
+    <wsdl:part name="parameters" element="ns1:DecisionRequest"/>
+  </wsdl:message>
+  <wsdl:message name="DecisionResponse">
+    <wsdl:part name="parameters" element="ns1:DecisionResponse"/>
+  </wsdl:message>
+  
+  <wsdl:message name="LoadRequest">
+    <wsdl:part name="parameters" element="ns1:ManageService"/>
+  </wsdl:message>
+  <wsdl:message name="LoadResponse">
+    <wsdl:part name="parameters" element="ns1:ManageResponse"/>    
+  </wsdl:message>
+  
+  <wsdl:message name="SuspendRequest">
+    <wsdl:part name="parameters" element="ns1:ManageService"/>
+  </wsdl:message>
+  <wsdl:message name="SuspendResponse">
+    <wsdl:part name="parameters" element="ns1:ManageResponse"/>    
+  </wsdl:message>
+  
+  <wsdl:message name="ResumeRequest">
+    <wsdl:part name="parameters" element="ns1:ManageService"/>    
+  </wsdl:message>
+  <wsdl:message name="ResumeResponse">
+    <wsdl:part name="parameters" element="ns1:ManageResponse"/>    
+  </wsdl:message>
+  
+  
+  <wsdl:portType name="DecisionServicePortType">
+    <wsdl:operation name="Decision">
+      <wsdl:input message="ns1:DecisionRequest" wsaw:Action="urn:DecisionRequest">
+    </wsdl:input>
+      <wsdl:output message="ns1:DecisionResponse" wsaw:Action="urn:DecisionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:portType name="LoadServicePortType">
+    <wsdl:operation name="Load">
+      <wsdl:input message="ns1:LoadRequest" wsaw:Action="urn:LoadRequest">
+      </wsdl:input>
+      <wsdl:output message="ns1:LoadResponse" wsaw:Action="urn:LoadResponse">
+      </wsdl:output>
+    </wsdl:operation>
+    </wsdl:portType>
+
+  <wsdl:portType name="SuspendServicePortType">
+    <wsdl:operation name="Suspend">
+      <wsdl:input message="ns1:SuspendRequest" wsaw:Action="urn:SuspendRequest">
+      </wsdl:input>
+      <wsdl:output message="ns1:SuspendResponse" wsaw:Action="urn:SuspendResponse">
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:portType name="ResumeServicePortType">
+    <wsdl:operation name="Resume">
+      <wsdl:input message="ns1:ResumeRequest" wsaw:Action="urn:ResumeRequest">
+      </wsdl:input>
+      <wsdl:output message="ns1:ResumeResponse" wsaw:Action="urn:ResumeResponse">
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:binding name="DecisionServiceSOAP11" type="ns1:DecisionServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Decision">
+      <soap:operation soapAction="urn:Decision" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:binding name="LoadServiceSOAP11" type="ns1:LoadServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Load">
+      <soap:operation soapAction="urn:Load" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+   </wsdl:binding>
+    
+  <wsdl:binding name="SuspendServiceSOAP11" type="ns1:SuspendServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Suspend">
+      <soap:operation soapAction="urn:Suspend" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    </wsdl:binding>
+    
+  <wsdl:binding name="ResumeServiceSOAP11" type="ns1:ResumeServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Resume">
+      <soap:operation soapAction="urn:Resume" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:service name="DecisionService">
+    <wsdl:port name="SOAP" binding="ns1:DecisionServiceSOAP11">
+      <soap:address location="http://localhost:8085/DecisionService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="LoadService">
+    <wsdl:port name="SOAP" binding="ns1:LoadServiceSOAP11">
+      <soap:address location="localhost:8085/LoadService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="SuspendService">
+    <wsdl:port name="SOAP" binding="ns1:SuspendServiceSOAP11">
+      <soap:address location="localhost:8085/SuspendService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="ResumeService">
+    <wsdl:port name="SOAP" binding="ns1:ResumeServiceSOAP11">
+      <soap:address location="localhost:8085/ResumeService"/>
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\Order.wsdl</con:url><con:content><wsdl:definitions targetNamespace="urn:opensoa.drools.salesorder" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:drools="urn:opensoa.drools">
+	<wsdl:types>
+		
+		<xs:schema targetNamespace="urn:opensoa.drools.salesorder" xmlns="urn:opensoa.drools.salesorder">
+
+			<xs:import namespace="urn:opensoa.drools"/>
+			
+			<xs:element name="shipping">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="carrier"/>
+						<xs:element ref="method"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="productId" type="xs:string"/>
+			<xs:element name="product">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="lineId"/>
+						<xs:element ref="productId"/>
+						<xs:element ref="cnt"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="partyId" type="xs:string"/>
+
+			<xs:element name="partyContactId" type="xs:string"/>
+			<xs:element name="orderId" type="xs:string"/>
+			<xs:element name="method">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="STANDARD"/>
+						<xs:enumeration value="LOCAL_DELIVERY"/>
+						<xs:enumeration value="EXPRESS"/>
+						<xs:enumeration value="GROUND"/>
+						<xs:enumeration value="AIR"/>
+						<xs:enumeration value="NEXT_DAY"/>
+						<xs:enumeration value="NO_SHIPPING"/>
+						<xs:enumeration value="NEXT_PM"/>
+						<xs:enumeration value="SECOND_DAY"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="lines">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="product" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="lineId" type="xs:string"/>
+			<xs:element name="header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="orderId"/>
+						<xs:element ref="partyId"/>
+						<xs:element ref="partyContactId"/>
+						<xs:element ref="currency"/>
+						<xs:element ref="shipping"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="currency">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="EUR"/>
+						<xs:enumeration value="USD"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="cnt" type="xs:int"/>
+			<xs:element name="carrier">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="USPS"/>
+						<xs:enumeration value="Company"/>
+						<xs:enumeration value="_NA_"/>
+						<xs:enumeration value="DHL"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			
+			<xs:complexType name="PriceCalculatorRequest">
+				<xs:complexContent>
+					<xs:extension base="drools:DecisionRequestType">
+						<xs:sequence>
+							<xs:element ref="Order"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			
+			<xs:element name="Order">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="header"/>
+						<xs:element ref="lines"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			<!-- DecideResponse elements -->
+			<xs:complexType name="PriceCalculatorResponse">
+				<xs:complexContent>
+					<xs:extension base="drools:DecisionRequestType">
+						<xs:sequence>
+							<xs:element name="orderId" type="xs:string"/>
+							<xs:element name="salePrice" type="xs:float"/>
+							<xs:element name="shippingPrice" type="xs:float"/>
+							<xs:element name="totalPrice" type="xs:float"/>
+							<xs:element name="comments" type="xs:string"/>
+							<xs:element name="currency" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+</wsdl:definitions></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache></con:interface><con:interface name="DecisionServiceSOAP11" bindingName="{urn:opensoa.drools}DecisionServiceSOAP11" soapVersion="1_1" definition="file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\DroolsService.wsdl" xsi:type="con:WsdlInterface" wsaVersion="NONE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:endpoints><con:endpoint>http://localhost:8085/DecisionService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:Decision" name="Decision" bindingOperationName="Decision" inputName="" receivesAttachments="false" sendsAttachments="false" type="Request-Response" anonymous="optional"><con:settings/><con:call name="Gold USD Customer"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8085/DecisionService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:opensoa.drools" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:DecisionRequest xsi:type="so:PriceCalculatorRequest" xmlns:so="urn:opensoa.drools.salesorder">
+         <Order xmlns="urn:opensoa.drools.salesorder">
+            <header>
+               <orderId>2020322</orderId>
+               <partyId>WA-23923</partyId>
+               <partyContactId>1006</partyContactId>
+               <currency>USD</currency>
+               <shipping>
+                  <carrier>USPS</carrier>
+                  <method>STANDARD</method>
+               </shipping>
+            </header>
+            <lines>
+               <product>
+                  <lineId>2020322-1</lineId>
+                  <productId>GZ-1004</productId>
+                  <cnt>1</cnt>
+               </product>
+               <product>
+                  <lineId>2020322-2</lineId>
+                  <productId>GZ-1001</productId>
+                  <cnt>10</cnt>
+               </product>
+            </lines>
+         </Order>
+      </urn:DecisionRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508"/></con:call><con:call name="Standard USD Customer"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8085/DecisionService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:opensoa.drools" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:DecisionRequest xsi:type="so:PriceCalculatorRequest" xmlns:so="urn:opensoa.drools.salesorder">
+         <Order xmlns="urn:opensoa.drools.salesorder">
+            <header>
+               <orderId>2020322</orderId>
+               <partyId>CA-20302</partyId>
+               <partyContactId>1006</partyContactId>
+               <currency>USD</currency>
+               <shipping>
+                  <carrier>USPS</carrier>
+                  <method>STANDARD</method>
+               </shipping>
+            </header>
+            <lines>
+               <product>
+                  <lineId>2020322-1</lineId>
+                  <productId>GZ-1004</productId>
+                  <cnt>1</cnt>
+               </product>
+               <product>
+                  <lineId>2020322-2</lineId>
+                  <productId>GZ-1001</productId>
+                  <cnt>1</cnt>
+               </product>
+            </lines>
+         </Order>
+      </urn:DecisionRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508"/></con:call><con:call name="Gold EURO Qnt Discount"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8085/DecisionService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:opensoa.drools" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:DecisionRequest xsi:type="so:PriceCalculatorRequest" xmlns:so="urn:opensoa.drools.salesorder">
+         <Order xmlns="urn:opensoa.drools.salesorder">
+            <header>
+               <orderId>2020322</orderId>
+               <partyId>WA-23923</partyId>
+               <partyContactId>1006</partyContactId>
+               <currency>EUR</currency>
+               <shipping>
+                  <carrier>USPS</carrier>
+                  <method>STANDARD</method>
+               </shipping>
+            </header>
+            <lines>
+               <product>
+                  <lineId>2020322-1</lineId>
+                  <productId>GZ-1004</productId>
+                  <cnt>1</cnt>
+               </product>
+               <product>
+                  <lineId>2020322-2</lineId>
+                  <productId>GZ-1001</productId>
+                  <cnt>10</cnt>
+               </product>
+            </lines>
+         </Order>
+      </urn:DecisionRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:opensoa.drools/DecisionServicePortType/DecisionRequest"/></con:call></con:operation><con:definitionCache rootPart="file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\DroolsService.wsdl"><con:part><con:url>file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\DroolsService.wsdl</con:url><con:content><wsdl:definitions targetNamespace="urn:opensoa.drools" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ns1="urn:opensoa.drools" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  
+  <wsdl:import namespace="urn:opensoa.drools.chapter12" location="Order.wsdl"/>
+    
+  <wsdl:types>
+    <xs:schema targetNamespace="urn:opensoa.drools" xmlns="urn:opensoa.drools">
+      <xs:complexType abstract="true" name="DecisionRequestType"/>
+      <xs:complexType abstract="true" name="DecisionResponseType"/>
+      
+      <xs:complexType name="ManageServiceType">
+          <xs:sequence>
+              <xs:element name="ServiceName" type="xs:string"/>
+          </xs:sequence>
+      </xs:complexType>
+      
+      <xs:complexType name="ManageResponseType">
+        <xs:sequence>
+          <xs:element name="ResultCode" type="xs:int"/>
+          <xs:element name="Result">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="SUCCESS"/>
+                <xs:enumeration value="FAILURE"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Comment" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:complexType>
+      
+      <xs:element name="DecisionRequest" type="ns1:DecisionRequestType"/>
+      <xs:element name="DecisionResponse" type="ns1:DecisionResponseType"/>
+      <xs:element name="ManageResponse" type="ns1:ManageResponseType"/>
+      <xs:element name="ManageService" type="ns1:ManageServiceType"/>
+      
+      </xs:schema>
+  </wsdl:types> 
+  
+  <wsdl:message name="DecisionRequest">
+    <wsdl:part name="parameters" element="ns1:DecisionRequest"/>
+  </wsdl:message>
+  <wsdl:message name="DecisionResponse">
+    <wsdl:part name="parameters" element="ns1:DecisionResponse"/>
+  </wsdl:message>
+  
+  <wsdl:message name="LoadRequest">
+    <wsdl:part name="parameters" element="ns1:ManageService"/>
+  </wsdl:message>
+  <wsdl:message name="LoadResponse">
+    <wsdl:part name="parameters" element="ns1:ManageResponse"/>    
+  </wsdl:message>
+  
+  <wsdl:message name="SuspendRequest">
+    <wsdl:part name="parameters" element="ns1:ManageService"/>
+  </wsdl:message>
+  <wsdl:message name="SuspendResponse">
+    <wsdl:part name="parameters" element="ns1:ManageResponse"/>    
+  </wsdl:message>
+  
+  <wsdl:message name="ResumeRequest">
+    <wsdl:part name="parameters" element="ns1:ManageService"/>    
+  </wsdl:message>
+  <wsdl:message name="ResumeResponse">
+    <wsdl:part name="parameters" element="ns1:ManageResponse"/>    
+  </wsdl:message>
+  
+  
+  <wsdl:portType name="DecisionServicePortType">
+    <wsdl:operation name="Decision">
+      <wsdl:input message="ns1:DecisionRequest" wsaw:Action="urn:DecisionRequest">
+    </wsdl:input>
+      <wsdl:output message="ns1:DecisionResponse" wsaw:Action="urn:DecisionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:portType name="LoadServicePortType">
+    <wsdl:operation name="Load">
+      <wsdl:input message="ns1:LoadRequest" wsaw:Action="urn:LoadRequest">
+      </wsdl:input>
+      <wsdl:output message="ns1:LoadResponse" wsaw:Action="urn:LoadResponse">
+      </wsdl:output>
+    </wsdl:operation>
+    </wsdl:portType>
+
+  <wsdl:portType name="SuspendServicePortType">
+    <wsdl:operation name="Suspend">
+      <wsdl:input message="ns1:SuspendRequest" wsaw:Action="urn:SuspendRequest">
+      </wsdl:input>
+      <wsdl:output message="ns1:SuspendResponse" wsaw:Action="urn:SuspendResponse">
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:portType name="ResumeServicePortType">
+    <wsdl:operation name="Resume">
+      <wsdl:input message="ns1:ResumeRequest" wsaw:Action="urn:ResumeRequest">
+      </wsdl:input>
+      <wsdl:output message="ns1:ResumeResponse" wsaw:Action="urn:ResumeResponse">
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:binding name="DecisionServiceSOAP11" type="ns1:DecisionServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Decision">
+      <soap:operation soapAction="urn:Decision" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:binding name="LoadServiceSOAP11" type="ns1:LoadServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Load">
+      <soap:operation soapAction="urn:Load" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+   </wsdl:binding>
+    
+  <wsdl:binding name="SuspendServiceSOAP11" type="ns1:SuspendServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Suspend">
+      <soap:operation soapAction="urn:Suspend" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    </wsdl:binding>
+    
+  <wsdl:binding name="ResumeServiceSOAP11" type="ns1:ResumeServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Resume">
+      <soap:operation soapAction="urn:Resume" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:service name="DecisionService">
+    <wsdl:port name="SOAP" binding="ns1:DecisionServiceSOAP11">
+      <soap:address location="http://localhost:8085/DecisionService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="LoadService">
+    <wsdl:port name="SOAP" binding="ns1:LoadServiceSOAP11">
+      <soap:address location="localhost:8085/LoadService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="SuspendService">
+    <wsdl:port name="SOAP" binding="ns1:SuspendServiceSOAP11">
+      <soap:address location="localhost:8085/SuspendService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="ResumeService">
+    <wsdl:port name="SOAP" binding="ns1:ResumeServiceSOAP11">
+      <soap:address location="localhost:8085/ResumeService"/>
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:C:\Users\jdavis\workspace\OpenSOA-Book\Chapter11\src\main\resources\Order.wsdl</con:url><con:content><wsdl:definitions targetNamespace="urn:opensoa.drools.salesorder" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:drools="urn:opensoa.drools">
+	<wsdl:types>
+		
+		<xs:schema targetNamespace="urn:opensoa.drools.salesorder" xmlns="urn:opensoa.drools.salesorder">
+
+			<xs:import namespace="urn:opensoa.drools"/>
+			
+			<xs:element name="shipping">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="carrier"/>
+						<xs:element ref="method"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="productId" type="xs:string"/>
+			<xs:element name="product">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="lineId"/>
+						<xs:element ref="productId"/>
+						<xs:element ref="cnt"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="partyId" type="xs:string"/>
+
+			<xs:element name="partyContactId" type="xs:string"/>
+			<xs:element name="orderId" type="xs:string"/>
+			<xs:element name="method">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="STANDARD"/>
+						<xs:enumeration value="LOCAL_DELIVERY"/>
+						<xs:enumeration value="EXPRESS"/>
+						<xs:enumeration value="GROUND"/>
+						<xs:enumeration value="AIR"/>
+						<xs:enumeration value="NEXT_DAY"/>
+						<xs:enumeration value="NO_SHIPPING"/>
+						<xs:enumeration value="NEXT_PM"/>
+						<xs:enumeration value="SECOND_DAY"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="lines">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="product" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="lineId" type="xs:string"/>
+			<xs:element name="header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="orderId"/>
+						<xs:element ref="partyId"/>
+						<xs:element ref="partyContactId"/>
+						<xs:element ref="currency"/>
+						<xs:element ref="shipping"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="currency">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="EUR"/>
+						<xs:enumeration value="USD"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="cnt" type="xs:int"/>
+			<xs:element name="carrier">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="USPS"/>
+						<xs:enumeration value="Company"/>
+						<xs:enumeration value="_NA_"/>
+						<xs:enumeration value="DHL"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			
+			<xs:complexType name="PriceCalculatorRequest">
+				<xs:complexContent>
+					<xs:extension base="drools:DecisionRequestType">
+						<xs:sequence>
+							<xs:element ref="Order"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			
+			<xs:element name="Order">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="header"/>
+						<xs:element ref="lines"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			<!-- DecideResponse elements -->
+			<xs:complexType name="PriceCalculatorResponse">
+				<xs:complexContent>
+					<xs:extension base="drools:DecisionRequestType">
+						<xs:sequence>
+							<xs:element name="orderId" type="xs:string"/>
+							<xs:element name="salePrice" type="xs:float"/>
+							<xs:element name="shippingPrice" type="xs:float"/>
+							<xs:element name="totalPrice" type="xs:float"/>
+							<xs:element name="comments" type="xs:string"/>
+							<xs:element name="currency" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+</wsdl:definitions></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache></con:interface><con:testSuite name="TestSuiteCh12"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Example1" searchProperties="true"><con:settings/><con:testStep type="request" name="Decision - Gold USD Customer"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>DecisionServiceSOAP11</con:interface><con:operation>Decision</con:operation><con:request name="Decision - Gold USD Customer" outgoingWss="" incomingWss="" wssPasswordType=""><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8085/DecisionService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:opensoa.drools" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:DecisionRequest xsi:type="so:PriceCalculatorRequest" xmlns:so="urn:opensoa.drools.salesorder">
+         <Order xmlns="urn:opensoa.drools.salesorder">
+            <header>
+               <orderId>2020322</orderId>
+               <partyId>WA-23923</partyId>
+               <partyContactId>1006</partyContactId>
+               <currency>USD</currency>
+               <shipping>
+                  <carrier>USPS</carrier>
+                  <method>STANDARD</method>
+               </shipping>
+            </header>
+            <lines>
+               <product>
+                  <lineId>2020322-1</lineId>
+                  <productId>GZ-1004</productId>
+                  <cnt>1</cnt>
+               </product>
+               <product>
+                  <lineId>2020322-2</lineId>
+                  <productId>GZ-1001</productId>
+                  <cnt>10</cnt>
+               </product>
+            </lines>
+         </Order>
+      </urn:DecisionRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response"/><con:assertion type="XPath Match"><con:configuration><path>//salePrice</path><content>240.9</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences></con:configuration></con:assertion><con:wsaConfig mustUnderstand="NONE" version="200508"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/></con:soapui-project>

@@ -1,0 +1,59 @@
+<!-- Introduction to Tasks with simple trigger -->
+<definitions xmlns="http://ws.apache.org/ns/synapse"
+	xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+	xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+
+	<registry provider="org.apache.synapse.registry.url.SimpleURLRegistry">
+		<parameter name="root"> file:./repository/conf/opensoa/resources/ </parameter>
+		<parameter name="cachableDuration">150000</parameter>
+	</registry>
+
+	<localEntry key="xslt-key-dummyOrders"
+		src="file:repository/conf/opensoa/resources/xslt/dummyUBLOrders.xslt"/>
+
+	<task class="org.apache.synapse.startup.tasks.MessageInjector" name="FetchOrders">
+		<property name="to" value="http://localhost:8280/soap/QueuedOrderRequestor"/>
+		<property name="soapAction" value="urn:getOrders"/>
+		<property name="message">
+			<getOrders xmlns="uri:opensoa.chapter10.order">
+				<customerId>1001</customerId>
+			</getOrders>
+		</property>
+		<trigger interval="30"/>
+	</task>
+	
+	<sequence name="main">
+		<in>
+			<log level="custom">
+				<property name="Text" value="Default message mediator invoked"/>
+			</log>
+			<send/>
+		</in>
+	</sequence>
+	
+	<!-- ** the sequene name="main" can be left out, as shown below **
+	<in>
+		<log level="custom">
+			<property name="Text" value="Default message mediator invoked"/>
+		</log>
+		<send/>
+	</in>
+	-->
+	
+
+	<proxy name="QueuedOrderRequestor" transports="http">
+		<target>
+			<endpoint>
+				<address uri="http://localhost:8280/soap/CustomerOrderQueueService" format="soap11"/>
+			</endpoint>
+			<outSequence>
+				<log level="full"/>
+				<send/>
+			</outSequence>
+		</target>
+	</proxy>
+
+	<proxy name="CustomerOrderQueueService" transports="http">
+		<target inSequence="sequence/mockQueuedOrders.xml"/>
+	</proxy>
+</definitions>

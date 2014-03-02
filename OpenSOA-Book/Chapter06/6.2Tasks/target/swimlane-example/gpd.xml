@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="swimlane-example" width="952" height="734">
+  <node name="start" x="170" y="34" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="approve" x="90" y="125" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="-13" y="-19"/>
+      <bendpoint w1="99" h1="14" w2="-102" h2="13"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="assign-charge-codes" x="147" y="206" width="178" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="review" x="290" y="125" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-20" h1="120" w2="107" h2="-37"/>
+    </edge>
+    <edge>
+      <label x="-2" y="-14"/>
+      <bendpoint w1="-102" h1="-26" w2="98" h2="-26"/>
+    </edge>
+  </node>
+  <node name="pastdue" x="11" y="269" width="132" height="36"/>
+  <node name="end" x="254" y="293" width="132" height="36"/>
+</root-container>

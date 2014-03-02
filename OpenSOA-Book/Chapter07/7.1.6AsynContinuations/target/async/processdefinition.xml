@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition 
+  xmlns="urn:jbpm.org:jpdl-3.2"
+  name="async-example">
+  
+    <start-state name="start">
+      <transition name="to_state" to="first"/>
+    </start-state>
+    
+    <state name="first">
+		<transition to="async-node"></transition>
+	</state>
+
+	<node name="async-node" async="true">
+	    <action class="com.sample.action.AsyncActionHandlerExample"/>
+		<transition to="end" name="ok"></transition>
+	</node>
+	
+   <end-state name="end"/>
+</process-definition>

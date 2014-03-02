@@ -1,0 +1,128 @@
+<wsdl:definitions 
+	targetNamespace="urn:opensoa.drools.salesorder" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:drools="urn:opensoa.drools">
+	<wsdl:types>
+		
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="urn:opensoa.drools.salesorder" 
+			xmlns="urn:opensoa.drools.salesorder"
+			xmlns:drools="urn:opensoa.drools">
+
+			<xs:import namespace="urn:opensoa.drools" />
+			
+			<xs:element name="shipping">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="carrier"/>
+						<xs:element ref="method"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="productId" type="xs:string"/>
+			<xs:element name="product">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="lineId"/>
+						<xs:element ref="productId"/>
+						<xs:element ref="cnt"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="partyId" type="xs:string"/>
+
+			<xs:element name="partyContactId" type="xs:string"/>
+			<xs:element name="orderId" type="xs:string"/>
+			<xs:element name="method">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="STANDARD"/>
+						<xs:enumeration value="LOCAL_DELIVERY"/>
+						<xs:enumeration value="EXPRESS"/>
+						<xs:enumeration value="GROUND"/>
+						<xs:enumeration value="AIR"/>
+						<xs:enumeration value="NEXT_DAY"/>
+						<xs:enumeration value="NO_SHIPPING"/>
+						<xs:enumeration value="NEXT_PM"/>
+						<xs:enumeration value="SECOND_DAY"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="lines">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="product" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="lineId" type="xs:string"/>
+			<xs:element name="header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="orderId"/>
+						<xs:element ref="partyId"/>
+						<xs:element ref="partyContactId"/>
+						<xs:element ref="currency"/>
+						<xs:element ref="shipping"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="currency">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="EUR"/>
+						<xs:enumeration value="USD"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="cnt" type="xs:int"/>
+			<xs:element name="carrier">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="USPS"/>
+						<xs:enumeration value="Company"/>
+						<xs:enumeration value="_NA_"/>
+						<xs:enumeration value="DHL"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			
+			<xs:complexType name="PriceCalculatorRequest">
+				<xs:complexContent>
+					<xs:extension base="drools:DecisionRequestType">
+						<xs:sequence>
+							<xs:element ref="Order"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			
+			<xs:element name="Order">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="header"/>
+						<xs:element ref="lines"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			<!-- DecideResponse elements -->
+			<xs:complexType name="PriceCalculatorResponse">
+				<xs:complexContent>
+					<xs:extension base="drools:DecisionResponseType">
+						<xs:sequence>
+							<xs:element name="orderId" type="xs:string"/>
+							<xs:element name="salePrice"  type="xs:float"/>
+							<xs:element name="shippingPrice" type="xs:float"/>
+							<xs:element name="totalPrice" type="xs:float"/>
+							<xs:element name="comments" type="xs:string" minOccurs="0"/>
+							<xs:element name="currency" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+</wsdl:definitions>

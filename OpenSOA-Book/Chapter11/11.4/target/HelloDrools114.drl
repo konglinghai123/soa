@@ -1,0 +1,26 @@
+package opensoa.drools.hellodrools;
+
+import opensoa.drools.hellodrools114.Person;
+
+# following global added for junit testing
+global java.util.List results;
+
+function String salutationGenerator( Person person ) {
+	if ( person.getGender().equals("M") )
+		return "Mr. " + person.getName().toUpperCase();
+	else if ( person.getGender().equals("F") )
+		return "Mrs. " + person.getName().toUpperCase();
+	else
+		return "";
+}
+
+rule "HelloFunction"
+	salience 35
+	when
+		person : Person ( );
+	then
+		System.out.println( salutationGenerator( person ) );
+		results.add ( new String(salutationGenerator( person )) );
+end
+
+

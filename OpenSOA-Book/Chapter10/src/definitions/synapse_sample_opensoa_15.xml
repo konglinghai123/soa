@@ -1,0 +1,131 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse" xmlns:vfs="uri:open-soa/chpt10/vfs">
+
+	<registry provider="org.apache.synapse.registry.url.SimpleURLRegistry">
+		<parameter name="root"> file:./repository/conf/opensoa/resources/ </parameter>
+		<parameter name="cachableDuration">150000</parameter>
+	</registry>
+
+	<endpoint name="mockResponse">
+		<address uri="http://localhost:8280/soap/OrderResponseService" format="soap11"/>
+	</endpoint>
+
+	<localEntry key="xslt-key" src="file:repository/conf/opensoa/resources/xslt/mapUBLOrder.xslt"/>
+	<localEntry key="xslt-key-resp" src="file:repository/conf/opensoa/resources/xslt/response.xslt"/>
+	<localEntry key="xslt-key-csv2order"
+	src="file:repository/conf/opensoa/resources/xslt/CSVtoSimpleOrder.xslt"/>
+	<localEntry key="xslt-key-email" src="file:repository/conf/opensoa/resources/xslt/Email.xslt"/>
+	<localEntry key="xslt-key-esper-csv-err" src="file:repository/conf/opensoa/resources/xslt/Esper-CSVError.xslt"/>
+	<localEntry key="xslt-key-esper-csv" src="file:repository/conf/opensoa/resources/xslt/EsperCSV.xslt"/>
+
+	<!-- Phase 1 entries -->
+	<proxy name="CreateOrderService" transports="http">
+		<target inSequence="sequence/createOrderService.xml">
+			<endpoint>
+				<wsdl uri="file:repository/conf/opensoa/resources/wsdl/jbpm-ch10.wsdl"
+					service="CreateProcessInstance" port="JMS"/>
+			</endpoint>
+		</target>
+	</proxy>
+
+	<proxy name="CreateProcessInstanceService" transports="jms">
+		<target inSequence="sequence/createProcessInstance.xml"/>
+	</proxy>
+
+	<proxy name="SendOrderResponse" transports="jms">
+		<target inSequence="sequence/jmsOrderReceiver.xml">
+			<endpoint>
+				<address uri="http://localhost:8280/soap/OrderResponseService" format="soap11"/>
+			</endpoint>
+		</target>
+	</proxy>
+
+	<proxy name="OrderResponseService" transports="http">
+		<target inSequence="sequence/mockProxyResponse.xml"/>
+	</proxy>
+
+	<!-- Phase 2 entries -->
+	<proxy name="VFSFileReceiverService" transports="vfs">
+    	<parameter name="transport.vfs.FileURI">file://C:/Eclipse/workspace-opensoabook/OpenSOA-Book/Chapter10/work/synapsevfs/in</parameter>
+		<parameter name="transport.vfs.ContentType">application/octet-stream</parameter>
+		<parameter name="transport.vfs.FileNamePattern">.*\.csv</parameter>
+		<parameter name="transport.PollInterval">15</parameter>
+   		<parameter name="transport.vfs.MoveAfterProcess">file://C:/Eclipse/workspace-opensoabook/OpenSOA-Book/Chapter10/work/synapsevfs/original</parameter>
+    	<parameter name="transport.vfs.MoveAfterFailure">file://C:/Eclipse/workspace-opensoabook/OpenSOA-Book/Chapter10/work/synapsevfs/original</parameter>
+		<parameter name="transport.vfs.ActionAfterProcess">MOVE</parameter>
+		<parameter name="transport.vfs.ActionAfterFailure">MOVE</parameter>
+		
+		<target>
+			<endpoint>
+				<wsdl uri="file:repository/conf/opensoa/resources/wsdl/jbpm-ch10.wsdl"
+					service="CreateProcessInstance" port="JMS"/>
+			</endpoint>
+			
+			<inSequence>
+				<header name="vfs:filename" expression="$trp:FILE_NAME" action="set"/>
+				<header name="vfs:datestamp" expression="$trp:LAST_MODIFIED " action="set"/>
+				<header name="vfs:filesize" expression="$trp:FILE_LENGTH  " action="set"/>
+				
+				<class name="org.apache.synapse.contrib.OpenCSVtoXML"/>
+				
+				<validate source="//*[local-name()='csv']">
+					<schema key="schemas/CSVOrder.xsd"/>
+					<on-fail>		
+						<header name="vfs:status" value="FAILED" action="set"/>
+						<clone continueParent="true">
+							<target sequence="sequence/esper.xml"/>
+						</clone>
+						<property name="Subject" value="Errors occurs when processing order" scope="transport"/>
+						<xslt key="xslt-key-email" source="//*[local-name()='csv']">
+							<property name="filename" expression="$trp:FILE_NAME"/>
+						</xslt>
+						<send>
+							<endpoint>
+								<address uri="mailto:biotechguy99@yahoo.com" format="pox"/>
+							</endpoint>
+						</send>
+						<drop/>
+					</on-fail>
+				</validate>
+				<xslt key="xslt-key-csv2order" source="//*[local-name()='csv']"/>
+
+				<header name="vfs:status" value="SUCCESS" action="set"/>
+
+				<clone continueParent="true">
+					<target sequence="sequence/esper.xml"/>
+				</clone>
+
+			</inSequence>
+
+			<outSequence>
+				<log level="custom">
+					<property name="Text" value="Received from CreateProcessInstanceService"/>
+				</log>
+				<log level="full"/>
+				<property name="transport.vfs.ReplyFileName"
+					expression="fn:concat(fn:substring-after(get-property('MessageID'), 'urn:uuid:'), '.xml')"
+					scope="transport"/>
+				<send>
+					<endpoint>
+						<address uri="vfs:file://C:/Eclipse/workspace-opensoabook/OpenSOA-Book/Chapter10/work/synapsevfs/out"/>
+					</endpoint>
+				</send>
+			</outSequence>
+
+		</target>
+	</proxy>
+	
+	<proxy name="EsperService" transports="http" trace="enable">
+		<target>
+			<inSequence>
+				<log level="custom">
+					<property name="Text" value="EsperService was invoked"/>
+				</log>
+				<log level="full"/>
+				<property name="RESPONSE" value="true"/>
+				<header name="To" action="remove"/>
+				<property action="set" name="OUT_ONLY" value="true"/>
+				<drop/>
+			</inSequence>
+		</target>
+	</proxy>
+</definitions>

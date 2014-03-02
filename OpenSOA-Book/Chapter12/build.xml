@@ -1,0 +1,225 @@
+<project name="chapter12" default="compile">
+
+	<property file="../build.properties" />
+	
+	<import file="../soapUI/build.xml"/>
+		
+	<property name="server.class" value="opensoa.drools.service.DroolsManagerMain"/>
+	<property name="pojoServer.class" value="opensoa.drools.utility.PojoCacheLoader"/>
+	<property name="embedded.class" value="opensoa.drools.utility.EmbeddedDrools"/>
+	<property name="test.embedded.class" value="opensoa.drools.tests.Test12"/>
+	<property name="test.embeddedDSL.class" value="opensoa.drools.tests.Test12DSL"/>
+	
+	<property name="target" value="target/classes"/>
+	<property name="java.src" value="src/main/java"/>
+	<property name="jar.archive" value="chapter12.jar"/>
+	<property name="jar.dir" value="target/classes"/>
+
+	<path id="base.path">
+		<pathelement path="${classpath}"/>
+		<pathelement path="${target}"/>
+		
+		<fileset dir="${general.lib}">
+			<include name="*.jar"/>
+		</fileset>
+		
+		<fileset dir="${tuscany.lib}">
+			<include name="*.jar"/>
+		</fileset>
+
+		<fileset dir="${pojocache.lib}">
+			<include name="*.jar"/>
+		</fileset>
+		
+	</path>
+	
+	<path id="drools.compile.task">
+		<fileset dir="${general.lib}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+	<path id="drools.path">
+		<pathelement path="target\classes"/>
+		<fileset dir="${general.lib}">
+			<include name="drools-ant-5.0.0.CR1.jar"/>
+			<include name="drools-decisiontables-5.0.0.CR1.jar"/>
+			<include name="drools-api-5.0.0.CR1.jar"/>
+		</fileset>
+	</path>
+
+	<taskdef name="compiler" classname="org.drools.contrib.DroolsCompilerAntTask" classpathref="drools.compile.task" />
+
+    <target name="create.rules.package" depends="compile" description="Generates the binary rule package...">		
+    	<fail unless="ruleflow" message="Target create.rules.package Must be called by one of the example targets, such as run.example.1"/>
+   		<mkdir dir="deployment-package"/>
+
+        <compiler
+            srcdir="target\classes"
+            tofile="deployment-package\chapter12.pkg"
+            classpathref="drools.path"
+            binformat="package" >
+            <include name="*.drl" />
+            <include name="${ruleflow}" />
+            <include name="*.dslr" />
+        </compiler>
+    </target>
+    	
+	<target name="compile" depends="clean">
+    	<mkdir dir="target/classes"/>
+		<mkdir dir="logs"/>
+		
+		<javac destdir="target/classes" debug="on" source="1.5" target="1.5">
+			<src path="src\main\java"/>
+			<src path="src\test\java"/>
+			<src path="src\main\generated\wsdl2javasource"/>
+			<classpath refid="base.path"/>
+		</javac>
+
+		<copy todir="target/classes">
+			<fileset dir="src\main\resources"/>
+		</copy>
+
+		<copy todir="target/classes">
+			<fileset dir="src\main\rules"/>
+		</copy>
+		
+		<copy todir="target/classes">
+			<fileset dir="src\main\data"/>
+		</copy>
+
+	</target>
+
+	<target depends="init" name="generate.classes.from.wsdl">
+		<java classname="org.apache.tuscany.sdo.generate.XSD2JavaGenerator" fork="true">
+			<arg value="-targetDirectory"/>
+			<arg value="src/main/generated/wsdl2javasource"/>
+			<arg value="-noContainment"/>
+			<arg value="-noUnsettable"/>
+			<arg value="src/main/resources/DroolsService.wsdl"/>
+			<classpath>
+				<fileset dir="${tuscany.lib}">
+					<include name="*.jar"/>
+				</fileset>
+				<fileset dir="${general.lib}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+
+		<java classname="org.apache.tuscany.sdo.generate.XSD2JavaGenerator" fork="true">
+			<arg value="-targetDirectory"/>
+			<arg value="src/main/generated/wsdl2javasource"/>
+			<arg value="-noContainment"/>
+			<arg value="-noUnsettable"/>
+			<arg value="src/main/resources/Order.xsd"/>
+			<classpath>
+				<fileset dir="${tuscany.lib}">
+					<include name="*.jar"/>
+				</fileset>
+				<fileset dir="${general.lib}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="clean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="target"/>
+		</delete>
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="test-results"/>
+		</delete>
+	</target>
+
+	<target name="init">
+		<mkdir dir="target/classes"/>
+		<mkdir dir="target"/>
+		<mkdir dir="target/wsdl2javasource"/>
+	</target>
+
+	<target name="run.embedded" description="Run the embedded Drools engine">
+		<antcall target="create.rules.package">
+			<param name="ruleflow" value="PriceCalculator.rf"/>
+		</antcall>
+		<java classname="${embedded.class}" fork="true">
+			<jvmarg value="-Xmx200m"/>
+			<classpath refid="base.path"/>
+		</java>
+	</target>
+    
+	<target name="run.server" description="Use to run the SCA Drools server">
+		<antcall target="create.rules.package">
+			<param name="ruleflow" value="PriceCalculator.rf"/>
+		</antcall>
+		<java classname="${server.class}" fork="true">
+			<jvmarg value="-javaagent:${pojocache.lib}/jboss-aop.jar"/>
+			<jvmarg value="-Djboss.aop.path=src/main/resources/pojocache-aop.xml"/>
+			<jvmarg value="-Xmx200m"/>
+			<classpath refid="base.path"/>
+		</java>
+	</target>
+
+	<target name="run.pojoServer" depends="compile"
+		description="Runs the PojoServer used to populate the PojoCache working memory objects">
+		<java classname="${pojoServer.class}" fork="true">
+			<jvmarg value="-javaagent:${pojocache.lib}/jboss-aop.jar"/>
+			<jvmarg value="-Djboss.aop.path=src/main/resources/pojocache-aop.xml"/>
+			<classpath refid="base.path"/>
+		</java>
+	</target>
+
+	<target name="jar" description="Create JAR archive file for upload into Guvnor"
+		depends="compile">
+		<jar destfile="${target}/../${jar.archive}">
+			<fileset dir="${jar.dir}" includes="**/dto/*.class, **/FunctionHelper.class"
+				excludes="**/*.jar"/>
+		</jar>
+	</target>
+	
+	<target name="run.embedded.test" description="Runs the jUnit Drools embedded test...">
+		<antcall target="create.rules.package">
+			<param name="ruleflow" value="PriceCalculator.rf"/>
+		</antcall>
+		<mkdir dir="test-results"/>
+		<junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${general.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+
+		  <formatter type="plain"/>
+
+		  <test name="${test.embedded.class}" haltonfailure="no" outfile="test-results/Test12embedded"/>
+
+		</junit>
+		
+		<echo message="Results can be found in test-results/Test12embedded.txt"/>
+	</target>
+	
+	<target name="run.embeddedDSL.test" description="Runs the jUnit Drools embedded DSL test...">
+		<antcall target="create.rules.package">
+			<param name="ruleflow" value="PriceCalculatorDSL.rf"/>
+		</antcall>
+		<mkdir dir="test-results"/>
+		<junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${general.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+
+		  <formatter type="plain"/>
+
+		  <test name="${test.embeddedDSL.class}" haltonfailure="no" outfile="test-results/Test12DSLembedded"/>
+
+		</junit>
+		
+		<echo message="Results can be found in test-results/Test12DSLembedded.txt"/>
+	</target>
+		
+</project>

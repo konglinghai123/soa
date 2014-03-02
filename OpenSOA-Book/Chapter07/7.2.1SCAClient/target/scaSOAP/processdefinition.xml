@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition 
+  xmlns="urn:jbpm.org:jpdl-3.2"
+  name="scaSOAP">
+  
+   <start-state name="start">
+		<transition to="create-ticket"></transition>
+	</start-state>
+	
+   <task-node name="create-ticket">
+		<task name="create-problem-ticket">
+			<assignment actor-id="jdoe"></assignment>
+		</task>
+		<transition to="soap-sca-submit"></transition>
+	</task-node>
+
+	<node name="soap-sca-submit">
+		<action name="SOAPNodeAction" class="opensoa.book.chapter721.impl.SOAPNodeActionHandler"/>
+		<transition to="end"/>
+	</node>
+
+	<end-state name="end"/>
+</process-definition>

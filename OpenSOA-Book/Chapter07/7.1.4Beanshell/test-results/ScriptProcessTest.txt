@@ -1,0 +1,10 @@
+Testsuite: com.sample.ScriptProcessTest
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 1.648 sec
+------------- Standard Output ---------------
+Event type is: transition
+Token is: Token(/)
+Token is: null
+Number is: 33
+------------- ---------------- ---------------
+
+Testcase: testSimpleProcess took 1.634 sec

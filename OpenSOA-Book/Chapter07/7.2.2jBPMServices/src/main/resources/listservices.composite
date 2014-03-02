@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" xmlns:hw="http://open-soa/sca/jbpm" name="jbpm-list" targetNamespace="http://open-soa/sca/jbpm">
+  <service name="ListProcessesService" promote="ListProcessesComponent">
+    <binding.ws wsdlElement="http://sca.opensoa#wsdl.port(ListProcesses/SOAP)"/>
+  </service>
+  <service name="ListProcessInstancesService" promote="ListProcessInstancesComponent">
+    <binding.ws wsdlElement="http://sca.opensoa#wsdl.port(ListProcessInstances/SOAP)"/>
+  </service>
+  <service name="ListInstanceTasksService" promote="ListInstanceTasksComponent">
+    <binding.ws wsdlElement="http://sca.opensoa#wsdl.port(ListInstanceTasks/SOAP)"/>
+  </service>
+  <service name="ListActorTasksService" promote="ListActorTasksComponent">
+    <binding.ws wsdlElement="http://sca.opensoa#wsdl.port(ListActorTasks/SOAP)"/>
+  </service>
+  <service name="ListInstanceTokensService" promote="ListInstanceTokensComponent">
+    <binding.ws wsdlElement="http://sca.opensoa#wsdl.port(ListInstanceTokens/SOAP)"/>
+  </service>
+  <component name="ListProcessesComponent">
+    <implementation.java class="opensoa.sca.impl.ListProcessesImpl"/>
+    <reference name="jbpmContextHelper" target="JBPMContextHelperComponent"/>
+  </component>
+  <component name="ListProcessInstancesComponent">
+    <implementation.java class="opensoa.sca.impl.ListProcessInstancesImpl"/>
+    <reference name="jbpmContextHelper" target="JBPMContextHelperComponent"/>
+  </component>
+  <component name="ListInstanceTasksComponent">
+    <implementation.java class="opensoa.sca.impl.ListInstanceTasksImpl"/>
+    <reference name="jbpmContextHelper" target="JBPMContextHelperComponent"/>
+  </component>
+  <component name="ListActorTasksComponent">
+    <implementation.java class="opensoa.sca.impl.ListActorTasksImpl"/>
+    <reference name="jbpmContextHelper" target="JBPMContextHelperComponent"/>
+  </component>
+  <component name="ListInstanceTokensComponent">
+    <implementation.java class="opensoa.sca.impl.ListInstanceTokensImpl"/>
+    <reference name="jbpmContextHelper" target="JBPMContextHelperComponent"/>
+  </component>
+</composite>

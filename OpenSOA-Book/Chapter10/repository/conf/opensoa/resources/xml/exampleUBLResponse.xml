@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OrderResponseSimple xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:oasis:names:specification:ubl:schema:xsd:OrderResponseSimple-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xsi:schemaLocation="urn:oasis:names:specification:ubl:schema:xsd:OrderResponseSimple-2 \\192.168.0.113\opt\synapse-1.2\repository\conf\opensoa\resources\schemas\ublsimpleresponse.xsd">
+	<cbc:UBLVersionID>2.0</cbc:UBLVersionID>
+	<cbc:ID>10001</cbc:ID>
+	<cbc:IssueDate>2005-06-20</cbc:IssueDate>
+	<cbc:Note>This is a note</cbc:Note>
+	<cbc:AcceptedIndicator>true</cbc:AcceptedIndicator>
+	<cac:OrderReference>
+		<cbc:ID>1001</cbc:ID>
+		<cbc:SalesOrderID>CON0095678</cbc:SalesOrderID>
+		<cbc:IssueDate>2005-06-20</cbc:IssueDate>
+	</cac:OrderReference>
+	<cac:SellerSupplierParty>
+		<cbc:CustomerAssignedAccountID>XFB01</cbc:CustomerAssignedAccountID>
+	</cac:SellerSupplierParty>
+	<cac:BuyerCustomerParty>
+		<cbc:CustomerAssignedAccountID>XFB01</cbc:CustomerAssignedAccountID>
+		<cbc:SupplierAssignedAccountID>GT00978567</cbc:SupplierAssignedAccountID>
+	</cac:BuyerCustomerParty>
+</OrderResponseSimple>

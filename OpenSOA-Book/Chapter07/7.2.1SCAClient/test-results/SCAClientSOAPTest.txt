@@ -1,0 +1,23 @@
+Testsuite: opensoa.book.chapter721.SCAClientSOAPTest
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 9.945 sec
+------------- Standard Output ---------------
+WARN - StatefulPersistenceContext.narrowProxy(615) | Narrowing proxy to class org.jbpm.graph.node.TaskNode - this operation breaks ==
+Variaible: John Doe
+** Case number is: 56693
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+May 19, 2009 9:16:13 AM org.apache.tuscany.sca.node.impl.NodeImpl <init>
+INFO: Creating node: soapclient.composite
+May 19, 2009 9:16:14 AM org.apache.tuscany.sca.node.impl.NodeImpl configureNode
+INFO: Loading contribution: file:/C:/Eclipse/workspace-opensoabook/OpenSOA-Book/Chapter07/7.2.1SCAClient/target/classes/
+May 19, 2009 9:16:16 AM org.apache.tuscany.sca.interfacedef.wsdl.xml.WSDLInterfaceProcessor
+WARNING: The #wsdl.interface({http://chapter721.book.opensoa}ProblemTicketComponentSOAP11port_http) specified does not match with WSDL Definitions
+May 19, 2009 9:16:16 AM org.apache.tuscany.sca.node.impl.NodeImpl configureNode
+INFO: Loading composite: file:/C:/Eclipse/workspace-opensoabook/OpenSOA-Book/Chapter07/7.2.1SCAClient/target/classes/soapclient.composite
+May 19, 2009 9:16:16 AM org.apache.tuscany.sca.interfacedef.wsdl.xml.WSDLInterfaceProcessor
+WARNING: The #wsdl.interface({http://chapter721.book.opensoa}ProblemTicketComponentSOAP11port_http) specified does not match with WSDL Definitions
+May 19, 2009 9:16:16 AM org.apache.tuscany.sca.node.impl.NodeImpl start
+INFO: Starting node: soapclient.composite
+------------- ---------------- ---------------
+
+Testcase: testSimpleProcess took 9.931 sec

@@ -1,0 +1,194 @@
+<project name="OpenSOA-Book" default="copy.libs" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+  <property name="ivy.install.version" value="2.0.0-beta1"/>
+  <property name="ivy.jar.dir" value="${basedir}/ivy"/>
+  <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy-2.0.0.jar"/>
+  <property name="ivy.checksums" value=""/>
+  <ivy:settings file="ivy/ivysettings.xml"/>
+
+  <property name="build.dir" value="build"/>
+  <property name="src.dir" value="src"/>
+  <property name="ivy.repo" value="${basedir}/ivy"/>
+
+  <!-- ================================= 
+          target: clean-cache              
+         ================================= -->
+  <target name="clean.cache" description="--> clean the ivy cache">
+    <delete includeemptydirs="true" failonerror="false">
+      <fileset dir="ivy/cache"/>
+    </delete>
+  </target>
+
+  <target name="resolve" description="Resolves all dependencies...">
+    <echo message="This will take some time (30-40 mins)...please be patient..."/>
+    <mkdir dir="${ivy.repo}"/>
+    <property name="ivy.default.ivy.user.dir" value="${ivy.repo}"/>
+    <ivy:resolve haltonfailure="false"/>
+  </target>
+
+  <target name="copy.tuscany.libs" depends="resolve"
+    description="Installs required tuscany libraries...">
+    <mkdir dir="tuscany-lib"/>
+    <copy todir="tuscany-lib" flatten="true">
+      <fileset dir="${ivy.repo}/cache">
+        <include name="**/tuscany-*.jar"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="copy.synapse.libs" depends="resolve"
+    description="Installs required synapse libraries...">
+    <mkdir dir="synapse-lib"/>
+    <copy todir="synapse-lib" flatten="true">
+      <fileset dir="${ivy.repo}/cache">
+        <include name="**/synapse-*.jar"/>
+        <include name="**/quickfixj-*.jar"/>
+        <include name="**/saxon-8.9.jar"/>
+        <include name="**/saxon-dom-8.9.jar"/>
+
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="copy.axis.libs" depends="resolve" description="Installs required axos libraries...">
+    <mkdir dir="axis-lib"/>
+    <copy todir="axis-lib" flatten="true">
+      <fileset dir="${ivy.repo}/cache">
+        <include name="**/axis2-*.jar"/>
+        <include name="**/axis-*.jar"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="copy.sources.libs" depends="resolve"
+    description="Installs required axos libraries...">
+    <mkdir dir="sources-lib"/>
+    <copy todir="sources-lib" flatten="true">
+      <fileset dir="${ivy.repo}/cache">
+        <include name="**/*sources.jar*"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="copy.libs"
+    depends="copy.general.libs, copy.tuscany.libs, copy.synapse.libs,copy.axis.libs,copy.sources.libs"
+    description="Installs all required libraries...">
+    
+  </target>
+
+  <target name="copy.general.libs" description="Installs all general libraries..." depends="resolve">
+    <mkdir dir="lib"/>
+    <copy todir="lib" flatten="true">
+      <fileset dir="${ivy.repo}/cache">
+        <include name="**/*.jar"/>
+        <exclude name="**/*sources.jar*"/>
+        <exclude name="**/*axis-*.jar"/>
+        <exclude name="**/*tuscany-*.jar"/>
+        <exclude name="**/synapse-*.jar"/>
+        <exclude name="**/quickfixj-*.jar"/>
+        <exclude name="**/asm-2.2.jar"/>
+        <exclude name="**/cglib-2.1_3*.jar"/>
+        <exclude name="**/cglib-nodep-2.1_3.jar"/>
+        <exclude name="**/antlr-2.7.6.jar"/>
+        <exclude name="**/saxon-dom-8.7.jar"/>
+        <exclude name="**/saxon-8.7.jar"/>
+        <exclude name="**/xmlbeans-*.jar"/>
+        <exclude name="**/xbean-2*.jar"/>
+        <exclude name="**/wsdl4j-1.6.2.jar"/>
+        <exclude name="**/xmlunit-1.1.jar"/>
+        <exclude name="**/ant-1.6.5.jar"/>
+        <exclude name="**/log4j-1.2.14.jar"/>
+        <exclude name="**/xml-apis-1.3.04.jar"/>
+        <exclude name="**/bcprov-jdk15-132.jar"/>
+        <exclude name="**/ant-nodeps-1.6.5.jar"/>
+        <exclude name="**/log4j-1.2.13.jar"/>
+        <exclude name="**/junit-3.8.2.jar"/>
+        <exclude name="**/jruby-complete-0.9.9.jar"/>
+        <exclude name="**/saxon-8.9.jar"/>
+        <exclude name="**/saxon-dom-8.9.jar"/>
+        <exclude name="**/servlet-api-2.3.jar"/>
+        <exclude name="**/slf4j-api-1.4.0.jar"/>
+        <exclude name="**/slf4j-jdk14-1.3.0.jar"/>
+        <exclude name="**/xml-apis-1.3.04.jar"/>
+        <exclude name="**/xmlsec-1.4.0.jar"/>
+        <exclude name="**/asm-2.2.3.jar"/>
+        <exclude name="**/jxl-2.4.2.jar"/>
+        <exclude name="**/js-1.6R5.jar"/>
+        <exclude name="**/javassist-3.4.GA.jar"/>
+        <exclude name="**/jta-1.0.1B.jar"/>
+        <exclude name="**/jxls-reader-0.9.6"/>
+        <exclude name="**/asm-commons-2.2.3.jar"/>
+        <exclude name="**/groovy-all-1.0.jar"/>
+        <exclude name="**/asm-tree-2.2.3.jar"/>
+        
+        <exclude name="**/spring-core-1.2.8.jar"/>
+        <exclude name="**/spring-beans-1.2.8.jar"/>
+				<exclude name="**/stax-api-1.0-2.jar"/>
+        
+      </fileset>
+    </copy>
+
+    <copy todir="war" flatten="true">
+      <fileset dir="${ivy.repo}/cache">
+        <include name="**/*.war"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="clean.all" depends="clean.cache"
+    description="Calls the various clear targets for all of
+	ant files. Also, will remove ivy.cache files">
+    <ant antfile="build.xml" dir="Chapter03/3.2.2Components" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter03/3.2.3Services" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter03/3.2.4Properties" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter03/3.2.5Implementation" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter03/3.2.6References" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter03/3.2.7Bindings" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter04/4.1ComponentTypes" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter04/4.2.1Conversations" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter04/4.2.2Callbacks" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter04/4.3ScriptingLanguages" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter04/4.4.1ProductionDeployment" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter04/4.4.2SDO" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter05/5.5Actions" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter05/5.6Events" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter05/5.7Variables" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter06/6.2Tasks" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter06/6.5API" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter06" target="clean.db"/>
+    <ant antfile="build.xml" dir="Chapter07/7.1.1SuperStates" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter07/7.1.2SubProcesses" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter07/7.1.3Exceptions" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter07/7.1.4Beanshell" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter07/7.1.5Logging" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter07/7.1.6AsynContinuations" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter07/7.2.1SCAClient" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter07/7.2.2jBPMServices" target="clean"/>
+    <ant antfile="build.xml" dir="Chapter07/7.2.2jBPMServices" target="clean.db"/>
+  	<ant antfile="build.xml" dir="Chapter08/8.5.1BasicQuery" target="clean"/>
+  	<ant antfile="build.xml" dir="Chapter08/8.5.2Variables" target="clean"/>
+  	<ant antfile="build.xml" dir="Chapter08/8.5.3Views" target="clean"/>
+  	<ant antfile="build.xml" dir="Chapter08/8.5.4Windows" target="clean"/>
+  	<ant antfile="build.xml" dir="Chapter08/8.6.1Functions" target="clean"/>
+  	<ant antfile="build.xml" dir="Chapter08/8.6.2Patterns" target="clean"/>
+  	<ant antfile="build.xml" dir="Chapter08/8.6.3JDBC" target="clean"/>
+  	<ant antfile="build.xml" dir="Chapter08/8.7EsperSCA" target="clean"/>
+  	<ant antfile="build.xml" dir="Chapter09" target="clean"/>
+  	<ant antfile="build.xml" dir="Chapter10" target="clean"/>
+  	<ant antfile="build.xml" dir="Chapter11/11.2" target="clean"/>
+  	<ant antfile="build.xml" dir="Chapter11/11.4" target="clean"/>
+  	<ant antfile="build.xml" dir="Chapter11/11.5" target="clean"/>
+  	<ant antfile="build.xml" dir="Chapter11/11.8" target="clean"/>
+  </target>
+
+  <target name="clean.libs" depends="clean.cache">
+    <delete includeemptydirs="true" failonerror="false" >
+      <fileset dir="axis-lib"/>
+      <fileset dir="sources-lib"/>
+      <fileset dir="tuscany-lib"/>
+      <fileset dir="lib"/>
+      <fileset dir="synapse-lib"/>
+      <fileset dir="pojocache-lib"/>
+    </delete>
+  </target>
+</project>

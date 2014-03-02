@@ -1,0 +1,25 @@
+<wsp:Policy xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+	xmlns:throttle="http://www.wso2.org/products/wso2commons/throttle">
+	<throttle:ThrottleAssertion>
+		<throttle:MaximumConcurrentAccess>10</throttle:MaximumConcurrentAccess>
+
+		<wsp:All>
+			<throttle:ID throttle:type="IP">other</throttle:ID>
+			<wsp:ExactlyOne>
+				<throttle:IsAllow>false</throttle:IsAllow>
+			</wsp:ExactlyOne>
+		</wsp:All>
+		<wsp:All>
+			<throttle:ID throttle:type="IP">127.0.0.2</throttle:ID>
+			<wsp:ExactlyOne>
+				<wsp:All>
+					<throttle:MaximumCount>2</throttle:MaximumCount>
+					<throttle:UnitTime>600000</throttle:UnitTime>
+					<throttle:ProhibitTimePeriod wsp:Optional="true">300000
+						</throttle:ProhibitTimePeriod>
+				</wsp:All>
+				<throttle:IsAllow>true</throttle:IsAllow>
+			</wsp:ExactlyOne>
+		</wsp:All>
+	</throttle:ThrottleAssertion>
+</wsp:Policy>

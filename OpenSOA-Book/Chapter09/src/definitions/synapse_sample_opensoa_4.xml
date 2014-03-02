@@ -1,0 +1,22 @@
+<!--  See Listing 9.4 in book for detailed explanation -->
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+      
+    <proxy name="CreateOrderService" transports="http" trace="enable">
+        <target>
+            <inSequence>
+                <log level="full"/>
+                <property name="RESPONSE" value="true"/>
+                <header name="To" action="remove"/>
+                <script language="js"><![CDATA[
+                mc.setPayloadXML(
+                     <CreateOrderResponse xmlns="uri:opensoa.chapter09.order">
+                        <Status>200</Status>
+                        <Message>Ok</Message>
+                    </CreateOrderResponse>);
+            ]]></script>
+                <send/>
+            </inSequence>
+        </target>
+    </proxy>
+    
+</definitions>

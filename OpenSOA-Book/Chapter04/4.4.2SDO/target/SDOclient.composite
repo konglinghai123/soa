@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<composite
+   xmlns="http://www.osoa.org/xmlns/sca/1.0"
+   targetNamespace="http://opensoa.book.chapter4"
+   xmlns:hw="http://opensoa.book.chapter4"
+   name="jmsclient">
+
+   <component name="SDOComponent">
+      <implementation.java
+         class="opensoa.book.chapter4_42.impl.SDOClientImpl" />
+   </component>
+
+   <reference
+      name="SDOClientReference"
+      promote="SDOComponent/sdoClient">
+      <interface.java interface="opensoa.book.chapter4_42.SDOClient"/>
+      <binding.ws wsdlElement="http://chapter4.book.opensoaSDO#wsdl.port(ProblemTicketService/SOAP)" />
+   </reference>
+</composite>

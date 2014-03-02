@@ -1,0 +1,14 @@
+<sequence name="mockProxyResponse" xmlns="http://ws.apache.org/ns/synapse">
+    <property name="Text" value="mockProxyResponse.xml file was invoked"/>
+    <log level="full"/>
+    <property name="RESPONSE" value="true"/>
+    <header name="To" action="remove"/>
+    <script language="js"><![CDATA[
+                mc.setPayloadXML(
+                     <AckOrderResponse xmlns="uri:opensoa.chapter10.order">
+                        <Status>200</Status>
+                        <Message>Ok</Message>
+                    </AckOrderResponse>);
+            ]]></script>
+    <send/>
+</sequence>

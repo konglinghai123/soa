@@ -1,0 +1,88 @@
+#created on: Sep 13, 2008
+package opensoa.drools
+
+import opensoa.drools.dto.Order;
+import opensoa.drools.dto.OrderProduct;
+import opensoa.drools.dto.TotalPrice;
+import opensoa.drools.dto.ProductPrice;
+import opensoa.drools.dto.Party;
+import java.util.ArrayList;
+
+global java.lang.Integer counter;
+
+# following global added for junit testing
+global java.util.List price_calc_results_dsl;
+
+expander pricing.dsl
+
+rule "Gold-LineItemPrice-DSL"
+	ruleflow-group 'price-calc-dsl'
+	salience 20
+	when
+	
+		There is an order
+		Retrieve the order line items
+		The customer is a GOLD customer
+		Get the DISCOUNT prices of the products
+ 	then
+ 		Calculate then item's price
+ 		Update the order
+ 		Print out the line item's price
+ 		>price_calc_results_dsl.add ( "Gold-LineItemPrice-DSL" );
+end		
+
+rule "Silver-LineItemPrice-dsl"
+	ruleflow-group 'price-calc-dsl'
+	salience 20
+	when
+		There is an order
+		Retrieve the order line items
+		The customer is a SILVER customer
+		Get the DISCOUNT prices of the products
+ 	then
+ 		Calculate then item's price
+ 		Update the order
+ 		Print out the line item's price
+ 		>price_calc_results_dsl.add ( "Silver-LineItemPrice-dsl" );
+end		
+
+rule "Regular-LineItemPrice-dsl"
+	ruleflow-group 'price-calc-dsl'
+	salience 20
+	when
+		There is an order
+		Retrieve the order line items
+		The customer is a REGULAR customer
+		Get the LIST prices of the products
+ 	then
+ 		Calculate then item's price
+ 		Update the order
+ 		Print out the line item's price
+ 		>price_calc_results_dsl.add ( "Regular-LineItemPrice-dsl" );
+end		
+
+rule "Quantity-Discount-dsl"
+	ruleflow-group 'price-calc-dsl'
+	salience 30
+	when
+		There is an order
+		Retrieve calculated order items which exceed a quantity of 10
+	then
+		Log : "Applying volume discount"
+		Apply line item discount of .10 to previously calculated price
+		Update the order
+		>price_calc_results_dsl.add ( "Quantity-Discount-dsl" );
+end
+
+rule "TotalEndPrice-dsl"
+	ruleflow-group 'price-calc-dsl'
+	salience 5
+	no-loop true
+	when
+		There is an order	
+		Calculate total price from line items
+	then
+		Print out total price
+		Save the total price into memory
+		>price_calc_results_dsl.add ( "TotalEndPrice-dsl" );
+end	

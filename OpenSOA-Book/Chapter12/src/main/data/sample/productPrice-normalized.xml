@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProductPrices>
+    <ProductPrice>
+        <productId>GZ-1000</productId>
+        <priceType>DEFAULT_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>15.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-1000</productId>
+        <priceType>LIST_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>15.0</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-1001</productId>
+        <priceType>DEFAULT_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>25.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-1001</productId>
+        <priceType>LIST_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>23.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-1004</productId>
+        <priceType>DEFAULT_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>24.99</price>
+    </ProductPrice>
+        <ProductPrice>
+        <productId>GZ-1004</productId>
+        <priceType>LIST_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>24.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-1005</productId>
+        <priceType>DEFAULT_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>2699.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-1005</productId>
+        <priceType>LIST_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>2499.0</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-1006</productId>
+        <priceType>DEFAULT_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>1.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-1006</productId>
+        <priceType>LIST_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>5.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-2002</productId>
+        <priceType>DEFAULT_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>47.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-2002</productId>
+        <priceType>LIST_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>48.0</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-2644</productId>
+        <priceType>SPECIAL_PROMO_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>31.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-2644</productId>
+        <priceType>DEFAULT_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>47.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-2644</productId>
+        <priceType>LIST_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>48.0</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-5005</productId>
+        <priceType>DEFAULT_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>47.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-5005</productId>
+        <priceType>LIST_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>48.0</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-7000</productId>
+        <priceType>DEFAULT_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>599.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-7000</productId>
+        <priceType>LIST_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>999.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-8544</productId>
+        <priceType>DEFAULT_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>269.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-8544</productId>
+        <priceType>LIST_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>270.0</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-9290</productId>
+        <priceType>DEFAULT_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>97.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>GZ-9290</productId>
+        <priceType>LIST_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>99.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>WG-1111</productId>
+        <priceType>DEFAULT_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>59.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>WG-1111</productId>
+        <priceType>LIST_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>60.0</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>WG-5569</productId>
+        <priceType>SPECIAL_PROMO_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>41.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>WG-5569</productId>
+        <priceType>DEFAULT_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>59.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>WG-5569</productId>
+        <priceType>LIST_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>60.0</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>WG-9943</productId>
+        <priceType>DEFAULT_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>549.99</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>WG-9943</productId>
+        <priceType>LIST_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>550.0</price>
+    </ProductPrice>
+    <ProductPrice>
+        <productId>WG-9943</productId>
+        <priceType>COMPETITIVE_PRICE</priceType>
+        <fromDate>2008-05-13 12:00:00.0</fromDate>
+        <price>922.0</price>
+    </ProductPrice>
+</ProductPrices>

@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<csv xmlns="http://ws.apache.org/synapse/ns/csv">
+    <col-defn n="17">
+        <col name="TransactionID"/>
+        <col name="SalesOrderId"/>
+        <col name="Date"/>
+        <col name="Note"/>
+        <col name="CustomerID"/>
+        <col name="CustomerName"/>
+        <col name="AddressLine1"/>
+        <col name="AddressLine2"/>
+        <col name="City"/>
+        <col name="State"/>
+        <col name="Zip"/>
+        <col name="ContactName"/>
+        <col name="ContactPhone"/>
+        <col name="ContactEmail"/>
+        <col name="Item"/>
+        <col name="Price"/>
+        <col name="Qty"/>
+    </col-defn>
+    <data>
+        <row n="1">
+            <col name="TransactionID">AEG012345</col>
+            <col name="SalesOrderId">CON0095678</col>
+            <col name="Date">2005-06-20</col>
+            <col name="Note">This is a sample note</col>
+            <col name="CustomerID">XFB01</col>
+            <col name="CustomerName">IYT Corporation</col>
+            <col name="AddressLine1">10250 Some Drive</col>
+            <col name="AddressLine2">Suite 101</col>
+            <col name="City">Irvine</col>
+            <col name="State">CA</col>
+            <col name="Zip">92032</col>
+            <col name="ContactName">John Brown</col>
+            <col name="ContactPhone">719-323-2322</col>
+            <col name="ContactEmail">jdoe@someplace.com</col>
+            <col name="Item">Beeswax</col>
+            <col name="Price">100.00</col>
+            <col name="Qty">5</col>
+        </row>
+    </data>
+</csv>

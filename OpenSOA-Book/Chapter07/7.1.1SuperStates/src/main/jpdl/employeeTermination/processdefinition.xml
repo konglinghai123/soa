@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition 
+  xmlns="urn:jbpm.org:jpdl-3.2"
+  name="employee-termination">
+   <start-state name="start">
+		<transition to="fork1"></transition>
+	</start-state>
+	
+   <super-state name="security">
+		<node name="disable ldap">
+			<transition to="security-fork" name="t"></transition>
+		</node>
+		<node name="record in db"></node>
+		<join name="security-join">
+			<transition to="record in db" name="t7"></transition>
+		</join>
+		<fork name="security-fork">
+			<transition to="rtrv vpn card" name="t1"></transition>
+			<transition to="rtrv access card" name="t2"></transition>
+			<transition to="rtrv parking card" name="t3"></transition>
+		</fork>
+		<task-node name="rtrv vpn card">
+			<task name="rtrv_vpn_card_taskl"></task>
+			<transition to="security-join" name="t4"></transition>
+		</task-node>
+		<task-node name="rtrv access card">
+			<task name="retreive_access_card_task"></task>
+			<transition to="security-join" name="t5"></transition>
+		</task-node>
+		<task-node name="rtrv parking card">
+			<transition to="security-join" name="t6"></transition>
+		</task-node>
+		<transition to="join1"></transition>
+	</super-state>
+
+	<fork name="fork1">
+		<transition to="finance" name="to-finance"></transition>
+		<transition to="hr" name="to-hr">
+			<description>
+					
+			</description>
+		</transition>
+		<transition to="security" name="to security"></transition>
+	</fork>
+
+	<join name="join1">
+		<transition to="end"></transition>
+	</join>
+
+	<super-state name="hr">
+		<node name="notify 401k">
+			<transition to="notify insrnc "></transition>
+		</node>
+		<node name="notify insrnc ">
+			<transition to="notify stock"></transition>
+		</node>
+		<node name="notify stock">
+			<transition to="rtrv equip"></transition>
+		</node>
+		<task-node name="rtrv equip">
+			<task name="retrieve_equipment_task"></task>
+			<transition to="exit intrv"></transition>
+		</task-node>
+		<task-node name="exit intrv">
+			<task name="conduct_exit_interview_task"></task>
+		</task-node>
+		<event type="superstate-enter">
+			<script>
+				System.out.println("Entering HR Superstate");
+			</script>
+		</event>
+		<transition to="join1"></transition>
+	</super-state>
+
+	<super-state name="finance">
+		<event type="superstate-enter">
+			<script>
+				System.out.println("Entering finance Superstate");
+				executionContext.setVariable("financeVar", "finance val");
+				
+			</script>
+		</event>
+		<transition to="join1" name="to_join1"></transition>
+
+		<task-node name="appr timecard">
+			<task name="approve_timecard_task"></task>
+			<transition to="issue check"></transition>
+		</task-node>
+		<node name="issue check">
+			<transition to="update payroll"></transition>
+		</node>
+		<state name="update payroll">
+		</state>
+		
+	</super-state>
+   <end-state name="end"></end-state>
+</process-definition>

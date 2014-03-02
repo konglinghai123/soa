@@ -1,0 +1,7 @@
+--MIMEBoundaryurn_uuid_BD3EFDDBFB9C53AB2B1237689189902
+Content-Type: application/xop+xml; charset=UTF-8; type="text/xml"
+Content-Transfer-Encoding: binary
+Content-ID: <0.urn:uuid:BD3EFDDBFB9C53AB2B1237689189903@apache.org>
+
+<?xml version='1.0' encoding='UTF-8'?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Body><createProcessInstanceResponse xmlns="http://vo.sca.opensoa-ch10/xsd"><processInstanceId>1001</processInstanceId></createProcessInstanceResponse></soapenv:Body></soapenv:Envelope>
+--MIMEBoundaryurn_uuid_BD3EFDDBFB9C53AB2B1237689189902--

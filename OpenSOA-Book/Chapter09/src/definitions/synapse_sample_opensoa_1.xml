@@ -1,0 +1,23 @@
+<!--  See Listing 9.1 in book for detailed explanation -->
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    
+    <sequence name="main">
+        
+        <log level="full">
+            <property name="Text" value="Service called was"/>
+            <property name="service: " expression="get-property('To')"/>
+            <property name="service-upper-case: " expression="fn:upper-case(get-property('To'))"/>
+        </log>
+        
+        <in>
+            <drop/>
+        </in>
+        
+    </sequence>
+    
+</definitions>
+
+<!-- This results in console output such as:
+   [datestamp],264 [machine] [HttpServerWorker-1]  INFO LogMediator Text = Service called was, service:  = /CreateOrderService
+ -->
+    

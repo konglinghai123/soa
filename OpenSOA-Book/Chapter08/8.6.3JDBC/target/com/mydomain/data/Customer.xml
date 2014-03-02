@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Customer">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="Customer" type="com.mydomain.domain.Customer"/> 
+  
+  <resultMap id="CustomerResult" class="Customer">
+    <result property="id" column="CUST_ID"/>
+    <result property="custName" column="CUST_NAME"/>
+  </resultMap>
+
+  <!-- Select with no parameters using the result map for Customer class. -->
+  <select id="selectAllCustomers" resultMap="CustomerResult">
+    select * from Customer
+  </select>
+
+  <select id="selectCustomerById" parameterClass="int" resultClass="Customer">
+    select
+      CUST_ID as id,
+      CUST_NAME as firstName
+    from CUSTOMER
+    where CUST_ID = #id#
+  </select>
+   
+  <!-- Insert example, using the Customer parameter class -->
+  <insert id="insertCustomer">
+    create table CUSTOMER  (CUST_ID int, CUST_NAME varchar(30));
+	insert into CUSTOMER(CUST_ID, CUST_NAME) values (101, 'Customer 101');
+	insert into CUSTOMER(CUST_ID, CUST_NAME) values (102, 'Customer 102');
+	insert into CUSTOMER(CUST_ID, CUST_NAME) values (103, 'Customer 103');
+	insert into CUSTOMER(CUST_ID, CUST_NAME) values (104, 'Customer 104');
+	insert into CUSTOMER(CUST_ID, CUST_NAME) values (105, 'Customer 105');
+  </insert>
+
+</sqlMap>

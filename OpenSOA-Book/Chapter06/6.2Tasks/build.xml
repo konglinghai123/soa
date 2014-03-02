@@ -1,0 +1,95 @@
+<project name="chapter06.2" default="compile">
+	
+	<property file="../../build.properties" />
+	
+	<property name="lib.ext" value="../lib"/>
+	<property name="resources.dir" value="../resources"/>
+	<property name="jarfile" value="target/chapter6tasks.jar"/>
+
+    <!-- define the jbpm tasks with the hibernate configurations in the classpath -->
+    <taskdef resource="org/jbpm/ant/jbpm.ant.tasks.properties">
+      <classpath>
+        <pathelement path="${resources.dir}" />
+    	<!-- this is done because the asm lib used by Tuscany is 
+    	not compatible with the one use by jBPM, so I override it -->
+    	<fileset dir="${lib.ext}">
+    		<include name="*.jar"/>
+    	</fileset>
+    	<fileset dir="${jbpm.lib}">
+    		<include name="*.jar"/>
+    	</fileset>
+      </classpath>
+    </taskdef>
+    			
+	<target name="compile" description="Compile the java classes...">
+		<mkdir dir="target/classes" />
+		<mkdir dir="test-results" />
+		
+		<javac destdir="target/classes" debug="on" source="1.5"
+			target="1.5">
+			<src path="src\main\java" />
+			<classpath>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+			</classpath>
+		</javac>
+		
+		<copy todir="target/classes">
+			<fileset dir="src\main\jpdl" />
+		</copy>
+
+		<copy todir="target/classes">
+			<fileset dir="..\resources" />
+		</copy>
+				
+	</target>
+
+	<target name="create.console.jar" depends="compile" description="Creates jar file for deployment to jBPM Console">
+		
+		<jar destfile="${jarfile}" 
+			 basedir="target/classes"
+			 includes="**/*.class"
+			 />
+	</target>
+	
+	<target name="clean" description="Cleans out the target directory...">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="target" />
+		</delete>
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="work" />
+		</delete>
+	</target>
+	
+	<!-- creates a process archive for the task-example process -->
+	<target name="prepare.example.task" description="Creates zip/par file for task example...">
+		<zip 
+			destfile="target\task-example.par"
+		    basedir="src\main\jpdl\task-example"/>		
+	</target>
+	
+	<!-- creates a process archive for the task-example process -->
+	<target name="prepare.example.swimlane" description="Creates zip/par file for swimlane example...">
+		<zip 
+			destfile="target\swimlane-example.par"
+		    basedir="src\main\jpdl\swimlane-example"/>		
+	</target>
+		
+	<target name="deploy.process.task" depends="prepare.example.task" description="Deploys task example to jBPM Console...">
+		<deployprocess process="target\task-example.par" />
+	</target>
+
+	<target name="deploy.process.swimlane" depends="prepare.example.swimlane" description="Deploys swimlane example to jBPM Console...">
+		<deployprocess process="target\swimlane-example.par" />
+	</target>
+	
+	<target name="deploy.examples.to.jboss" depends="deploy.process.swimlane, deploy.process.task, copy.jarfile.to.jboss" description="Compiles and deploys processes to jBPM Console...">
+		<echo message="Deploying examples processes..."/>
+	</target>	
+
+	<target name="copy.jarfile.to.jboss" depends="create.console.jar" description="Copies jar file JBoss (jBPM Console)">
+		<copy file="${jarfile}" todir="${JBOSS_HOME}/server/default/deploy/jbpm" overwrite="true"/>
+	</target>
+	
+</project>

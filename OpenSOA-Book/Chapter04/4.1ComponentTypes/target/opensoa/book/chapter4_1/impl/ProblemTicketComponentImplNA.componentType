@@ -1,0 +1,17 @@
+<componentType
+   xmlns="http://www.osoa.org/xmlns/sca/1.0"
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+   <service name="ProblemTicketComponent">
+      <interface.java
+         interface="opensoa.book.chapter4_1.ProblemTicketComponent" />
+   </service>
+
+   <reference name="createTicket">
+      <interface.java
+         interface="opensoa.book.chapter4_1.CreateTicketComponent" />
+   </reference>
+
+   <property name="username" type="xsd:string" />
+   <property name="password" type="xsd:string" />
+</componentType>

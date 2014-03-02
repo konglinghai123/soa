@@ -1,0 +1,13 @@
+Testsuite: opensoa.drools.tests.Test11_7
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 5.525 sec
+------------- Standard Output ---------------
+HelloWorldMaleFlow fired: John Doe
+Inside action
+person: Mr. John Doe
+HelloWorldFemaleFlow fired: John Doe
+Inside action
+person: Mrs. John Doe
+------------- ---------------- ---------------
+
+Testcase: testMr took 5.047 sec
+Testcase: testMrs took 0.457 sec

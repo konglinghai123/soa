@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition name="swimlane-example">
+	<swimlane name="approver">
+		<assignment pooled-actors="jdavis, dgenkin"/>
+	</swimlane>
+	<start-state name="start">
+		<task name="poDetails"></task>
+		<transition to="approve" name="submit"/>
+	</start-state>
+	<task-node name="approve">
+		<task name="approveAmt" swimlane="approver">
+			<reminder duedate="0 seconds" repeat="10 minutes"/>
+		</task>
+		<timer duedate="30 minutes" name="past-due-timer" transition="past-due"/>
+		<transition to="assign-charge-codes" 
+			name="approved"/>
+		<transition to="review" name="return"/>
+		<transition to="pastdue" name="past-due">
+			<cancel-timer name="approveAmt"/>
+		</transition>
+	</task-node>
+	<task-node name="assign-charge-codes">
+		<task name="charge-code-task" swimlane="approver"/>
+		<transition to="end" name="ok"/>
+	</task-node>
+	<task-node name="review">
+		<transition to="end" name="cancel"/>
+		<transition to="approve" name="resubmit"/>
+	</task-node>
+
+	<state name="pastdue">
+	 <!--  
+		<event type="node-enter">
+			<action name="cancel-timer" class="com.sample.CancelTimerService"></action>
+		</event>
+	-->	
+</state>
+	<end-state name="end"/>
+</process-definition>
+

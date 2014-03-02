@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  xmlns=""  name="task-example">
+
+	<start-state name="start">
+		<task name="poDetails"></task>
+		<transition to="approve" name="submit"></transition>
+	</start-state>
+
+	<task-node name="approve">
+		<task name="approveAmt">
+			<assignment class="com.sample.AssignmentExample"/>
+		</task>
+		<transition to="end" name="approved"></transition>
+		<transition to="notifyRejection" name="rejected"></transition>
+		<transition to="review" name="return"></transition>
+	</task-node>
+
+	<mail-node name="notifyRejection">
+		<transition to="end"></transition>
+	</mail-node>
+
+	<task-node name="review">
+		<transition to="end" name="cancel"></transition>
+		<transition to="approve" name="resubmit"></transition>
+	</task-node>
+
+
+	<end-state name="end"></end-state>
+
+
+</process-definition>

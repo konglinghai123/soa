@@ -1,0 +1,75 @@
+#created on: Sep 13, 2008
+package opensoa.drools
+
+import opensoa.drools.dto.Order;
+import opensoa.drools.dto.OrderProduct;
+import opensoa.drools.dto.TotalPrice;
+import opensoa.drools.dto.ProductPrice;
+import opensoa.drools.dto.Party;
+import java.util.ArrayList;
+
+# following global added for junit testing
+global java.util.List price_calc_results;
+
+rule "Regular-LineItemPrice"
+	ruleflow-group 'price-calc'
+	salience 20
+	when
+		order : Order();
+		item : OrderProduct ( itemCnt : cnt, stdPrice == 0 ) from order.getLines();
+		party : Party ( partyId == order.partyId, partyTypeId == Party.REGULAR  ); 
+		ProductPrice ( price : price, productId == item.productId, priceType == ProductPrice.LIST_PRICE);
+	then
+		item.setStdPrice( price * itemCnt );
+		update ( order );
+		price_calc_results.add ( "Regular-LineItemPrice" );
+end
+
+rule "Discount-LineItemPrice"
+	ruleflow-group 'price-calc'
+	salience 20 
+	when
+		order : Order();
+		item : OrderProduct ( itemCnt : cnt, stdPrice == 0 ) from order.getLines();
+		party : Party ( partyId == order.partyId, partyTypeId in ( Party.SILVER, Party.GOLD ) ); 
+		ProductPrice ( price : price, productId == item.productId, priceType == ProductPrice.DISCOUNT_PRICE);
+	then
+		item.setStdPrice ( price * itemCnt );
+		update ( order );
+		price_calc_results.add ( "Discount-LineItemPrice" );
+end
+
+# Should really pass the discount value in, not hard-code % in rule
+rule "Quantity-Discount"
+	ruleflow-group 'price-calc'
+	salience 30
+	when
+		order : Order();
+		item : OrderProduct ( qntDiscountPrice == 0, price : stdPrice, cnt >= 10, stdPrice > 0 ) from order.getLines();
+	then
+		item.setQntDiscountPrice ( price * .90f );
+		update ( order );
+		price_calc_results.add ( "Quantity-Discount" );
+end
+
+rule "TotalEndPrice"
+	ruleflow-group 'price-calc'
+	salience 5
+	no-loop true
+	when
+		order : Order();
+		#item : OrderProduct ( disprice : qntDiscountPrice, stdprice :  stdPrice > 0 ) from order.getLines();
+		totalPrice : Float() from accumulate ( 
+		  OrderProduct ( disprice : qntDiscountPrice, stdprice :  stdPrice > 0 ) from order.getLines(),
+		  init ( float total = 0; ),
+		  action ( total += (disprice > 0 ? disprice : stdprice); ),
+		  result ( new Float(total) ) 
+		  );
+	then
+		TotalPrice tot = new TotalPrice();
+		tot.setTotalPrice ( totalPrice );
+		tot.setOrderId ( order.getOrderId() );
+		insert ( tot );
+		price_calc_results.add ( "TotalEndPrice" );
+end	
+

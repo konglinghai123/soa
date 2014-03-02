@@ -1,0 +1,42 @@
+package opensoa.drools.hellodrools;
+
+import opensoa.drools.hellodrools.Person;
+
+# following global added for junit testing
+global java.util.List results;
+
+rule "HelloBasic"
+	salience 10
+	when 
+		Person();
+	then
+		System.out.println("HelloBasic: Hello World");
+		results.add ( new String("HelloBasic: Hello World") );
+end
+	
+rule "HelloBasic2"
+	when
+		person : Person();
+	then
+		System.out.println("HelloBasic2: Hello " + person.getName());	
+		results.add ( new String("HelloBasic2: Hello " + person.getName()) );
+end
+
+rule "HelloMr"
+	when
+		person : Person ( gender == 'M');
+	then
+		System.out.println("Hello Mr. " + person.getName());
+		results.add ( "Hello Mr. " + person.getName() );
+end
+
+rule "HelloDude"
+	salience -10
+	when
+		person : Person ( gender == 'M', age < 25 );
+	then
+		System.out.println ("Hello Dude!");
+		retract ( person );
+		results.add ("Hello Dude!");
+end
+

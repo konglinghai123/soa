@@ -1,0 +1,16 @@
+<sequence name="createOrderService" xmlns="http://ws.apache.org/ns/synapse">
+    <validate source="//*[local-name()='Order']">
+        <schema key="schemas/ubl.xsd"/>
+        <on-fail>
+            <makefault>
+                <code value="tns:Receiver"
+                    xmlns:tns="http://www.w3.org/2003/05/soap-envelope"/>
+                <reason value="Invalid Order Request"/>
+            </makefault>
+            <property name="RESPONSE" value="true"/>
+            <header name="To" action="remove"/>
+            <send/><drop/>
+        </on-fail>
+    </validate>
+    <xslt key="xslt-key" source="//*[local-name()='CreateOrder']"/>
+</sequence>

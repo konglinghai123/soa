@@ -1,0 +1,4 @@
+<contribution xmlns="http://www.osoa.org/xmlns/sca/1.0"
+              xmlns:hw="http://opensoa.book.chapter441">
+   <deployable composite="hw:ProblemManagementComposite"/>
+</contribution>

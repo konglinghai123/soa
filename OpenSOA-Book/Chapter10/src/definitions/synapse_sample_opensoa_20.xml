@@ -1,0 +1,25 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+	
+	<localEntry key="sec_policy" src="file:repository/conf/opensoa/resources/policy/usernametoken.xml"/>
+		
+	<proxy name="TestWSSecurityService" transports="http" trace="enable">
+		<target>
+			<inSequence>
+				<property name="RESPONSE" value="true"/>
+				<header name="To" action="remove"/>
+				<script language="js"><![CDATA[
+                mc.setPayloadXML( 
+                     <CreateOrderResponse xmlns="uri:opensoa.chapter10.order">
+                        <Status>200</Status>
+                        <Message>Ok</Message>
+                    </CreateOrderResponse>);
+            ]]></script>
+				<send/>
+			</inSequence>
+		</target>
+		<publishWSDL uri="file:repository/conf/opensoa/resources/wsdl/ublOrder.wsdl"/>
+		<policy key="sec_policy"/>
+		<enableSec/>
+	</proxy>
+	
+</definitions>

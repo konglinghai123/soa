@@ -1,0 +1,17 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    xmlns="http://services.samples/xsd" elementFormDefault="qualified"
+                    attributeFormDefault="unqualified"
+                    targetNamespace="http://services.samples/xsd"
+                    xmlns:test2="http://services.samples2/xsd">
+                    
+            <xs:import namespace="http://services.samples2/xsd" schemaLocation="file:./repository/conf/opensoa/resources/schemas/ubl/common/test2.xsd"/>
+
+            <xs:element name="getQuote">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="test2:getQuote2"/>
+
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+</xs:schema>

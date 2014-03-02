@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<forms>
+  <form task="poDetails" form="poDetails.xhtml"/>
+  <form task="approveAmt" form="approveAmt.xhtml"/>
+  <form task="assignChargeCodes" form="assignChargeCodes.xhtml"/>
+</forms>

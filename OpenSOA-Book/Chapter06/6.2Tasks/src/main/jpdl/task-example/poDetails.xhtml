@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<!-- the DOCTYPE means we are required to use html for a root element -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:tf="http://jbpm.org/jsf/tf" xmlns:jbpm="http://jbpm.org/jsf">
+
+<ui:component>
+
+	<jbpm:dataform>
+
+		<f:facet name="header">
+			<h:outputText value="#{taskName}" />
+		</f:facet>
+
+		<jbpm:datasection>
+			<jbpm:datacell>
+				<f:facet name="header">
+					<h:outputText value="Submitter" />
+				</f:facet>
+				<h:inputText value="#{var['submitter']}" size="35"/>
+			</jbpm:datacell>
+			<jbpm:datacell>
+				<f:facet name="header">
+					<h:outputText value="Justification" />
+				</f:facet>
+				<h:inputTextarea value="#{var['justification']}" rows="5" cols="60"
+					style="width: 300px" />
+			</jbpm:datacell>
+		</jbpm:datasection>
+
+		<!--  item 1 -->
+		<jbpm:datasection>
+			<f:facet name="header">
+				<span style="color: #ffff99; margin-left: 0px; padding-left: 0px;">ITEM 1</span>
+			</f:facet>
+			<jbpm:datacell>
+				<f:facet name="header">
+					<h:outputText value="Item Name" />
+				</f:facet>
+				<h:inputText value="#{var['item1Name']}"  size="35"/>
+			</jbpm:datacell>
+			<jbpm:datacell>
+				<f:facet name="header">
+					<h:outputText value="Cnt" />
+				</f:facet>
+				<h:inputText value="#{var['item1Cnt']}" size="10" />
+			</jbpm:datacell>
+			<jbpm:datacell>
+				<f:facet name="header">
+					<h:outputText value="Unit Cost" />
+				</f:facet>
+				<h:inputText value="#{var['item1UnitCost']}"  size="10"/>
+			</jbpm:datacell>
+			<jbpm:datacell>
+				<f:facet name="header">
+					<h:outputText value="Total Cost" />
+				</f:facet>
+				<h:inputText value="#{var['item1TotalCost']}" size="10"/>
+			</jbpm:datacell>
+			<jbpm:datacell>
+				<f:facet name="header">
+					<h:outputText value="Supplier" />
+				</f:facet>
+				<h:inputText value="#{var['supplier1Name']}"  size="35"/>
+			</jbpm:datacell>
+		</jbpm:datasection>
+
+		<jbpm:datasection>
+			<f:facet name="header">
+				<span style="color: #ffff99; margin-left: 0px; padding-left: 0px;">ITEM 2</span>
+			</f:facet>
+			<jbpm:datacell>
+				<f:facet name="header">
+					<h:outputText value="Item Name" />
+				</f:facet>
+				<h:inputText value="#{var['item2Name']}" size="35" />
+			</jbpm:datacell>
+			<jbpm:datacell>
+				<f:facet name="header">
+					<h:outputText value="Cnt" />
+				</f:facet>
+				<h:inputText value="#{var['item2Cnt']}" size="10" />
+			</jbpm:datacell>
+			<jbpm:datacell>
+				<f:facet name="header">
+					<h:outputText value="Unit Cost" />
+				</f:facet>
+				<h:inputText value="#{var['item2UnitCost']}"  size="10"/>
+			</jbpm:datacell>
+			<jbpm:datacell>
+				<f:facet name="header">
+					<h:outputText value="Total Cost" />
+				</f:facet>
+				<h:inputText value="#{var['item2TotalCost']}" size="10"/>
+			</jbpm:datacell>
+			<jbpm:datacell>
+				<f:facet name="header">
+					<h:outputText value="Supplier" />
+				</f:facet>
+				<h:inputText value="#{var['supplier2Name']}"  size="35"/>
+			</jbpm:datacell>
+		</jbpm:datasection>
+
+		<jbpm:datasection>
+			<jbpm:datacell>
+				<f:facet name="header">
+					<h:outputText value="Actions" />
+				</f:facet>
+				<!-- TASKFORM BUTTONS -->
+				<tf:saveButton value="Save" />
+				<tf:cancelButton value="Cancel" />
+				<tf:transitionButton transition="submit" value="Submit" />
+			</jbpm:datacell>
+		</jbpm:datasection>
+
+	</jbpm:dataform>
+
+</ui:component>
+
+</html>

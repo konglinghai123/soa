@@ -1,0 +1,55 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+	
+	<registry provider="org.apache.synapse.registry.url.SimpleURLRegistry">
+		<parameter name="root"> file:./repository/conf/opensoa/resources/ </parameter>
+		<parameter name="cachableDuration">150000</parameter>
+	</registry>
+	
+	<localEntry key="sec_policy" src="file:repository/conf/opensoa/resources/policy/usernametoken.xml"/>
+
+	<proxy name="ThrottledProxy" transports="http" trace="enable">
+		<target>
+			<inSequence>
+				<throttle onReject="throttle-fault" onAccept="mockEndpoint" id="A">
+					<policy key="policy/throttle_policy.xml"/>
+				</throttle>
+			</inSequence>
+			<outSequence>
+				<throttle id="A"/>
+				<send/>
+			</outSequence>
+		</target>
+		<publishWSDL uri="file:repository/conf/opensoa/resources/wsdl/ublOrder.wsdl"/>
+		<policy key="sec_policy"/>
+		<enableSec/>
+	</proxy>
+	
+	<sequence name="throttle-fault" trace="enable">
+		<log level="custom">
+			<property name="text" value="**Access Denied**"/>
+		</log>
+		<makefault>
+			<code value="tns:Receiver"
+				xmlns:tns="http://www.w3.org/2003/05/soap-envelope"/>
+			<reason value="**Access Denied**"/>
+		</makefault>
+		<property name="RESPONSE" value="true"/>
+		<header name="To" action="remove"/>
+		<send/>
+		<drop/>
+	</sequence>
+	
+	<sequence name="mockEndpoint">
+		<property name="RESPONSE" value="true"/>
+		<header name="To" action="remove"/>
+		<script language="js"><![CDATA[
+                mc.setPayloadXML(
+                     <CreateOrderResponse xmlns="uri:opensoa.chapter10.order">
+                        <Status>200</Status>
+                        <Message>Ok</Message>
+                    </CreateOrderResponse>);
+            ]]></script>
+		<send/>
+	</sequence>
+
+</definitions>

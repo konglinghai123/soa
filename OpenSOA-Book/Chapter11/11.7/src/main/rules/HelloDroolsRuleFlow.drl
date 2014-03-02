@@ -1,0 +1,34 @@
+package opensoa.drools.hellodrools;
+
+import opensoa.drools.hellodrools117.Person;
+
+# following global added for junit testing
+global java.util.List results;
+
+rule "HelloWorldMaleFlow"
+	ruleflow-group 'male'
+	no-loop true
+	when
+		man : Person (  )
+	then
+		man.setSalutation ( "Mr." );
+		update ( man );
+		System.out.println ( "HelloWorldMaleFlow fired: " + man.getName() );
+		results.add ( man.getSalutation() );
+end
+
+rule "HelloWorldFemaleFlow"
+	ruleflow-group 'female'
+	no-loop true
+	when
+		female : Person (  )
+	then
+		female.setSalutation ( "Mrs." );
+		update ( female );
+		System.out.println ( "HelloWorldFemaleFlow fired: " + female.getName() );
+		results.add ( female.getSalutation() );
+end
+
+query "personQuery"
+	person : Person ( );
+end

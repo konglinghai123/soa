@@ -1,0 +1,66 @@
+<!--  This example requires ActiveMQ to be running on your local machine. No special configuration
+      is required. Just launch ActiveMQ, send a message to CreateOrderService via soapUI, and then
+      monitor the ActiveMQ queue using it's web console at:  http://localhost:8161/admin/    -->
+
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+
+    <registry provider="org.apache.synapse.registry.url.SimpleURLRegistry">
+        <parameter name="root">
+            file:./repository/conf/opensoa/resources/
+        </parameter>
+        <parameter name="cachableDuration">150000</parameter>
+    </registry>
+
+    <localEntry key="xslt-key" src="file:repository/conf/opensoa/resources/xslt/mapUBLOrder.xslt"/>
+
+    <endpoint name="MockCreateProcessInstanceService">
+        <address uri="jms:/CreateProcessInstanceService?transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory&amp;java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&amp;java.naming.provider.url=tcp://localhost:61616&amp;transport.jms.DestinationType=queue" format="soap11"/>
+    </endpoint>
+
+    <proxy name="CreateOrderService" transports="http" >
+        <target>
+            <endpoint  key="MockCreateProcessInstanceService"/>
+            <inSequence>
+                <validate source="//*[local-name()='Order']">
+                    <schema key="schemas/ubl.xsd"/>
+                    <on-fail>
+                        <makefault>
+                            <code value="tns:Receiver"
+                                xmlns:tns="http://www.w3.org/2003/05/soap-envelope"/>
+                            <reason value="Invalid Order Request"/>
+                        </makefault>
+                        <property name="RESPONSE" value="true"/>
+                        <header name="To" action="remove"/>
+                        <send/><drop/>
+                    </on-fail>
+                </validate>
+                <xslt key="xslt-key" source="//*[local-name()='CreateOrder']"/>
+            </inSequence>
+        </target>
+    </proxy>
+
+    <proxy name="mockEndpoint" transports="http">
+        <target inSequence="sequence/mockProxy.xml"/>
+    </proxy>
+    
+    <!-- CreateProcessInstanceService -->
+    <proxy name="CreateProcessInstanceService" transports="jms" trace="enable">
+        <target>
+            <inSequence>
+                <property action="set" name="OUT_ONLY" value="true"/>
+                <property name="RESPONSE" value="true"/>
+
+                <script language="js">
+                    <![CDATA[
+                       mc.setPayloadXML(
+                         <createProcessInstanceResponse 
+                                 xmlns="http://vo.sca.opensoa-ch10/xsd">
+                                <processInstanceId>1001</processInstanceId>
+                          </createProcessInstanceResponse>);
+                ]]>
+                </script>
+                <send/>
+            </inSequence>
+        </target>
+    </proxy>
+</definitions>

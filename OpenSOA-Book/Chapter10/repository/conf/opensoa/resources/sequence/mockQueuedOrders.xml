@@ -1,0 +1,10 @@
+<sequence name="mockQueuedOrders" xmlns="http://ws.apache.org/ns/synapse">
+	<log level="custom">
+		<property name="Text" value="*** CustomerOrderQueueSerivce was invoked *** "/>
+	</log>
+	<property action="set" name="OUT_ONLY" value="true"/>
+	<property name="RESPONSE" value="true"/>
+	<header name="To" action="remove"/>
+	<xslt key="xslt-key-dummyOrders"/>
+	<send/>
+</sequence>

@@ -1,0 +1,10 @@
+<componentType xmlns="http://www.osoa.org/xmlns/sca/1.0"
+        xmlns:wsdli="http://www.w3.org/2006/01/wsdl-instance"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <property name="smtp_username" type="xsd:string">user</property>
+  <property name="smtp_password" type="xsd:string">password</property>
+  <property name="smtp_host" type="xsd:string">localhost</property>
+  <property name="smtp_domain" type="xsd:string">localhost.localdomain</property>
+</componentType>    

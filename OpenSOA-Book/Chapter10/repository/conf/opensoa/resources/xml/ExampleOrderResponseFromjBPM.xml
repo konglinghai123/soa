@@ -1,0 +1,13 @@
+<OrderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="opensoa.order.response.simple" xsi:schemaLocation="opensoa.order.response.simple \\192.168.0.113\opt\synapse-1.2\repository\conf\opensoa\resources\schemas\jbpmresponse.xsd">
+	<Order>
+		<CustomerID>GT00978567</CustomerID>
+		<CustomerReferenceID>XFB01</CustomerReferenceID>
+		<PO>CON0095678</PO>
+		<TransactionID>1001</TransactionID>
+		<Status>
+			<Approved>Yes</Approved>
+			<CommittedDeliveryDt>2005-06-20</CommittedDeliveryDt>
+			<Note>This is a note.</Note>
+		</Status>
+	</Order>
+</OrderResponse>

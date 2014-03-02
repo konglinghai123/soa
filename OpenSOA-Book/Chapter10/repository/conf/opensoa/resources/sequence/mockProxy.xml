@@ -1,0 +1,13 @@
+<sequence name="mockProxy" xmlns="http://ws.apache.org/ns/synapse">
+    <log level="full"/>
+    <property name="RESPONSE" value="true"/>
+    <header name="To" action="remove"/>
+    <script language="js"><![CDATA[
+                mc.setPayloadXML(
+                     <CreateOrderResponse xmlns="uri:opensoa.chapter10.order">
+                        <Status>200</Status>
+                        <Message>Ok</Message>
+                    </CreateOrderResponse>);
+            ]]></script>
+    <send/>
+</sequence>

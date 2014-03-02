@@ -1,0 +1,35 @@
+<composite
+   xmlns="http://www.osoa.org/xmlns/sca/1.0"
+   targetNamespace="http://opensoa.book.chapter327"
+   xmlns:hw="http://opensoa.book.chapter327"
+   name="IssueManagementComposite">
+
+   <service
+      name="SystemErrorService"
+      promote="SystemErrorComponent">
+      <binding.ws
+         wsdlElement="http://chapter327.book.opensoa#wsdl.binding(SystemErrorServiceJMSBinding)"
+         uri="jms:/SystemErrorInQueue?transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory&amp;java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&amp;java.naming.provider.url=tcp://localhost:61616?wireFormat.maxInactivityDuration=0" />
+
+      <binding.ws
+         wsdlElement="http://chapter327.book.opensoa#wsdl.port(SystemErrorService/SOAP)" />
+
+	  <!--
+      <binding.ws uri="http://localhost:8085/SystemErrorService" />
+      -->
+   </service>
+
+   <component name="SystemErrorComponent">
+      <implementation.java
+         class="opensoa.book.chapter3_27.impl.SystemErrorComponentImpl" />
+         
+      <reference
+         name="problemTicket"
+         target="ProblemTicket" />
+   </component>
+
+   <component name="ProblemTicket">
+      <implementation.composite name="hw:ProblemManagementComposite" />
+   </component> 
+   
+</composite>

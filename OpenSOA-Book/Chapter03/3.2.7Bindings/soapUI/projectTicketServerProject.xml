@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="OpenSoa-03.2.7" soapui-version="2.5 beta2" resourceRoot="" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="ProjectSettings@projectRoot">C:\Users\jdavis\workspace-opensoabook\OpenSOA-Book\Chapter03\3.2.7Bindings\soapUI</con:setting></con:settings><con:interface name="SystemErrorServiceSOAPBinding" bindingName="{http://chapter327.book.opensoa}SystemErrorServiceSOAPBinding" soapVersion="1_1" definition="http://localhost:8085/SystemErrorService?wsdl" xsi:type="con:WsdlInterface" wsaVersion="NONE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8085/SystemErrorService?wsdl"><con:part><con:url>http://localhost:8085/SystemErrorService?wsdl=ProblemService.wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="http://chapter327.book.opensoa" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns0="http://chapter327.book.opensoa" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema>
+      <xs:complexType name="SystemErrorDO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="problem" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="system" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="title" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TicketDO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="caseNumber" type="xs:int"/>
+          <xs:element minOccurs="0" name="customerEmail" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="customerName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="problemDesc" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="source" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="subject" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="unqualified" targetNamespace="http://chapter327.book.opensoa">
+      <xs:element name="systemProblem">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="arg0" nillable="true" type="SystemErrorDO"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="systemProblemResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createTicket">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="arg0" nillable="true" type="TicketDO"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createTicketResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="systemProblemResponse">
+    <wsdl:part name="parameters" element="ns0:systemProblemResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createTicketResponse">
+    <wsdl:part name="parameters" element="ns0:createTicketResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createTicketRequest">
+    <wsdl:part name="parameters" element="ns0:createTicket"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="systemProblemRequest">
+    <wsdl:part name="parameters" element="ns0:systemProblem"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="SystemErrorComponentPortType">
+    <wsdl:operation name="systemProblem">
+      <wsdl:input message="ns0:systemProblemRequest" wsaw:Action="urn:systemProblem"></wsdl:input>
+      <wsdl:output message="ns0:systemProblemResponse" wsaw:Action="urn:systemProblemResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="ProblemTicketComponentPortType">
+    <wsdl:operation name="createTicket">
+      <wsdl:input message="ns0:createTicketRequest" wsaw:Action="urn:createTicket"></wsdl:input>
+      <wsdl:output message="ns0:createTicketResponse" wsaw:Action="urn:createTicketResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SystemErrorServiceSOAPBinding" type="ns0:SystemErrorComponentPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="systemProblem">
+      <soap:operation soapAction="urn:systemProblem" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ProblemTicketServiceJMSBinding" type="ns0:ProblemTicketComponentPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+    <wsdl:operation name="createTicket">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SystemErrorServiceJMSBinding" type="ns0:SystemErrorComponentPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+    <wsdl:operation name="systemProblem">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ProblemTicketServiceSOAPBinding" type="ns0:ProblemTicketComponentPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="createTicket">
+      <soap:operation soapAction="urn:createTicket" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ProblemTicketService">
+    <wsdl:port name="SOAP" binding="ns0:ProblemTicketServiceSOAPBinding">
+      <soap:address location="http://localhost:8085/ProblemTicketService"/>
+    </wsdl:port>
+  </wsdl:service>
+  <wsdl:service name="SystemErrorService">
+    <wsdl:port name="SOAP" binding="ns0:SystemErrorServiceSOAPBinding">
+      <soap:address location="http://localhost:8085/SystemErrorService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>http://localhost:8085/SystemErrorService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="SystemErrorComponent.$promoted$SystemErrorService" targetNamespace="http://chapter327.book.opensoa/SystemErrorComponent/$promoted$SystemErrorService" xmlns:tns="http://chapter327.book.opensoa/SystemErrorComponent/$promoted$SystemErrorService" xmlns:ns0="http://chapter327.book.opensoa" xmlns:SOAP11="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:import namespace="http://chapter327.book.opensoa" location="/SystemErrorService?wsdl=ProblemService.wsdl"></wsdl:import>
+  <wsdl:service name="SystemErrorComponentPortTypeService">
+    <wsdl:port name="SOAP" binding="ns0:SystemErrorServiceSOAPBinding">
+      <SOAP11:address location="http://192.168.2.103:8085/SystemErrorService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8085/SystemErrorService</con:endpoint><con:endpoint>http://192.168.2.103:8085/SystemErrorService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:systemProblem" name="systemProblem" bindingOperationName="systemProblem" inputName="" receivesAttachments="false" sendsAttachments="false" type="Request-Response" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.2.103:8085/SystemErrorService</con:endpoint><con:wsaConfig mustUnderstand="NONE" version="200508"/></con:call><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8085/SystemErrorService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+	xmlns:chap="http://chapter327.book.opensoa">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <chap:systemProblem>
+         <arg0>
+            <problem>This is a problem</problem>
+            <system>This is a system</system>
+            <title>This is a title</title>
+         </arg0>
+      </chap:systemProblem>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://chapter327.book.opensoa/SystemErrorComponent/$promoted$SystemErrorService/SystemErrorComponentPortType/systemProblemRequest"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="OpenSoa-04.2.1" soapui-version="2.5" resourceRoot="" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="ProjectSettings@projectRoot">..\Chapter04\4.2.1Conversations\soapUI</con:setting></con:settings><con:interface name="ProblemTicketComponentBinding" bindingName="{http://chapter43.book.opensoa/}ProblemTicketComponentBinding" soapVersion="1_1" definition="http://localhost:8085/ProblemTicketService?wsdl" xsi:type="con:WsdlInterface" wsaVersion="NONE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8085/ProblemTicketService?wsdl"><con:part><con:url>http://localhost:8085/ProblemTicketService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ProblemTicketComponentService" targetNamespace="http://chapter43.book.opensoa/" xmlns:tns="http://chapter43.book.opensoa/" xmlns:SOAP="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:SOAP11="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema version="1.0">
+      <xs:complexType name="ticketDO">
+        <xs:sequence>
+          <xs:element name="caseNumber" type="xs:int"/>
+          <xs:element minOccurs="0" name="customerEmail" type="xs:string"/>
+          <xs:element minOccurs="0" name="customerName" type="xs:string"/>
+          <xs:element minOccurs="0" name="problemDesc" type="xs:string"/>
+          <xs:element minOccurs="0" name="source" type="xs:string"/>
+          <xs:element minOccurs="0" name="subject" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="unqualified" targetNamespace="http://chapter43.book.opensoa/">
+      <xs:import/>
+      <xs:element name="createTicketResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createTicket">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="arg0" nillable="true" type="ticketDO"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="createTicketResponse">
+    <wsdl:part name="createTicketResponse" element="tns:createTicketResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createTicket">
+    <wsdl:part name="createTicket" element="tns:createTicket"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ProblemTicketComponent">
+    <wsdl:operation name="createTicket">
+      <wsdl:input message="tns:createTicket"></wsdl:input>
+      <wsdl:output message="tns:createTicketResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ProblemTicketComponentBinding" type="tns:ProblemTicketComponent">
+    <SOAP:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="createTicket">
+      <SOAP:operation/>
+      <wsdl:input>
+        <SOAP:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <SOAP:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ProblemTicketComponentService">
+    <wsdl:port name="ProblemTicketComponentPort" binding="tns:ProblemTicketComponentBinding">
+      <SOAP:address location="http://192.168.2.103:8085/ProblemTicketService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8085/ProblemTicketService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createTicket" bindingOperationName="createTicket" inputName="" receivesAttachments="false" sendsAttachments="false" type="Request-Response" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8085/ProblemTicketService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:chap="http://chapter43.book.opensoa/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <chap:createTicket>
+         <arg0>
+            <caseNumber>1001</caseNumber>
+            <customerEmail>jdoe@someplace.com</customerEmail>
+            <customerName>John Doe</customerName>
+            <problemDesc>This is the problem desc</problemDesc>
+            <source>This is the source</source>
+            <subject>This is the subject</subject>
+         </arg0>
+      </chap:createTicket>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://chapter43.book.opensoa/ProblemTicketComponent/createTicketRequest"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>

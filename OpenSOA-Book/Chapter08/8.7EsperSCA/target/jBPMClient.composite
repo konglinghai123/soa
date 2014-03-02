@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<composite
+   xmlns="http://www.osoa.org/xmlns/sca/1.0"
+   targetNamespace="http://opensoa.book.chapter8"
+   xmlns:hw="http://opensoa.book.chapter8"
+   name="jBPMClient">
+
+   <component name="JBPMComponent">
+      <implementation.java
+         class="opensoa.esper.impl.JBPMClientImpl" />
+   </component>
+
+   <reference
+      name="JBPMClientReference"
+      promote="JBPMComponent/jBPMClient">
+      <interface.wsdl
+         interface="http://esper.opensoa#wsdl.interface(EsperManagerSOAP11port_http)" />
+
+      <binding.ws
+         wsdlElement="http://esper.opensoa#wsdl.port(EsperManager/EsperManagerSOAP11port_http)"/>
+   </reference>
+   
+</composite>

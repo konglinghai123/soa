@@ -1,0 +1,122 @@
+<project name="chapter07.2.2" default="compile">
+
+	<property name="server.class"  value="opensoa.sca.Server" />
+	
+	<property file="../../build.properties" />
+	<property name="lib.ext" value="../../Chapter06/lib"/>
+
+	<property name="target" value="target/classes"/>
+	<property name="resources.dir" value="../../Chapter06/resources"/>
+	
+	<import file="../../Chapter06/build.xml"/>
+	<import file="../../soapUI/build.xml"/> 
+
+	<path id="base.path">
+		<pathelement path="${classpath}"/>
+		<pathelement path="${jbpm.server}"/>
+		<pathelement path="${target}"/>
+		<fileset dir="${tuscany.lib}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${jbpm.lib}">
+			<include name="*.jar"/>
+		</fileset>
+    	<fileset dir="${lib.ext}">
+    		<include name="*.jar"/>
+    	</fileset>
+	</path>
+    		
+	<target name="clean.db" description="Clears out the hsqldb database files...">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="dbfiles"/>
+		</delete>
+	</target>
+	
+	<target name="compile" depends="clean" description="Compiles the code...">
+		
+		<mkdir dir="target/classes" />
+		<mkdir dir="logs" />
+		<javac destdir="target/classes" debug="on" source="1.5"
+			target="1.5">
+			<src path="src\main\java" />
+			<src path="src\test\java" />
+			<src path="src\main\generated\wsdl2javasource" />
+			<classpath refid="base.path"/>		
+		</javac>
+		
+		<copy todir="target/classes">
+			<fileset dir="src\main\resources" />
+		</copy>
+		
+		<copy todir="target/classes">
+			<fileset dir="..\7.1.4Beanshell\src\main\jpdl" />
+		</copy>
+		
+		<copy todir="target/classes">
+			<fileset dir="..\7.2.1SCAClient\src\main\jpdl" />
+		</copy>
+				
+	</target>
+
+	<target depends="init" name="generate.classes.from.wsdl" description="Generates Java classes from WSDL...">
+		<delete includeemptydirs="true">
+			<fileset dir="src/main/generated/wsdl2javasource"/>
+		</delete>
+		<mkdir dir="src/main/generated/wsdl2javasource" />
+		
+		<java classname="org.apache.tuscany.sdo.generate.XSD2JavaGenerator" fork="true">
+			<arg value="-targetDirectory"/>
+			<arg value="src/main/generated/wsdl2javasource"/>
+			<arg value="-noInterfaces"/>
+			
+			<arg value="src/main/resources/jbpm.wsdl"/>
+			<classpath>
+				<fileset dir="${tuscany.lib}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+	
+	<target name="populate.processes" depends="compile" description="Runs the jBPM service example test...">
+		<junit printsummary="yes" haltonfailure="yes" fork="true" maxmemory="1024m">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+
+		  <formatter type="plain"/>
+
+		  <test name="com.sample.JbpmServiceTest" haltonfailure="no" outfile="test-results/JbpmServiceTest"/>
+
+		</junit>
+		
+		<echo message="Results can be found in test-results/JbpmServiceTest.txt"/>
+	</target>	
+				
+	<target name="clean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="target" />
+		</delete>
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="work" />
+		</delete>
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="logs" />
+		</delete>
+	</target>
+	
+	<target name="init">
+		<mkdir dir="target/classes"/>
+		<mkdir dir="target/wsdl2javasource"/>
+	</target>
+
+	<target name="run.server" depends="compile">
+        <java classname="${server.class}" fork="true">
+            <classpath refid="base.path"/>
+        </java>
+	</target>
+	
+</project>

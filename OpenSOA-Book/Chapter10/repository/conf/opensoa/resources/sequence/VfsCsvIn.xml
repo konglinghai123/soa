@@ -1,0 +1,31 @@
+<sequence name="esperIn" xmlns="http://ws.apache.org/ns/synapse" 
+	xmlns:vfs="uri:open-soa/chpt10/vfs">
+	<header name="vfs:filename" expression="$trp:FILE_NAME" action="set"/>
+	<header name="vfs:datestamp" expression="$trp:LAST_MODIFIED " action="set"/>
+	<header name="vfs:filesize" expression="$trp:FILE_LENGTH  " action="set"/>
+	<class name="org.apache.synapse.contrib.OpenCSVtoXML"/>
+	<validate source="//*[local-name()='csv']">
+		<schema key="schemas/CSVOrder.xsd"/>
+		<on-fail>		
+			<header name="vfs:status" value="FAILED" action="set"/>
+			<clone continueParent="true">
+				<target sequence="sequence/esper.xml"/>
+			</clone>
+			<property name="Subject" value="Errors occurs when processing order" scope="transport"/>
+			<xslt key="xslt-key-email" source="//*[local-name()='csv']">
+				<property name="filename" expression="$trp:FILE_NAME"/>
+			</xslt>
+			<send>
+				<endpoint>
+					<address uri="mailto:biotechguy99@yahoo.com" format="pox"/>
+				</endpoint>
+			</send>
+			<drop/>
+		</on-fail>
+	</validate>
+	<xslt key="xslt-key-csv2order" source="//*[local-name()='csv']"/>
+	<header name="vfs:status" value="SUCCESS" action="set"/>
+	<clone continueParent="true">
+		<target sequence="sequence/esper.xml"/>
+	</clone>
+</sequence>

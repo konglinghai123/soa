@@ -1,0 +1,88 @@
+<project name="chapter05.5" default="run.tests">
+	
+	<property file="../../build.properties" />
+		
+	<target name="compile" description="Compile Java code...">
+		<mkdir dir="target/classes" />
+		<mkdir dir="test-results" />
+		
+		<javac destdir="target/classes" debug="on" source="1.5"
+			target="1.5">
+			<src path="src\main\java" />
+			<classpath>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+			</classpath>
+		</javac>
+		
+		<javac destdir="target/classes" debug="on" source="1.5"
+			target="1.5">
+			<src path="src\test\java" />
+			<classpath>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+			</classpath>
+		</javac>
+		
+		<copy todir="target/classes">
+			<fileset dir="src\main\jpdl" />
+		</copy>
+
+		<copy todir="target/classes">
+			<fileset dir="..\resources" />
+		</copy>
+				
+	</target>
+
+	<target name="clean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="target" />
+		</delete>
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="work" />
+		</delete>
+	</target>
+
+	<target name="run.tests" depends="salary.process.test, simple.process.test" description="Run's the jUnit tests...">
+		<echo message="Running all tests..."/>
+	</target>
+    
+	<target name="salary.process.test" depends="compile" description="Runs the Salary process...">
+		<junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+
+		  <formatter type="plain"/>
+
+		  <test name="com.sample.SalaryProcessTest" haltonfailure="no" outfile="test-results/SalaryProcessTest"/>
+
+		</junit>
+		
+		<echo message="Results can be found in test-results/SalaryProcessTest.txt"/>
+	</target>
+	
+	<target name="simple.process.test" depends="compile" description="Runs the Simple process...">
+		<junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+
+		  <formatter type="plain"/>
+
+		  <test name="com.sample.SimpleProcessTest" haltonfailure="no" outfile="test-results/SimpleProcessTest"/>
+
+		</junit>
+		
+		<echo message="Results can be found in test-results/SimpleProcessTest.txt"/>
+	</target>
+	
+</project>

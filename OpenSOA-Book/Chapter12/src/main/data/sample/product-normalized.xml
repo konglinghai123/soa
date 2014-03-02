@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Products>
+    <Product>
+        <productId>GZ-1006</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Open Gizmo</productName>
+        <description>Gizmo based on open standards</description>
+        <chargeShipping>Y</chargeShipping>
+        <shippingWeight>2.2</shippingWeight>
+    </Product>
+    <Product>
+        <productId>GZ-1006-1</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Open Gizmo (LGPL)</productName>
+        <description>Gizmo based on open standards</description>
+        <chargeShipping>Y</chargeShipping>
+        <shippingWeight>1.7</shippingWeight>       
+    </Product>
+    <Product>
+        <productId>GZ-1006-2</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Open Gizmo (GPL)</productName>
+        <description>Gizmo based on open standards</description>
+        <chargeShipping>Y</chargeShipping>
+        <shippingWeight>4.3</shippingWeight>
+    </Product>
+    <Product>
+        <productId>GZ-1006-3</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Open Gizmo (BSD)</productName>
+        <description>Gizmo based on open standards</description>
+        <chargeShipping>Y</chargeShipping>
+        <shippingWeight>1.1</shippingWeight>
+    </Product>
+    <Product>
+        <productId>GZ-1006-4</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Open Gizmo (MIT)</productName>
+        <description>Gizmo based on open standards</description>
+        <chargeShipping>Y</chargeShipping>
+        <shippingWeight>5.2</shippingWeight>
+    </Product>
+
+    <Product>
+        <productId>GZ-2002</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Square Gizmo</productName>
+        <description>A square gizmo</description>
+        <chargeShipping>Y</chargeShipping>
+        <shippingWeight>0.8</shippingWeight>
+    </Product>
+    <Product>
+        <productId>GZ-2644</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Round Gizmo</productName>
+        <description>Round Gizmo w/ Lights</description>
+        <chargeShipping>N</chargeShipping>
+        <shippingWeight>1.7</shippingWeight>
+        
+    </Product>
+    <Product>
+        <productId>GZ-5005</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Purple Gizmo</productName>
+        <description>The stylish gizmo</description>
+        <chargeShipping>Y</chargeShipping>
+        <shippingWeight>3.2</shippingWeight>        
+    </Product>
+    <Product>
+        <productId>GZ-1004</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Massive Gizmo</productName>
+        <description>The biggest gizmo ever</description>
+        <chargeShipping>Y</chargeShipping>
+        <shippingWeight>6.3</shippingWeight>
+    </Product>
+    <Product>
+        <productId>GZ-1001</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Big Gizmo</productName>
+        <description>Big Gizmo w/ Legs</description>
+        <chargeShipping>N</chargeShipping>
+        <shippingWeight>3.1</shippingWeight>
+    </Product>
+    <Product>
+        <productId>GZ-9290</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>His/Her Gizmo</productName>
+        <description>A set of his/her gizmos</description>
+        <chargeShipping>Y</chargeShipping>
+        <shippingWeight>1.9</shippingWeight>
+    </Product>
+
+    <Product>
+        <productId>WG-1111</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Micro Chrome Widget</productName>
+        <description>Micro Widget - Chrome Colored</description>
+        <chargeShipping>N</chargeShipping>
+        <shippingWeight>1.1</shippingWeight>
+    </Product>
+    <Product>
+        <productId>WG-5569</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Tiny Chrome Widget</productName>
+        <description>Tiny Chrome Widget</description>
+        <chargeShipping>Y</chargeShipping>
+        <shippingWeight>5.1</shippingWeight>
+    </Product>
+    <Product>
+        <productId>WG-9943</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Giant Widget</productName>
+        <description>Giant Widget with Wheels</description>
+        <chargeShipping>Y</chargeShipping>
+        <shippingWeight>2.8</shippingWeight>
+    </Product>
+    <Product>
+        <productId>WG-9943-B3</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Giant Widget B3</productName>
+        <description>Black Giant Widget with 3 Wheels</description>
+        <chargeShipping>Y</chargeShipping>
+        <shippingWeight>3.5</shippingWeight>
+        
+    </Product>
+    <Product>
+        <productId>WG-9943-B4</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Giant Widget B4</productName>
+        <description>Black Giant Widget with 4 Wheels</description>
+        <chargeShipping>Y</chargeShipping>
+        <shippingWeight>1.9</shippingWeight>
+        
+    </Product>
+    <Product>
+        <productId>WG-9943-S3</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Giant Widget S3</productName>
+        <description>Silver Giant Widget with 3 Wheels</description>
+        <chargeShipping>Y</chargeShipping>
+        <shippingWeight>2.2</shippingWeight>
+    </Product>
+    <Product>
+        <productId>WG-9943-S4</productId>
+        <productTypeId>FINISHED_GOOD</productTypeId>
+        <productName>Giant Widget S4</productName>
+        <description>Silver Giant Widget with 4 Wheels</description>
+        <chargeShipping>Y</chargeShipping>
+        <shippingWeight>0.7</shippingWeight>
+        
+    </Product>
+</Products>

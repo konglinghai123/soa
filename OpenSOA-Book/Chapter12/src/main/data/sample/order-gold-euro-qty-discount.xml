@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Order>
+    <header>
+    	<orderId>2020322</orderId>
+        <partyId>WA-23923</partyId>
+        <partyContactId>1006</partyContactId>
+        <currency>EUR</currency>
+        <shipping>
+        	<carrier>USPS</carrier>
+        	<method>STANDARD</method>
+        </shipping>
+    </header>
+    <lines>
+        <product>
+        	<lineId>2020322-1</lineId>
+            <productId>GZ-1004</productId>
+            <cnt>1</cnt>
+        </product>
+        <product>
+        	<lineId>2020322-2</lineId>
+            <productId>GZ-1001</productId>
+            <cnt>10</cnt>
+        </product>
+    </lines>
+</Order>

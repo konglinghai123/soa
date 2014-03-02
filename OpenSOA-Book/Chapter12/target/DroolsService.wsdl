@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="urn:opensoa.drools" 
+	xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" 
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" 
+	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" 
+	xmlns:ns1="urn:opensoa.drools" 
+	xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  
+  <wsdl:import namespace="urn:opensoa.drools.chapter12" location="Order.wsdl"/>
+  
+  <wsdl:types>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      targetNamespace="urn:opensoa.drools" 
+      xmlns="urn:opensoa.drools"
+      xmlns:ns1="urn:opensoa.drools" >
+      
+      <xs:complexType name="DecisionRequestType" abstract="true"/>
+      <xs:complexType name="DecisionResponseType" abstract="true"/>
+      
+      <xs:complexType name="ManageServiceType" />
+      
+      <xs:complexType name="ManageResponseType">
+        <xs:sequence>
+          <xs:element name="ResultCode" type="xs:int"/>
+          <xs:element name="Result" >
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="SUCCESS"/>
+                <xs:enumeration value="FAILURE"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Comment" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:complexType>
+      
+      <xs:element name="DecisionRequest" type="ns1:DecisionRequestType"/>
+      <xs:element name="DecisionResponse" type="ns1:DecisionResponseType"/>
+      <xs:element name="ManageResponse" type="ns1:ManageResponseType"/>
+      <xs:element name="ManageService" type="ns1:ManageServiceType"/>
+      
+      </xs:schema>
+  </wsdl:types> 
+  
+  <wsdl:message name="DecisionRequest">
+    <wsdl:part name="parameters" element="ns1:DecisionRequest"/>
+  </wsdl:message>
+  <wsdl:message name="DecisionResponse">
+    <wsdl:part name="parameters" element="ns1:DecisionResponse"/>
+  </wsdl:message>
+  
+  <wsdl:message name="LoadRequest">
+    <wsdl:part name="parameters"  element="ns1:ManageService"/>
+  </wsdl:message>
+  <wsdl:message name="LoadResponse">
+    <wsdl:part name="parameters" element="ns1:ManageResponse"/>    
+  </wsdl:message>
+  
+  <wsdl:message name="SuspendRequest">
+    <wsdl:part name="parameters" element="ns1:ManageService"/>
+  </wsdl:message>
+  <wsdl:message name="SuspendResponse">
+    <wsdl:part name="parameters"  element="ns1:ManageResponse"/>    
+  </wsdl:message>
+  
+  <wsdl:message name="ResumeRequest">
+    <wsdl:part name="parameters" element="ns1:ManageService"/>    
+  </wsdl:message>
+  <wsdl:message name="ResumeResponse">
+    <wsdl:part name="parameters"  element="ns1:ManageResponse"/>    
+  </wsdl:message>
+  
+  
+  <wsdl:portType name="DecisionServicePortType">
+    <wsdl:operation name="Decision">
+      <wsdl:input message="ns1:DecisionRequest" wsaw:Action="urn:DecisionRequest">
+    </wsdl:input>
+      <wsdl:output message="ns1:DecisionResponse" wsaw:Action="urn:DecisionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:portType name="LoadServicePortType">
+    <wsdl:operation name="Load">
+      <wsdl:input message="ns1:LoadRequest" wsaw:Action="urn:LoadRequest">
+      </wsdl:input>
+      <wsdl:output message="ns1:LoadResponse" wsaw:Action="urn:LoadResponse">
+      </wsdl:output>
+    </wsdl:operation>
+    </wsdl:portType>
+
+  <wsdl:portType name="SuspendServicePortType">
+    <wsdl:operation name="Suspend">
+      <wsdl:input message="ns1:SuspendRequest" wsaw:Action="urn:SuspendRequest">
+      </wsdl:input>
+      <wsdl:output message="ns1:SuspendResponse" wsaw:Action="urn:SuspendResponse">
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:portType name="ResumeServicePortType">
+    <wsdl:operation name="Resume">
+      <wsdl:input message="ns1:ResumeRequest" wsaw:Action="urn:ResumeRequest">
+      </wsdl:input>
+      <wsdl:output message="ns1:ResumeResponse" wsaw:Action="urn:ResumeResponse">
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:binding name="DecisionServiceSOAP11" type="ns1:DecisionServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Decision">
+      <soap:operation soapAction="urn:Decision" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:binding name="LoadServiceSOAP11" type="ns1:LoadServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Load">
+      <soap:operation soapAction="urn:Load" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+   </wsdl:binding>
+    
+  <wsdl:binding name="SuspendServiceSOAP11" type="ns1:SuspendServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Suspend">
+      <soap:operation soapAction="urn:Suspend" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    </wsdl:binding>
+    
+  <wsdl:binding name="ResumeServiceSOAP11" type="ns1:ResumeServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Resume">
+      <soap:operation soapAction="urn:Resume" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:service name="SuspendService">
+    <wsdl:port name="SOAP" binding="ns1:SuspendServiceSOAP11">
+      <soap:address location="http://localhost:8085/SuspendService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="DecisionService">
+    <wsdl:port name="SOAP" binding="ns1:DecisionServiceSOAP11">
+      <soap:address location="http://localhost:8085/DecisionService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="LoadService">
+    <wsdl:port name="SOAP" binding="ns1:LoadServiceSOAP11">
+      <soap:address location="http://localhost:8085/LoadService"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+  <wsdl:service name="ResumeService">
+    <wsdl:port name="SOAP" binding="ns1:ResumeServiceSOAP11">
+      <soap:address location="http://localhost:8085/ResumeService"/>
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions>

@@ -1,0 +1,66 @@
+<project name="chapter07.1.4" default="beanshell.test">
+	
+	<property file="../../build.properties" />
+		
+	<property name="lib.ext" value="../../Chapter06/lib"/>
+	
+	<target name="compile" description="Compiles Java code...">
+		<mkdir dir="target/classes" />
+		<mkdir dir="test-results" />
+			
+		<javac destdir="target/classes" debug="on" source="1.5"
+			target="1.5">
+			<src path="src\test\java" />
+			<classpath>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+			</classpath>
+		</javac>
+		
+		<copy todir="target/classes">
+			<fileset dir="src\main\jpdl" />
+		</copy>
+
+		<copy todir="target/classes">
+			<fileset dir="..\resources-embedded" />
+		</copy>
+				
+	</target>
+
+	<target name="clean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="target" />
+		</delete>
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="work" />
+		</delete>
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="logs" />
+		</delete>
+	</target>
+
+	<target name="beanshell.test" depends="compile" description="Runs the beanshell example test...">
+		<junit printsummary="yes" haltonfailure="yes" fork="true" maxmemory="1024m">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<!-- this is done because the asm lib used by Tuscany is 
+            	not compatible with the one use by jBPM, so I override it -->
+            	<fileset dir="${lib.ext}">
+            		<include name="*.jar"/>
+            	</fileset>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+
+		  <formatter type="plain"/>
+
+		  <test name="com.sample.ScriptProcessTest" haltonfailure="no" outfile="test-results/ScriptProcessTest"/>
+
+		</junit>
+		
+		<echo message="Results can be found in test-results/ScriptProcessTest.txt"/>
+	</target>
+	
+</project>

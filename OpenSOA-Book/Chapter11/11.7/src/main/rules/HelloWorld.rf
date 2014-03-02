@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<process xmlns="http://drools.org/drools-5.0/process"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+         xs:schemaLocation="http://drools.org/drools-5.0/process drools-processes-5.0.xsd"
+         type="RuleFlow" name="flow" id="opensoa.drools.hellodrools" package-name="opensoa.drools.hellodrools" version="1.0">    
+        
+<!-- This is the default header element added when creating with the 4.x plugin, but it won't compile w/5.0 
+<process xmlns="http://drools.org/drools-4.0/process"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+         xs:schemaLocation="http://drools.org/drools-4.0/process drools-processes-4.0.xsd"
+         type="RuleFlow" name="flow" id="opensoa.drools.hellodrools" package-name="opensoa.drools.hellodrools" version="1.0" >
+         -->
+  <header>
+    <imports>
+      <import name="opensoa.drools.hellodrools117.Person" />
+      <import name="java.io.InputStreamReader" />
+      <import name="java.io.Reader" />
+      <import name="java.util.ArrayList" />
+      <import name="java.util.Iterator" />
+      <import name="org.drools.FactHandle" />
+      <import name="org.drools.QueryResult" />
+      <import name="org.drools.QueryResults" />
+      <import name="org.drools.RuleBase" />
+      <import name="org.drools.RuleBaseFactory" />
+      <import name="org.drools.StatefulSession" />
+      <import name="org.drools.WorkingMemory" />
+      <import name="org.drools.compiler.PackageBuilder" />
+      <import name="org.drools.rule.Package" />
+    </imports>
+  </header>
+
+  <nodes>
+    <split id="2" name="Gender" x="137" y="102" width="80" height="40" type="2" >
+      <constraints>
+        <constraint toNodeId="3" toType="DROOLS_DEFAULT" name="constraint" priority="1" type="rule" dialect="mvel" >Person ( gender == 'M')</constraint>
+        <constraint toNodeId="4" toType="DROOLS_DEFAULT" name="constraint" priority="1" type="rule" dialect="mvel" >Person ( gender == 'F' )</constraint>
+      </constraints>
+    </split>
+    <ruleSet id="4" name="Female" x="252" y="140" width="80" height="40" ruleFlowGroup="female" />
+    <actionNode id="8" name="Action" x="369" y="178" width="80" height="40" >
+        <action type="expression" dialect="java" >System.out.println ( "Inside action" );
+
+QueryResults results;
+QueryResult result;
+
+results = drools.getWorkingMemory().getQueryResults("personQuery");
+
+Person person;
+Iterator it;
+
+for (it = results.iterator(); it.hasNext();) {
+				result = ( QueryResult ) it.next();
+				person = (Person) result.get("person");
+				System.out.println("person: " + person.getSalutation() + " " + person.getName());
+}</action>
+    </actionNode>
+    <start id="1" name="Start" x="28" y="102" width="80" height="40" />
+    <ruleSet id="3" name="Male" x="252" y="51" width="80" height="40" ruleFlowGroup="male" />
+    <end id="7" name="End" x="370" y="255" width="80" height="40" />
+    <join id="5" name="Join" x="368" y="99" width="80" height="40" type="2" />
+  </nodes>
+
+  <connections>
+    <connection from="1" to="2" />
+    <connection from="2" to="4" />
+    <connection from="5" to="8" />
+    <connection from="2" to="3" />
+    <connection from="8" to="7" />
+    <connection from="3" to="5" />
+    <connection from="4" to="5" />
+  </connections>
+
+</process>

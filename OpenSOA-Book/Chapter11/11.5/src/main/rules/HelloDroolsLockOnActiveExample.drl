@@ -1,0 +1,49 @@
+package opensoa.drools.hellodrools;
+
+import opensoa.drools.hellodrools115.Person;
+
+# following global added for junit testing
+global java.util.List results;
+
+rule "MrFlow"
+	when 
+		Person( gender == 'M');
+	then
+		System.out.println("MrFlow: Setting to agenda-group 'Mr'");
+		drools.setFocus( "Mr" );
+		results.add ( "MrFlow" );
+end
+
+## The use of lock-on-active prevents a recursive situation	
+rule "HelloMr"
+	salience 50
+	agenda-group "Mr"
+	lock-on-active true
+	when
+		person : Person ();
+	then
+		update ( person );
+		System.out.println("Hello Mr. " + person.getName());
+		results.add ( "HelloMr" );
+end
+
+## The following two rules aren't triggered in the test case
+rule "MrsFlow"
+	when 
+		Person( gender == 'F');
+	then
+		System.out.println("MrsFlow: Setting to agenda-group 'Mrs'");
+		drools.setFocus( "Mrs" );
+		results.add ( "MrsFlow" );
+end
+
+rule "HelloMrs"
+	agenda-group "Mrs"
+	when
+		person : Person ();
+	then
+		System.out.println("Hello Mrs. " + person.getName());
+		retract ( person );
+		results.add ( "HelloMrs" );
+end
+

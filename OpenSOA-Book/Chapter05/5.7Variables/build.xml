@@ -1,0 +1,56 @@
+<project name="chapter05.7" default="variable.process.test">
+	
+	<property file="../../build.properties" />
+		
+	<target name="compile" description="Compiles Java code...">
+		<mkdir dir="target/classes" />
+		<mkdir dir="test-results" />
+		
+		<javac destdir="target/classes" debug="on" source="1.5"
+			target="1.5">
+			<src path="src\test\java" />
+			<classpath>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+			</classpath>
+		</javac>
+		
+		<copy todir="target/classes">
+			<fileset dir="src\main\jpdl" />
+		</copy>
+
+		<copy todir="target/classes">
+			<fileset dir="..\resources" />
+		</copy>
+				
+	</target>
+
+	<target name="clean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="target" />
+		</delete>
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="work" />
+		</delete>
+	</target>
+
+	<target name="variable.process.test" depends="compile" description="Runs the variable process test...">
+		<junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement path="target/classes"/>
+            	<fileset dir="${jbpm.lib}">
+            		<include name="*.jar"/>
+            	</fileset>
+            </classpath>
+
+		  <formatter type="plain"/>
+
+		  <test name="com.sample.VariableProcessTest" haltonfailure="no" outfile="test-results/VariableProcessTest"/>
+
+		</junit>
+		
+		<echo message="Results can be found in test-results/VariableProcessTest.txt"/>
+	</target>
+	
+</project>
